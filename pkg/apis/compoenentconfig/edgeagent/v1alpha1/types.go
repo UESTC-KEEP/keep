@@ -16,6 +16,14 @@ limitations under the License.
 
 package v1alpha1
 
+import (
+	"github.com/shirou/gopsutil/cpu"
+	"github.com/shirou/gopsutil/disk"
+	"github.com/shirou/gopsutil/host"
+	"github.com/shirou/gopsutil/mem"
+	"github.com/shirou/gopsutil/net"
+)
+
 const (
 	// DataBaseDriverName is sqlite3
 	DataBaseDriverName = "sqlite3"
@@ -55,7 +63,11 @@ type Modules struct {
 type HealthzAgent struct {
 	// Enable 说明healthzagent模块当前是否启用 如果没有启用则其对应的配置文件也不会进行校验 默认启动
 	// default true
-	Enable bool    `json:"enable,omitempty"`
-	Cpu    float64 `json:"cpu,omitempty"`
-	Disk   float64 `json:"disk,omitempty"`
+	Enable             bool `json:"enable,omitempty"`
+	HostInfoStat       *host.InfoStat
+	Cpu                *[]cpu.InfoStat `json:"cpu,omitempty"`
+	Mem                *mem.VirtualMemoryStat
+	DiskPartitionStat  *[]disk.PartitionStat           `json:"disk_partition_stat,omitempty"`
+	DiskIOCountersStat *map[string]disk.IOCountersStat `json:"disk_io_counters_stat"`
+	NetIOCountersStat  *[]net.IOCountersStat           `json:"net_io_counters_stat"`
 }

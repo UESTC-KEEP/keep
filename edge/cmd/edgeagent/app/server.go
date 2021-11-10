@@ -8,6 +8,7 @@ import (
 	"github.com/wonderivan/logger"
 	"keep/core"
 	"keep/edge/cmd/edgeagent/app/options"
+	"keep/edge/pkg/common/utils"
 	"keep/edge/pkg/healthzagent"
 	edgeagent "keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1"
 )
@@ -38,6 +39,7 @@ func NewEdgeAgentCommand() *cobra.Command {
 			}
 			registerModules(config)
 			logger.Info("命令创建成功")
+			utils.PrintKEEPLogo()
 			core.Run()
 		},
 	}

@@ -1,6 +1,6 @@
 {
-  "File": {
-    "filename": "./keep_edgecore_logs.log",
+  "File":{
+    "filename": "/var/log/keepedge/keep_edgecore_logs.log",
     "level": "TRAC",
     "daily": true,
     "maxlines": 1000000,

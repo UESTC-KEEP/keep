@@ -33,9 +33,12 @@ func NewDefaultEdgeAgentConfig() *EdgeAgentConfig {
 		},
 		Modules: &Modules{
 			HealthzAgent: &HealthzAgent{
-				Enable: true,
-				Cpu:    0.0,
-				Disk:   0.0,
+				Enable:             true,
+				Cpu:                nil,
+				Mem:                nil,
+				DiskPartitionStat:  nil,
+				DiskIOCountersStat: nil,
+				NetIOCountersStat:  nil,
 			},
 		},
 	}
@@ -52,9 +55,12 @@ func NewMinEdgeCoreConfig() *EdgeAgentConfig {
 		},
 		Modules: &Modules{
 			HealthzAgent: &HealthzAgent{
-				Enable: true,
-				Cpu:    0.0,
-				Disk:   0.0,
+				Enable:             true,
+				Cpu:                nil,
+				Mem:                nil,
+				DiskPartitionStat:  nil,
+				DiskIOCountersStat: nil,
+				NetIOCountersStat:  nil,
 			},
 		},
 	}
