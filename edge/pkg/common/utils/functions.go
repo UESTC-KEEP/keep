@@ -2,11 +2,27 @@ package utils
 
 import (
 	"fmt"
+	"github.com/mitchellh/go-ps"
 	"github.com/wonderivan/logger"
 )
 
 func GracefulExit() {
 	logger.Info("准备退出...")
+}
+
+// FindProcess 根据进程名找当前是不是有进程在执行
+func FindProcess(name string) (bool, error) {
+	processes, err := ps.Processes()
+	if err != nil {
+		return false, err
+	}
+
+	for _, process := range processes {
+		if process.Executable() == name {
+			return true, nil
+		}
+	}
+	return false, nil
 }
 
 func PrintKEEPLogo() {

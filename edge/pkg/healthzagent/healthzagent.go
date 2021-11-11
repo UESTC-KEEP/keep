@@ -1,7 +1,6 @@
 package healthzagent
 
 import (
-	"fmt"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/host"
@@ -11,6 +10,7 @@ import (
 	"keep/core"
 	"keep/edge/pkg/common/modules"
 	healthzagentconfig "keep/edge/pkg/healthzagent/config"
+	prome "keep/edge/pkg/healthzagent/promethus"
 	"keep/edge/pkg/healthzagent/server"
 	edgeagent "keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1"
 	"os"
@@ -18,13 +18,15 @@ import (
 )
 
 type HealthzAgent struct {
-	enable             bool
-	hostInfoStat       *host.InfoStat
-	cpu                *[]cpu.InfoStat
-	mem                *mem.VirtualMemoryStat
-	diskPartitionStat  *[]disk.PartitionStat
-	diskIOCountersStat *map[string]disk.IOCountersStat
-	netIOCountersStat  *[]net.IOCountersStat
+	enable                    bool
+	hostInfoStat              *host.InfoStat
+	cpu                       *[]cpu.InfoStat
+	mem                       *mem.VirtualMemoryStat
+	diskPartitionStat         *[]disk.PartitionStat
+	diskIOCountersStat        *map[string]disk.IOCountersStat
+	netIOCountersStat         *[]net.IOCountersStat
+	defaultEdgeHealthInterval int
+	cpuUsage                  float64
 }
 
 // Register 注册healthzagent模块
@@ -53,13 +55,18 @@ func (h *HealthzAgent) Enable() bool {
 }
 
 func (h *HealthzAgent) Start() {
-	logger.Debug(server.DescribeMachine(server.GetMachineStatus()))
 	logger.Debug("healthzagent开始启动....")
-	n := 0
+	// 打印机器配置
+	server.GetMachineStatus()
+	logger.Debug(server.DescribeMachine(&server.Healagent))
+	// 启动周期性任务轮询本机用量
+	cron := server.StartMetricEdgeInterval(edgeagent.NewDefaultEdgeAgentConfig().Modules.HealthzAgent.DefaultEdgeHealthInterval)
+	// 启动本机StartMertricsServer
+	go prome.StartMertricsServer(8080)
+	//os.Exit(1)
+	defer cron.Stop()
 	for {
-		fmt.Println("healthzagent运行中：", n)
-		n++
-		time.Sleep(1 * time.Second)
+		time.Sleep(time.Second)
 	}
 }
 

@@ -18,6 +18,7 @@ package v1alpha1
 
 import (
 	"github.com/wonderivan/logger"
+	"keep/constants"
 	"keep/pkg/util"
 	"os"
 )
@@ -33,12 +34,15 @@ func NewDefaultEdgeAgentConfig() *EdgeAgentConfig {
 		},
 		Modules: &Modules{
 			HealthzAgent: &HealthzAgent{
-				Enable:             true,
-				Cpu:                nil,
-				Mem:                nil,
-				DiskPartitionStat:  nil,
-				DiskIOCountersStat: nil,
-				NetIOCountersStat:  nil,
+				Enable:                    true,
+				CpuUsage:                  0.0,
+				DefaultEdgeHealthInterval: constants.DefaultEdgeHealthInterval,
+				Cpu:                       nil,
+				Mem:                       nil,
+				DiskPartitionStat:         nil,
+				DiskIOCountersStat:        nil,
+				NetIOCountersStat:         nil,
+				DefaultMqttCacheQueueSize: constants.DefaultMqttCacheQueueSize,
 			},
 		},
 	}

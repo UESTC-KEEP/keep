@@ -5,6 +5,7 @@ package server
 
 import (
 	"fmt"
+	"github.com/robfig/cron"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/host"
@@ -12,18 +13,25 @@ import (
 	"github.com/shirou/gopsutil/net"
 	"github.com/wonderivan/logger"
 	edgeagent "keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1"
+	"strconv"
 	"time"
 )
 
-// GetMachineStatus 获取节点综合信息
-func GetMachineStatus() *edgeagent.HealthzAgent {
-	var healagent edgeagent.HealthzAgent
-	healagent.HostInfoStat, _ = GetBasicStatus()
-	healagent.Cpu, _, _ = GetCpuStatus()
-	healagent.Mem = GetMemStatus()
-	healagent.DiskPartitionStat, healagent.DiskIOCountersStat = GetDiskStatus()
-	healagent.NetIOCountersStat, _ = GetNetIOStatus()
-	return &healagent
+var Healagent edgeagent.HealthzAgent
+
+// GetMachineStatus  获取节点综合信息
+func GetMachineStatus() {
+	logger.Debug("查询节点用量...")
+	Healagent.HostInfoStat, _ = GetBasicStatus()
+	Healagent.Cpu, Healagent.CpuUsage, _ = GetCpuStatus()
+	Healagent.Mem = GetMemStatus()
+	Healagent.DiskPartitionStat, Healagent.DiskIOCountersStat = GetDiskStatus()
+	Healagent.NetIOCountersStat, _ = GetNetIOStatus()
+	logger.Debug(fmt.Sprintf("\n内存用量：%.2f%%  cpu用量：%.2f%% ", Healagent.Mem.UsedPercent, Healagent.CpuUsage))
+	for i := 0; i < len(*Healagent.NetIOCountersStat); i++ {
+		logger.Debug(fmt.Sprintf("网卡名字：%s 发送数据：%vKB 接收数据：%vKB",
+			(*Healagent.NetIOCountersStat)[i].Name, (*Healagent.NetIOCountersStat)[i].BytesSent/1024, (*Healagent.NetIOCountersStat)[i].BytesRecv/1024))
+	}
 }
 
 // DescribeMachine 描述主机信息
@@ -34,8 +42,7 @@ func DescribeMachine(ha *edgeagent.HealthzAgent) string {
 	KernelArch := machine.KernelArch
 	KernelVersion := machine.KernelVersion
 	PlatformFamily := machine.PlatformFamily
-	_, cpupencent, _ := GetCpuStatus()
-	return fmt.Sprintf("\n主机名：%s\n操作系统：%s\n内核架构：%s\n内核版本：%s\n平台族：%s\n内存用量：%.2f%%\ncpu用量：%.2f%%\n", hostname, os, KernelArch, KernelVersion, PlatformFamily, (*ha).Mem.UsedPercent, cpupencent)
+	return fmt.Sprintf("\n主机名：%s\n操作系统：%s\n内核架构：%s\n内核版本：%s\n平台族：%s\n内存用量：%.2f%%\ncpu用量：%.2f%%\n", hostname, os, KernelArch, KernelVersion, PlatformFamily, (*ha).Mem.UsedPercent, ha.CpuUsage)
 }
 
 // GetBasicStatus 获取边缘节点基础信息
@@ -83,7 +90,7 @@ func GetDiskStatus() (*[]disk.PartitionStat, *map[string]disk.IOCountersStat) {
 		//fmt.Printf("part:%v\n", part.String())
 		_, err := disk.Usage(part.Mountpoint)
 		if err != nil {
-			logger.Warn("路径：", part.Mountpoint, " 磁盘查询失败...", err)
+			//logger.Warn("路径：", part.Mountpoint, " 磁盘查询失败...", err)
 			continue
 		}
 		//fmt.Printf("disk info:used:%v free:%v\n", diskInfo.UsedPercent, diskInfo.Free)
@@ -103,4 +110,18 @@ func GetNetIOStatus() (*[]net.IOCountersStat, error) {
 	}
 	//logger.Debug("网络信息：",info)
 	return &info, nil
+}
+
+// StartMetricEdgeInterval  定时轮询边缘节点用量
+func StartMetricEdgeInterval(interval int) *cron.Cron {
+	//定期 删除过期文件
+	cron2 := cron.New() //创建一个cron实例
+	//validTime秒执行一次 更新边缘节点信息
+	err := cron2.AddFunc("*/"+strconv.Itoa(interval)+" * * * * *", GetMachineStatus)
+	if err != nil {
+		logger.Error(err)
+	}
+	cron2.Start()
+	logger.Debug("定时检测边缘节点健康状态启动成功...")
+	return cron2
 }

@@ -63,11 +63,14 @@ type Modules struct {
 type HealthzAgent struct {
 	// Enable 说明healthzagent模块当前是否启用 如果没有启用则其对应的配置文件也不会进行校验 默认启动
 	// default true
-	Enable             bool `json:"enable,omitempty"`
-	HostInfoStat       *host.InfoStat
-	Cpu                *[]cpu.InfoStat `json:"cpu,omitempty"`
-	Mem                *mem.VirtualMemoryStat
-	DiskPartitionStat  *[]disk.PartitionStat           `json:"disk_partition_stat,omitempty"`
-	DiskIOCountersStat *map[string]disk.IOCountersStat `json:"disk_io_counters_stat"`
-	NetIOCountersStat  *[]net.IOCountersStat           `json:"net_io_counters_stat"`
+	Enable                    bool                            `json:"enable,omitempty"`
+	HostInfoStat              *host.InfoStat                  `json:"host_info_stat"`
+	Cpu                       *[]cpu.InfoStat                 `json:"cpu,omitempty"`
+	CpuUsage                  float64                         `json:"cpu_usage,omitempty"`
+	Mem                       *mem.VirtualMemoryStat          `json:"mem,omitempty"`
+	DiskPartitionStat         *[]disk.PartitionStat           `json:"disk_partition_stat,omitempty"`
+	DiskIOCountersStat        *map[string]disk.IOCountersStat `json:"disk_io_counters_stat"`
+	NetIOCountersStat         *[]net.IOCountersStat           `json:"net_io_counters_stat"`
+	DefaultEdgeHealthInterval int                             `json:"defaultEdgeHealthInterval,omitempty"`
+	DefaultMqttCacheQueueSize int                             `json:"defaultMqttCacheQueueSize,omitempty"`
 }
