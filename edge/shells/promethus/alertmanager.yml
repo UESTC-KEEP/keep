@@ -1,0 +1,20 @@
+global:
+  resolve_timeout: 5m
+  smtp_smarthost: 'smtp.sina.cn:25'
+  smtp_from: 'zhanglianjunjun@sina.cn'
+  smtp_auth_username: 'zhanglianjunjun@sina.cn'
+  smtp_auth_password: 'b3c995a23a490d9a'
+  smtp_require_tls: false
+
+route:
+  receiver: 'mail' # 父节点
+  group_by: ['alertname'] # 分组规则
+  group_wait: 10s # 为了能够一次性收集和发送更多的相关信息时，可以通过group_wait参数设置等待时间
+  group_interval: 1m  #定义相同的Group之间发送告警通知的时间间隔
+  repeat_interval: 1m
+
+receivers:
+  - name: 'mail'
+    email_configs:
+      - to: '875175688@qq.com'
+        send_resolved: true
