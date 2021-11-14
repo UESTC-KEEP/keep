@@ -6,10 +6,14 @@ import (
 	"github.com/mitchellh/go-ps"
 	"github.com/spf13/cobra"
 	"github.com/wonderivan/logger"
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
+	"keep/constants"
 	"keep/core"
 	"keep/edge/cmd/edgeagent/app/options"
 	"keep/edge/pkg/common/utils"
 	"keep/edge/pkg/healthzagent"
+	"keep/edge/pkg/logsagent"
 	edgeagent "keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1"
 )
 
@@ -34,11 +38,13 @@ func NewEdgeAgentCommand() *cobra.Command {
 		Long: `edgeagent description,however there is nothing in our code for now,so there is nothing in description`,
 		Run: func(cmd *cobra.Command, args []string) {
 			config, err := opts.Config()
+			text, err := yaml.Marshal(&config)
+			// 写入配置文件
+			err = ioutil.WriteFile(constants.DefaultConfigDir+"edgeagent.yaml", text, 0777)
 			if err != nil {
 				logger.Fatal(err)
 			}
 			registerModules(config)
-			logger.Info("命令创建成功")
 			utils.PrintKEEPLogo()
 			core.Run()
 		},
@@ -86,4 +92,6 @@ func findProcess(name string) (bool, error) {
 // register all modules in system
 func registerModules(config *edgeagent.EdgeAgentConfig) {
 	healthzagent.Register(config.Modules.HealthzAgent)
+	fmt.Println(config.Modules.LogsAgent)
+	logsagent.Register(config.Modules.LogsAgent)
 }

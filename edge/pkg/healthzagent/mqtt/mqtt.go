@@ -26,7 +26,7 @@ func SubscribeMqtt(host_ip, port, topic string) map[string]interface{} {
 		SubReqs: []*client.SubReq{
 			&client.SubReq{
 				TopicFilter: []byte(topic),
-				QoS:         mqtt.QoS1,
+				QoS:         mqtt.QoS0,
 				// Define the processing of the message handler.
 				Handler: func(topicName, message []byte) {
 					fmt.Println(string(topicName), string(message))
@@ -35,7 +35,7 @@ func SubscribeMqtt(host_ip, port, topic string) map[string]interface{} {
 						logger.Error(err)
 					}
 					fmt.Println("解析的结构体：", Message)
-					cancel()
+					ctx.Done()
 				},
 			},
 		},
@@ -48,6 +48,7 @@ func SubscribeMqtt(host_ip, port, topic string) map[string]interface{} {
 	// Check for termination request.
 	case <-ctx.Done():
 		logger.Debug(fmt.Sprintf("Termination pending: %s", ctx.Err()))
+		break
 		// sleep 1.5-2 sec before next round
 		// (recommended by specification as "collecting period")
 	case <-time.After(10000 * time.Millisecond):
@@ -57,7 +58,7 @@ func SubscribeMqtt(host_ip, port, topic string) map[string]interface{} {
 	if err != nil {
 		logger.Error(err)
 	}
-
+	defer cancel()
 	//defer MqttClient.Terminate()
 	return Message
 }

@@ -21,6 +21,7 @@ import (
 	"keep/constants"
 	"keep/pkg/util"
 	"os"
+	"time"
 )
 
 // NewDefaultEdgeAgentConfig returns a full EdgeCoreConfig object
@@ -43,6 +44,14 @@ func NewDefaultEdgeAgentConfig() *EdgeAgentConfig {
 				DiskIOCountersStat:        nil,
 				NetIOCountersStat:         nil,
 				DefaultMqttCacheQueueSize: constants.DefaultMqttCacheQueueSize,
+			},
+			LogsAgent: &LogsAgent{
+				Enable:      true,
+				LogLevel:    6,
+				LogTime:     time.Now(),
+				LogFileName: "",
+				LogInfo:     "",
+				LogFiles:    []string{"/var/log/keepedge/keep_edgeagent_logs.log"},
 			},
 		},
 	}

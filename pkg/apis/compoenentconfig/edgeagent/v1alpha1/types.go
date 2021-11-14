@@ -22,6 +22,7 @@ import (
 	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/mem"
 	"github.com/shirou/gopsutil/net"
+	"time"
 )
 
 const (
@@ -56,6 +57,7 @@ type DataBase struct {
 
 type Modules struct {
 	HealthzAgent *HealthzAgent `json:"healthzAgent,omitempty"`
+	LogsAgent    *LogsAgent    `json:"logsagent,omitempty"`
 }
 
 // HealthzAgent 是该模块的说明
@@ -73,4 +75,13 @@ type HealthzAgent struct {
 	NetIOCountersStat         *[]net.IOCountersStat           `json:"net_io_counters_stat"`
 	DefaultEdgeHealthInterval int                             `json:"defaultEdgeHealthInterval,omitempty"`
 	DefaultMqttCacheQueueSize int                             `json:"defaultMqttCacheQueueSize,omitempty"`
+}
+
+type LogsAgent struct {
+	Enable      bool      `json:"enable,omitempty"`
+	LogLevel    int       `json:"log_level"`
+	LogTime     time.Time `json:"log_time"`
+	LogFileName string    `json:"log_file_name"`
+	LogInfo     string    `json:"log_info"`
+	LogFiles    []string  `json:"log_files"`
 }
