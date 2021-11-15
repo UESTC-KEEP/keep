@@ -29,7 +29,7 @@ func GetMachineStatus() {
 	Healagent.NetIOCountersStat, _ = GetNetIOStatus()
 	logger.Debug(fmt.Sprintf("\n内存用量：%.2f%%  cpu用量：%.2f%% ", Healagent.Mem.UsedPercent, Healagent.CpuUsage))
 	for i := 0; i < len(*Healagent.NetIOCountersStat); i++ {
-		logger.Debug(fmt.Sprintf("网卡名字：%s 发送数据：%vKB 接收数据：%vKB",
+		fmt.Println(fmt.Sprintf("网卡名字：%s 发送数据：%vKB 接收数据：%vKB",
 			(*Healagent.NetIOCountersStat)[i].Name, (*Healagent.NetIOCountersStat)[i].BytesSent/1024, (*Healagent.NetIOCountersStat)[i].BytesRecv/1024))
 	}
 }

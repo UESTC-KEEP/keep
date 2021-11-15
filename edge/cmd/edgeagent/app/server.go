@@ -10,6 +10,7 @@ import (
 	"keep/core"
 	"keep/edge/cmd/edgeagent/app/options"
 	"keep/edge/pkg/common/utils"
+	"keep/edge/pkg/edgepublisher"
 	"keep/edge/pkg/healthzagent"
 	"keep/edge/pkg/logsagent"
 	edgeagent "keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1"
@@ -61,4 +62,5 @@ func NewEdgeAgentCommand() *cobra.Command {
 func registerModules(config *edgeagent.EdgeAgentConfig) {
 	healthzagent.Register(config.Modules.HealthzAgent)
 	logsagent.Register(config.Modules.LogsAgent)
+	edgepublisher.Register(config.Modules.EdgePublisher)
 }

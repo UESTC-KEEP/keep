@@ -21,6 +21,7 @@ func init() {
 
 // GetAllDockerImages 查看节点镜像列表
 func GetAllDockerImages() (*[]types.ImageSummary, error) {
+
 	list, err := clit.ImageList(context.Background(), types.ImageListOptions{})
 	if err != nil {
 		logger.Warn(err)

@@ -21,6 +21,7 @@ import (
 	"keep/constants"
 	"keep/pkg/util"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -51,7 +52,18 @@ func NewDefaultEdgeAgentConfig() *EdgeAgentConfig {
 				LogTime:     time.Now(),
 				LogFileName: "",
 				LogInfo:     "",
-				LogFiles:    []string{"/var/log/keepedge/keep_edgeagent_logs.log"},
+				LogFiles:    strings.Split(constants.DefaultLogFiles, "$$$$"),
+			},
+			EdgePublisher: &EdgePublisher{
+				Enable:            true,
+				HTTPServer:        constants.DefaultHttpServer,
+				Port:              constants.DefaultHttpPort,
+				ServePort:         constants.DefaultServePort,
+				Heartbeat:         constants.DefaultEdgeHeartBeat,
+				EdgeMsgQueens:     []string{constants.DefaultLogsTopic, constants.DefaultDataTopic},
+				TLSCAFile:         "",
+				TLSCertFile:       "",
+				TLSPrivateKeyFile: "",
 			},
 		},
 	}

@@ -14,7 +14,6 @@ import (
 	"keep/edge/pkg/healthzagent/server"
 	edgeagent "keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1"
 	"os"
-	"time"
 )
 
 type HealthzAgent struct {
@@ -65,9 +64,6 @@ func (h *HealthzAgent) Start() {
 	go prome.StartMertricsServer(8080)
 	//os.Exit(1)
 	defer cron.Stop()
-	for {
-		time.Sleep(time.Second)
-	}
 }
 
 // NewHealthzAgent 创建新的healthzagent对象  并且初始化它

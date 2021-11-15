@@ -56,8 +56,9 @@ type DataBase struct {
 }
 
 type Modules struct {
-	HealthzAgent *HealthzAgent `json:"healthzAgent,omitempty"`
-	LogsAgent    *LogsAgent    `json:"logsagent,omitempty"`
+	HealthzAgent  *HealthzAgent  `json:"healthzAgent,omitempty"`
+	LogsAgent     *LogsAgent     `json:"logsagent,omitempty"`
+	EdgePublisher *EdgePublisher `json:"edgepublisher,omitempty"`
 }
 
 // HealthzAgent 是该模块的说明
@@ -77,6 +78,7 @@ type HealthzAgent struct {
 	DefaultMqttCacheQueueSize int                             `json:"defaultMqttCacheQueueSize,omitempty"`
 }
 
+// LogsAgent logsagent模块结构定义
 type LogsAgent struct {
 	Enable      bool      `json:"enable,omitempty"`
 	LogLevel    int       `json:"log_level"`
@@ -84,4 +86,17 @@ type LogsAgent struct {
 	LogFileName string    `json:"log_file_name"`
 	LogInfo     string    `json:"log_info"`
 	LogFiles    []string  `json:"log_files"`
+}
+
+//EdgePublisher 模块定义
+type EdgePublisher struct {
+	Enable            bool     `json:"enable"`
+	HTTPServer        string   `json:"httpServer,omitempty"`
+	Port              int32    `json:"port,omitempty"`
+	ServePort         int32    `json:"servePort,omitempty"`
+	Heartbeat         int32    `json:"heartbeat,omitempty"`
+	EdgeMsgQueens     []string `json:"edge_msg_queens"`
+	TLSCAFile         string   `json:"tlsCaFile,omitempty"`
+	TLSCertFile       string   `json:"tlsCertFile,omitempty"`
+	TLSPrivateKeyFile string   `json:"tlsPrivateKeyFile,omitempty"`
 }

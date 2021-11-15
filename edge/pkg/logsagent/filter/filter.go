@@ -2,6 +2,7 @@ package filter
 
 import (
 	"fmt"
+	"keep/edge/pkg/edgepublisher/bufferpooler"
 	"keep/edge/pkg/logsagent/config"
 	"strings"
 )
@@ -35,7 +36,8 @@ func FilterLogsByLevel(log string) {
 		}
 	case 6:
 		if strings.Contains(log, "DEBG") {
-			fmt.Println("OKKKKK")
+			bufferpooler.SendLogInQueue(log)
+			fmt.Println("发送日志至bufferpooler成功...")
 		}
 	case 7:
 		if strings.Contains(log, "TRAC") {
