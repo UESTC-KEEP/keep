@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"fmt"
 	"github.com/mitchellh/go-ps"
 	"github.com/wonderivan/logger"
@@ -23,6 +24,19 @@ func FindProcess(name string) (bool, error) {
 		}
 	}
 	return false, nil
+}
+
+// EnvironmentCheck  check the environment before edgeagent start
+// if Check failed,  return errors
+func EnvironmentCheck() error {
+	// if kubelet is running, return error
+	if find, err := FindProcess("edgecore"); err != nil {
+		return err
+	} else if !find {
+		return errors.New("kubeedge edgecore未在运行,请检查")
+	}
+	logger.Debug("环境检测通过...")
+	return nil
 }
 
 func PrintKEEPLogo() {

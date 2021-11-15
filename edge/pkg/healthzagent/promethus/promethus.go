@@ -25,7 +25,12 @@ func StartMertricsServer(port int) {
 	go func() {
 		for {
 			// 设置 gauge 的值为
-			newTemp, _ := strconv.ParseFloat(mqtt.GetRencentMqttMsg("192.168.1.40", "1883", "clock_sensor")["temp"].(string), 64)
+			temp_ := mqtt.GetRencentMqttMsg("192.168.1.40", "1883", "clock_sensor")["temp"].(string)
+			newTemp, err := strconv.ParseFloat(temp_, 64)
+			if err != nil {
+				logger.Error(err)
+				continue
+			}
 			hzat := server.Healagent
 			mem.Set(hzat.Mem.UsedPercent)
 			cpu.Set(hzat.CpuUsage)

@@ -1,9 +1,7 @@
 package app
 
 import (
-	"errors"
 	"fmt"
-	"github.com/mitchellh/go-ps"
 	"github.com/spf13/cobra"
 	"github.com/wonderivan/logger"
 	"gopkg.in/yaml.v2"
@@ -15,6 +13,7 @@ import (
 	"keep/edge/pkg/healthzagent"
 	"keep/edge/pkg/logsagent"
 	edgeagent "keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1"
+	"os"
 )
 
 var versionCmd = &cobra.Command{
@@ -44,8 +43,13 @@ func NewEdgeAgentCommand() *cobra.Command {
 			if err != nil {
 				logger.Fatal(err)
 			}
-			registerModules(config)
 			utils.PrintKEEPLogo()
+			err = utils.EnvironmentCheck()
+			if err != nil {
+				logger.Fatal(err)
+				os.Exit(1)
+			}
+			registerModules(config)
 			core.Run()
 		},
 	}
@@ -53,45 +57,8 @@ func NewEdgeAgentCommand() *cobra.Command {
 	return cmd
 }
 
-// environmentCheck check the environment before edgeagent start
-// if Check failed,  return errors
-func environmentCheck() error {
-	// if kubelet is running, return error
-	if find, err := findProcess("kubelet"); err != nil {
-		return err
-	} else if find {
-		return errors.New("Kubelet should not running on edge node when running edgeagent")
-	}
-
-	// if kube-proxy is running, return error
-	if find, err := findProcess("kube-proxy"); err != nil {
-		return err
-	} else if find {
-		return errors.New("Kube-proxy should not running on edge node when running edgeagent")
-	}
-
-	return nil
-}
-
-// findProcess find a running process by name
-func findProcess(name string) (bool, error) {
-	processes, err := ps.Processes()
-	if err != nil {
-		return false, err
-	}
-
-	for _, process := range processes {
-		if process.Executable() == name {
-			return true, nil
-		}
-	}
-
-	return false, nil
-}
-
 // register all modules in system
 func registerModules(config *edgeagent.EdgeAgentConfig) {
 	healthzagent.Register(config.Modules.HealthzAgent)
-	fmt.Println(config.Modules.LogsAgent)
 	logsagent.Register(config.Modules.LogsAgent)
 }
