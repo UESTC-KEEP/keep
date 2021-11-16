@@ -3,11 +3,12 @@ package native_engine
 import (
 	"github.com/wonderivan/logger"
 	"k8s.io/client-go/kubernetes"
-	"keep/cloud/pkg/k8sclient/conf"
+	"k8s.io/client-go/tools/clientcmd"
+	"keep/constants"
 )
 
 func GetClient() *kubernetes.Clientset{
-	config, err := conf.GetKubeConfig()
+	config, err := clientcmd.BuildConfigFromFlags("", constants.DefaultKubeConfigPath)
 	if err!=nil{
 		logger.Error(err.Error())
 	}

@@ -18,6 +18,7 @@ package cmd
 
 import (
 	"io"
+	"keep/kpadm/cmd/kpadm/app/cmd/logs"
 
 	"github.com/spf13/cobra"
 )
@@ -66,6 +67,7 @@ func NewKeepEdgeCommand(in io.Reader, out, err io.Writer) *cobra.Command {
 
 	cmds.ResetFlags()
 	cmds.AddCommand(NewCmdVersion(out))
+	cmds.AddCommand(logs.LogsCmd)
 
 	return cmds
 }
