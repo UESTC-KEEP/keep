@@ -1,7 +1,7 @@
 # 配置文件说明
 - 系统配置文件：/etc/keepedge
   -  config/edgeagent.yml
-  ```go
+  ```go 
   database:
   drivername: ""
   aliasname: ""
@@ -39,6 +39,7 @@ modules:
     tlscafile: ""
     tlscertfile: ""
     tlsprivatekeyfile: ""
+    
   ```
   - 日志配置文件：logger_conf.json
     - 内容：
@@ -55,6 +56,7 @@ modules:
       "permit": "0660"
       }
       }
+     
   ```
 
 - 日志文件存放：/var/log/keepedge
