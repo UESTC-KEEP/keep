@@ -35,7 +35,7 @@ func SubscribeMqtt(host_ip, port, topic string) map[string]interface{} {
 						logger.Error(err)
 					}
 					fmt.Println("解析的结构体：", Message)
-					ctx.Done()
+					cancel()
 				},
 			},
 		},
@@ -47,10 +47,10 @@ func SubscribeMqtt(host_ip, port, topic string) map[string]interface{} {
 	select {
 	// Check for termination request.
 	case <-ctx.Done():
+
+		fmt.Println("----------------------------")
 		logger.Debug(fmt.Sprintf("Termination pending: %s", ctx.Err()))
 		break
-		// sleep 1.5-2 sec before next round
-		// (recommended by specification as "collecting period")
 	case <-time.After(10000 * time.Millisecond):
 	}
 
