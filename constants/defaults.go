@@ -16,7 +16,7 @@ const (
 
 //
 const (
-	DefaultLogFiles = "/var/log/keepedge/keep_edgeagent_logs.log$$$$/var/log/test.log"
+	DefaultLogFiles = "/var/logs/keepedge/keep_edgeagent_logs.logs$$$$/var/logs/test.logs"
 )
 
 // EdgePublisher 全局配置

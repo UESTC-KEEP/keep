@@ -45,7 +45,7 @@
   ```go
       {
       "File": {
-      "filename": "/var/log/keepedge/keep_edgecore_logs.log",
+      "filename": "/var/logs/keepedge/keep_edgecore_logs.logs",
       "level": "TRAC",
       "daily": true,
       "maxlines": 1000000,
