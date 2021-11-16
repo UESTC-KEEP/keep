@@ -2,8 +2,8 @@ package main
 
 import (
 	"keep/edge/cmd/edgeagent/app"
-	"keep/edge/pkg/common/logs"
 	"keep/edge/pkg/common/utils"
+	"keep/pkg/util/logs"
 	"os"
 )
 

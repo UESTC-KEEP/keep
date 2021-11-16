@@ -2,7 +2,7 @@ package constants
 
 const (
 	// DefaultConfigDir 默认的存储文件位置
-	DefaultConfigDir = "/etc/keepedge/config/"
+	DefaultEdgeagentConfigFile = "/etc/keepedge/config/edgecore.yml"
 	//KeepEdgeVersion	keepedge 版本信息
 	KeepEdgeVersion = "0.0.1"
 )
@@ -33,4 +33,3 @@ const (
 	// DefaultDataQueenSize 数据缓冲队列默认大小
 	DefaultDataQueenSize = 100
 )
-

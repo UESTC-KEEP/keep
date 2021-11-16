@@ -26,7 +26,7 @@ func FindProcess(name string) (bool, error) {
 	return false, nil
 }
 
-// EnvironmentCheck  check the environment before edgeagent start
+// EnvironmentCheck  check the environment before keep start
 // if Check failed,  return errors
 func EnvironmentCheck() error {
 	// if kubelet is running, return error

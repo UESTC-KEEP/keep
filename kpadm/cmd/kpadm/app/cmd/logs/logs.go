@@ -39,7 +39,7 @@ to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("logs called")
 		switch logtopic {
-		case "edgeagent":
+		case "keep":
 			printLogs(constants.DefaultEdgeLogFiles)
 		case "cloudagent":
 			printLogs(constants.DefaultCloudLogFiles)
@@ -48,7 +48,7 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
-	LogsCmd.PersistentFlags().StringVarP(&logtopic, "agent", "a", "", "edgeagent or cloudagent")
+	LogsCmd.PersistentFlags().StringVarP(&logtopic, "agent", "a", "", "keep or cloudagent")
 }
 
 // 控制台打印日志文件
