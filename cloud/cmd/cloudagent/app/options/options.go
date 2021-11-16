@@ -18,16 +18,6 @@ package options
 
 import (
 	"keep/constants"
-<<<<<<< HEAD
-	"path"
-)
-
-func NewDefaultCloudAgentOptions() *EdgeAgentOptions {
-	return &EdgeAgentOptions{
-		ConfigFile: path.Join(constants.DefaultConfigDir, "edgeagent.yaml"),
-	}
-}
-=======
 	"keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 )
 
@@ -48,4 +38,3 @@ func (o *CloudAgentOptions) Config() (*cloud.CloudAgentConfig, error) {
 	}
 	return cfg, nil
 }
->>>>>>> bddbd7e0f200a771b61cbb6932118d2c7492d2c4

@@ -1,11 +1,5 @@
 package k8sclient
 
-<<<<<<< HEAD
-import "keep/cloud/pkg/k8sclient/watchengine"
-
-func main(){
-	watchengine.CreatePod()
-=======
 import (
 	"github.com/wonderivan/logger"
 	v1 "k8s.io/api/core/v1"
@@ -42,7 +36,6 @@ func (k *K8sClient) Name() string {
 
 func (k *K8sClient) Group() string {
 	return modules.K8sClientGroup
->>>>>>> b0af266029c89d24fd39eac5960a66536ae9a802
 }
 
 //Enable indicates whether this module is enabled

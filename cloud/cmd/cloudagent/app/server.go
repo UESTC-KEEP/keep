@@ -1,23 +1,6 @@
 package app
 
 import (
-<<<<<<< HEAD
-	"github.com/wonderivan/logger"
-	"github.com/spf13/cobra"
-	"keep/cloud/cmd/cloudagent/app/options"
-)
-
-func NewCloudAgentCommnd() *cobra.Command {
-	opts := options.NewDefaultCloudAgentOptions()
-	cmd := &cobra.Command{
-		Use: "cloudagent",
-		Long: `cloudagent long description`,
-		Run: func(cmd *cobra.Command, args []string) {
-			logger.Debug("cloudagent 开始启动！！！")
-		}
-	}
-}
-=======
 	"github.com/spf13/cobra"
 	"github.com/wonderivan/logger"
 	"gopkg.in/yaml.v2"
@@ -62,4 +45,3 @@ func NewCloudAgentCommand() *cobra.Command {
 func registerModules(config *cloudagent.CloudAgentConfig) {
 	k8sclient.Register(config.Modules.K8sClient)
 }
->>>>>>> bddbd7e0f200a771b61cbb6932118d2c7492d2c4
