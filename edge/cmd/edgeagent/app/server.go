@@ -13,7 +13,11 @@ import (
 	"keep/edge/pkg/edgepublisher"
 	"keep/edge/pkg/healthzagent"
 	"keep/edge/pkg/logsagent"
+<<<<<<< HEAD
 	edgeagent "keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1"
+=======
+	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
+>>>>>>> b0af266029c89d24fd39eac5960a66536ae9a802
 	"os"
 )
 
@@ -30,17 +34,17 @@ to quickly create a Cobra application.`,
 	},
 }
 
-// NewEdgeAgentCommand  create edgeagent cmd
+// NewEdgeAgentCommand  create keep cmd
 func NewEdgeAgentCommand() *cobra.Command {
 	opts := options.NewDefaultEdgeAgentOptions()
 	cmd := &cobra.Command{
-		Use:  "edgeagent",
-		Long: `edgeagent description,however there is nothing in our code for now,so there is nothing in description`,
+		Use:  "keep",
+		Long: `keep description,however there is nothing in our code for now,so there is nothing in description`,
 		Run: func(cmd *cobra.Command, args []string) {
 			config, err := opts.Config()
 			text, err := yaml.Marshal(&config)
 			// 写入配置文件
-			err = ioutil.WriteFile(constants.DefaultConfigDir+"edgeagent.yaml", text, 0777)
+			err = ioutil.WriteFile(constants.DefaultEdgeagentConfigFile, text, 0777)
 			if err != nil {
 				logger.Fatal(err)
 			}

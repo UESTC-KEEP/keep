@@ -2,9 +2,9 @@ package constants
 
 const (
 	// DefaultConfigDir 默认的存储文件位置
-	DefaultConfigDir = "/etc/keepedge/config/"
+	DefaultEdgeagentConfigFile = "/etc/keepedge/config/edgecore.yml"
 	//KeepEdgeVersion	keepedge 版本信息
-	KeepEdgeVersion = "0.0.0"
+	KeepEdgeVersion = "0.0.1"
 )
 
 // healthzagent 全局静态配置
@@ -16,7 +16,8 @@ const (
 
 //
 const (
-	DefaultLogFiles = "/var/log/keepedge/keep_edgeagent_logs.log$$$$/var/log/test.log"
+	DefaultEdgeLogFiles  = "/var/log/keepedge/keep_edgeagent_logs.log"
+	DefaultCloudLogFiles = "/var/log/keepedge/keep_edgeagent_logs.log"
 )
 
 // EdgePublisher 全局配置
@@ -32,4 +33,3 @@ const (
 	// DefaultDataQueenSize 数据缓冲队列默认大小
 	DefaultDataQueenSize = 100
 )
-

@@ -8,7 +8,9 @@ import (
 	"keep/edge/pkg/edgepublisher/chanmsgqueen"
 	edgepublisherconfig "keep/edge/pkg/edgepublisher/config"
 	"keep/edge/pkg/edgepublisher/publisher"
-	edgeagent "keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1"
+
+	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
+
 	"os"
 	"sync"
 )

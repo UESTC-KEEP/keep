@@ -1,7 +1,9 @@
 package config
 
 import (
-	edgeagent "keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1"
+
+	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
+
 	"sync"
 )
 

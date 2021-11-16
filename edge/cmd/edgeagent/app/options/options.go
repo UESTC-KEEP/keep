@@ -18,8 +18,12 @@ package options
 
 import (
 	"keep/constants"
+<<<<<<< HEAD
 	"keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1"
 	"path"
+=======
+	"keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
+>>>>>>> b0af266029c89d24fd39eac5960a66536ae9a802
 )
 
 type EdgeAgentOptions struct {
@@ -28,7 +32,7 @@ type EdgeAgentOptions struct {
 
 func NewDefaultEdgeAgentOptions() *EdgeAgentOptions {
 	return &EdgeAgentOptions{
-		ConfigFile: path.Join(constants.DefaultConfigDir, "edgeagent.yaml"),
+		ConfigFile: constants.DefaultEdgeagentConfigFile,
 	}
 }
 
