@@ -12,7 +12,7 @@ import (
 	"github.com/shirou/gopsutil/mem"
 	"github.com/shirou/gopsutil/net"
 	"github.com/wonderivan/logger"
-	edgeagent "keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1"
+	edgeagent "keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1/edge"
 	"strconv"
 	"time"
 )
