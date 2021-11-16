@@ -7,7 +7,7 @@ import (
 	"keep/edge/pkg/logsagent/config"
 	logsagentconfig "keep/edge/pkg/logsagent/config"
 	"keep/edge/pkg/logsagent/tailf"
-	edgeagent "keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1"
+	edgeagent "keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1/edge"
 	"os"
 	"time"
 )
