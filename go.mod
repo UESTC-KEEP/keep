@@ -3,6 +3,7 @@ module keep
 go 1.17
 
 require (
+	github.com/Unknwon/goconfig v1.0.0
 	github.com/docker/docker v20.10.10+incompatible
 	github.com/hpcloud/tail v1.0.0
 	github.com/kubeedge/beehive v1.7.0
