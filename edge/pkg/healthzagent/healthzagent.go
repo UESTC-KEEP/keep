@@ -12,7 +12,7 @@ import (
 	"keep/edge/pkg/healthzagent/config"
 	prome "keep/edge/pkg/healthzagent/promethus"
 	"keep/edge/pkg/healthzagent/server"
-	edgeagent "keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1"
+	edgeagent "keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1/edge"
 	"os"
 )
 
