@@ -57,8 +57,8 @@ func NewDefaultEdgeAgentConfig() *EdgeAgentConfig {
 			EdgePublisher: &EdgePublisher{
 				Enable:            true,
 				HTTPServer:        constants.DefaultHttpServer,
-				Port:              constants.DefaultHttpPort,
-				ServePort:         constants.DefaultServePort,
+				Port:              constants.DefaultCloudHttpPort,
+				ServePort:         constants.DefaultEdgePort,
 				Heartbeat:         constants.DefaultEdgeHeartBeat,
 				EdgeMsgQueens:     []string{constants.DefaultLogsTopic, constants.DefaultDataTopic},
 				TLSCAFile:         "",

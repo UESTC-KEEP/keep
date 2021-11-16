@@ -9,7 +9,7 @@ import (
 	"github.com/wonderivan/logger"
 	"keep/core"
 	"keep/edge/pkg/common/modules"
-	healthzagentconfig "keep/edge/pkg/healthzagent/config"
+	"keep/edge/pkg/healthzagent/config"
 	prome "keep/edge/pkg/healthzagent/promethus"
 	"keep/edge/pkg/healthzagent/server"
 	edgeagent "keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1"
@@ -30,7 +30,7 @@ type HealthzAgent struct {
 
 // Register 注册healthzagent模块
 func Register(h *edgeagent.HealthzAgent) {
-	healthzagentconfig.InitConfigure(h)
+	config.InitConfigure(h)
 	healthzagent, err := NewHealthzAgent(h.Enable)
 	if err != nil {
 		logger.Error("初始化edgehealthzagent失败...:", err)
@@ -59,7 +59,7 @@ func (h *HealthzAgent) Start() {
 	server.GetMachineStatus()
 	logger.Debug(server.DescribeMachine(&server.Healagent))
 	// 启动周期性任务轮询本机用量
-	cron := server.StartMetricEdgeInterval(edgeagent.NewDefaultEdgeAgentConfig().Modules.HealthzAgent.DefaultEdgeHealthInterval)
+	cron := server.StartMetricEdgeInterval(config.Config.DefaultEdgeHealthInterval)
 	// 启动本机StartMertricsServer
 	go prome.StartMertricsServer(8080)
 	//os.Exit(1)
