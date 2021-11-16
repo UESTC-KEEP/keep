@@ -18,7 +18,7 @@ package options
 
 import (
 	"keep/constants"
-	"keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1/edge"
+	"keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1"
 	"path"
 )
 
@@ -32,8 +32,8 @@ func NewDefaultEdgeAgentOptions() *EdgeAgentOptions {
 	}
 }
 
-func (o *EdgeAgentOptions) Config() (*edge.EdgeAgentConfig, error) {
-	cfg := edge.NewDefaultEdgeAgentConfig()
+func (o *EdgeAgentOptions) Config() (*v1alpha1.EdgeAgentConfig, error) {
+	cfg := v1alpha1.NewDefaultEdgeAgentConfig()
 	if err := cfg.Parse(o.ConfigFile); err != nil {
 		return nil, err
 	}
