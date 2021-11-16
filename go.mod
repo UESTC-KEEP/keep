@@ -3,8 +3,8 @@ module keep
 go 1.17
 
 require (
-	github.com/Unknwon/goconfig v1.0.0
 	github.com/docker/docker v20.10.10+incompatible
+	github.com/gomodule/redigo v1.8.5
 	github.com/hpcloud/tail v1.0.0
 	github.com/kubeedge/beehive v1.7.0
 	github.com/mitchellh/go-ps v1.0.0
@@ -20,6 +20,7 @@ require (
 	k8s.io/apimachinery v0.22.3
 	k8s.io/client-go v0.22.3
 	k8s.io/klog/v2 v2.30.0
+	k8s.io/utils v0.0.0-20210819203725-bdf08cb9a70a
 	sigs.k8s.io/yaml v1.3.0
 )
 
@@ -73,6 +74,5 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
-	k8s.io/utils v0.0.0-20210819203725-bdf08cb9a70a // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.1.2 // indirect
 )

@@ -1,4 +1,4 @@
-package native_engine
+package naive_engine
 
 import (
 	"github.com/wonderivan/logger"
@@ -7,13 +7,13 @@ import (
 	"keep/constants"
 )
 
-func GetClient() *kubernetes.Clientset{
+func GetClient() *kubernetes.Clientset {
 	config, err := clientcmd.BuildConfigFromFlags("", constants.DefaultKubeConfigPath)
-	if err!=nil{
+	if err != nil {
 		logger.Error(err.Error())
 	}
 	clientset, err := kubernetes.NewForConfig(config)
-	if err!=nil{
+	if err != nil {
 		logger.Error(err.Error())
 	}
 	return clientset

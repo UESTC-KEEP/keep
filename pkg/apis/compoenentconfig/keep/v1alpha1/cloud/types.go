@@ -17,5 +17,7 @@ type K8sClient struct {
 	Enable       bool    `json:"enable"`
 	MasterLBIp   string  `json:"master_lb_ip"`
 	MasterLBPort int     `json:"master_lb_port"`
+	RedisIp      string  `json:"redis_ip"`
+	RedisPort    int     `json:"redis_port"`
 	PodInfo      *v1.Pod `json:"pod_info"`
 }

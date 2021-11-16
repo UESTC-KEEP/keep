@@ -10,6 +10,8 @@ func NewDefaultEdgeAgentConfig() *CloudAgentConfig {
 				Enable:       true,
 				MasterLBIp:   constants.DefaultMasterLBIp,
 				MasterLBPort: constants.DefaultMasterLBPort,
+				RedisIp:      constants.DefaultRedisServerIp,
+				RedisPort:    constants.DefaultRedisServerPort,
 				PodInfo:      nil,
 			},
 		},
