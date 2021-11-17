@@ -1,8 +1,8 @@
 package logsagent
 
 import (
+	"github.com/kubeedge/beehive/pkg/core"
 	"github.com/wonderivan/logger"
-	"keep/core"
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/logsagent/config"
 	logsagentconfig "keep/edge/pkg/logsagent/config"

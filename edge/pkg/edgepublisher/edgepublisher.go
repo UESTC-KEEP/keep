@@ -1,8 +1,8 @@
 package edgepublisher
 
 import (
+	"github.com/kubeedge/beehive/pkg/core"
 	"github.com/wonderivan/logger"
-	"keep/core"
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/edgepublisher/bufferpooler"
 	"keep/edge/pkg/edgepublisher/chanmsgqueen"
@@ -59,6 +59,7 @@ func (l *EdgePublisher) Start() {
 	chanmsgqueen.InitMsgQueens()
 	wg.Wait()
 	go bufferpooler.StartEdgePublisher()
+	bufferpooler.StartListenLogMsg()
 	publisher.ReadQueueAndPublish()
 }
 

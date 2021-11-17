@@ -3,9 +3,9 @@ package bufferpooler
 import (
 	"encoding/json"
 	"fmt"
+	beehiveContext "github.com/kubeedge/beehive/pkg/core/context"
 	"github.com/wonderivan/logger"
 	"keep/constants"
-	beehiveContext "keep/core/context"
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/edgepublisher/chanmsgqueen"
 	"keep/edge/pkg/edgepublisher/config"
@@ -54,32 +54,43 @@ func StartEdgePublisher() {
 }
 
 var StopReceiveMessageForAllModules = make(chan bool)
+var PermissionOfSending = true
 
-// SendLogInQueue 发送日志到消息队列中
-func SendLogInQueue() {
+// StartListenLogMsg 发送日志到消息队列中
+func StartListenLogMsg() {
 	go func() {
 		for {
 			select {
 			case <-StopReceiveMessageForAllModules:
+				// 收到信息停止接收所有消息
 				logger.Debug("收到退出信息，清理通道...")
-				close(StopReceiveMessageForAllModules)
-				time.Sleep(3 * time.Second)
+				PermissionOfSending = false
+				return
 			default:
-				msg, err := beehiveContext.Receive(modules.EdgePublisherModule)
-				if err != nil {
-					logger.Error(err)
-				}
-				fmt.Println("接收消息 msg: %v\n", msg)
-				resp := msg.NewRespByMessage(&msg, " message received ")
-				beehiveContext.SendResp(*resp)
+				ReceiveFromBehiveAndPublish()
 
-				topic := constants.DefaultLogsTopic
-				cli := chanmsgqueen.EdgePublishQueens[topic]
-				err = cli.Publish(topic, msg.Content)
-				if err != nil {
-					logger.Error(err)
-				}
 			}
 		}
 	}()
+}
+
+// ReceiveFromBehiveAndPublish 接收来自behivee的通信  同时返回响应 之后发布到消息队列
+func ReceiveFromBehiveAndPublish() {
+	msg, err := beehiveContext.Receive(modules.EdgePublisherModule)
+	if err != nil {
+		logger.Error(err)
+		time.Sleep(5 * time.Second)
+	} else {
+		fmt.Printf("接收消息 msg: %v\n", msg)
+		resp := msg.NewRespByMessage(&msg, " message received ")
+		beehiveContext.SendResp(*resp)
+
+		topic := constants.DefaultLogsTopic
+		fmt.Println(chanmsgqueen.EdgePublishQueens)
+		cli := chanmsgqueen.EdgePublishQueens[topic]
+		err = cli.Publish(topic, msg.Content)
+		if err != nil {
+			logger.Error(err)
+		}
+	}
 }

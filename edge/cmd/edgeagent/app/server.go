@@ -2,12 +2,12 @@ package app
 
 import (
 	"fmt"
+	"github.com/kubeedge/beehive/pkg/core"
 	"github.com/spf13/cobra"
 	"github.com/wonderivan/logger"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"keep/constants"
-	"keep/core"
 	"keep/edge/cmd/edgeagent/app/options"
 	"keep/edge/pkg/common/utils"
 	"keep/edge/pkg/edgepublisher"

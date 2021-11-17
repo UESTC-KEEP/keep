@@ -8,11 +8,10 @@ import (
 )
 
 func main() {
-
-	command := app.NewEdgeAgentCommand()
-	logs.InitKeepLogger()
 	defer utils.GracefulExit()
 
+	logs.InitKeepLogger()
+	command := app.NewEdgeAgentCommand()
 	if err := command.Execute(); err != nil {
 		os.Exit(1)
 	}
