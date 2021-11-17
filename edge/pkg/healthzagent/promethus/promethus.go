@@ -1,16 +1,33 @@
 package prome
 
 import (
+	"encoding/json"
 	"fmt"
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/wonderivan/logger"
 	"keep/edge/pkg/healthzagent/mqtt"
 	"keep/edge/pkg/healthzagent/server"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+	uuid "github.com/satori/go.uuid"
+	"github.com/wonderivan/logger"
 )
+
+const LOG_TAG = "PROMETHUS"
+
+func UnmarshalMqttData(data []byte) string {
+	type JSONData_t map[string]string
+	var msg JSONData_t
+	err := json.Unmarshal(data, &msg)
+	if err != nil {
+		logger.Error(err)
+	}
+	logger.Debug(LOG_TAG+": 解析的结构体：", msg)
+	str_temp := string(msg["temp"])
+	return str_temp
+}
 
 func StartMertricsServer(port int) {
 	// 创建一个没有任何 label 标签的 gauge 指标
@@ -23,10 +40,23 @@ func StartMertricsServer(port int) {
 	prometheus.MustRegister(cpu)
 
 	go func() {
+		temp_topic := "clock_sensor"
+		client_name := (uuid.NewV4()).String()
+		mqtt_cli := mqtt.CreateMqttClient(client_name, "192.168.1.40", "1883")
+		mqtt_cli.RegistSubscribeTopic(temp_topic)
 		for {
 			// 设置 gauge 的值为
-			temp_ := mqtt.GetRencentMqttMsg("192.168.1.40", "1883", "clock_sensor")["temp"].(string)
-			newTemp, err := strconv.ParseFloat(temp_, 64)
+			data_rec := mqtt_cli.GetTopicData(temp_topic) //直接获取二进制数据，GetTopicData本身不做解析
+			if nil == data_rec {                          //TODO这个地方得考虑超时处理，算是检验设备是否在线的一部分
+				logger.Error(LOG_TAG + ": Read mqtt err")
+				time.Sleep(5 * time.Second)
+				continue
+			}
+
+			temp_data := UnmarshalMqttData(data_rec)
+
+			newTemp, err := strconv.ParseFloat(temp_data, 64)
+
 			if err != nil {
 				logger.Error(err)
 				continue
@@ -36,13 +66,12 @@ func StartMertricsServer(port int) {
 			cpu.Set(hzat.CpuUsage)
 			temp.Set(newTemp)
 			fmt.Println("promethus更新:温度 " + fmt.Sprintf("%.2f", newTemp) + "  cpu:" + fmt.Sprintf("%.2f", hzat.CpuUsage) + "  mem:" + fmt.Sprintf("%.2f", hzat.Mem.UsedPercent))
-			time.Sleep(5 * time.Second)
 		}
 	}()
 	//temp.
 	// 暴露指标
 	http.Handle("/metrics", promhttp.Handler())
-	logger.Debug("metricsServer启动成功...")
+	logger.Debug(LOG_TAG + ": metricsServer启动成功...")
 	err := http.ListenAndServe(":"+strconv.Itoa(port), nil)
 	if err != nil {
 		logger.Error(err)
