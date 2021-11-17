@@ -24,8 +24,8 @@ func StartMertricsServer(port int) {
 
 	go func() {
 		for {
-			// 设置 gauge 的值为
 			temp_ := mqtt.GetRencentMqttMsg("192.168.1.40", "1883", "clock_sensor")["temp"].(string)
+			// 设置 gauge 的值为
 			newTemp, err := strconv.ParseFloat(temp_, 64)
 			if err != nil {
 				logger.Error(err)

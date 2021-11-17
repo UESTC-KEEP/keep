@@ -47,8 +47,8 @@ func FilterLogsByLevel(log string) {
 			//bufferpooler.SendLogInQueue(log)
 			messsage := model.NewMessage("")
 			counter++
-			messsage.Content = counter
-			fmt.Println("+++++++++++++++++++++++++++++  ", counter)
+			messsage.Content = log
+			fmt.Println("+++++++++++++++++++++++  ", log)
 			if bufferpooler.PermissionOfSending {
 				go func() {
 					resp, err := beehiveContext.SendSync(modules.EdgePublisherModule, *messsage, 5*time.Second)
