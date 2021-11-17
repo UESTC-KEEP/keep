@@ -1,8 +1,8 @@
 package core
 
 import (
-	beehiveContext "github.com/kubeedge/beehive/pkg/core/context"
 	"github.com/wonderivan/logger"
+	beehiveContext "keep/core/context"
 	"os"
 	"os/signal"
 	"syscall"

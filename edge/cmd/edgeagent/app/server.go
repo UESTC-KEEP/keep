@@ -13,11 +13,7 @@ import (
 	"keep/edge/pkg/edgepublisher"
 	"keep/edge/pkg/healthzagent"
 	"keep/edge/pkg/logsagent"
-<<<<<<< HEAD
-	edgeagent "keep/pkg/apis/compoenentconfig/edgeagent/v1alpha1"
-=======
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
->>>>>>> b0af266029c89d24fd39eac5960a66536ae9a802
 	"os"
 )
 

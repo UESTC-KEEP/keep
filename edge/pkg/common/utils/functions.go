@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"github.com/mitchellh/go-ps"
 	"github.com/wonderivan/logger"
+	"keep/edge/pkg/edgepublisher/bufferpooler"
 )
 
 func GracefulExit() {
+	bufferpooler.StopReceiveMessageForAllModules <- true
 	logger.Info("准备退出...")
 }
 

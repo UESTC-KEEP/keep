@@ -8,6 +8,7 @@ import (
 )
 
 func main() {
+
 	command := app.NewEdgeAgentCommand()
 	logs.InitKeepLogger()
 	defer utils.GracefulExit()

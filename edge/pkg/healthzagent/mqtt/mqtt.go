@@ -47,9 +47,7 @@ func SubscribeMqtt(host_ip, port, topic string) map[string]interface{} {
 	select {
 	// Check for termination request.
 	case <-ctx.Done():
-
-		fmt.Println("----------------------------")
-		logger.Debug(fmt.Sprintf("Termination pending: %s", ctx.Err()))
+		logger.Debug(fmt.Sprintf("通道关闭: %s", ctx.Err()))
 		break
 	case <-time.After(10000 * time.Millisecond):
 	}
