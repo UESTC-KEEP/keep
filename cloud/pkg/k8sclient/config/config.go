@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/wonderivan/logger"
+	"k8s.io/client-go/discovery"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 	restclient "k8s.io/client-go/rest"
@@ -15,6 +16,7 @@ import (
 var Config Configure
 var once sync.Once
 var Clientset *kubernetes.Clientset
+var DCI discovery.DiscoveryInterface
 var K8sConfig *restclient.Config
 var DD dynamic.Interface
 var GR []*restmapper.APIGroupResources
@@ -43,6 +45,7 @@ func GetClient() {
 		logger.Error(err.Error())
 		err = nil
 	}
+	DCI = Clientset.Discovery()
 	DD, err = dynamic.NewForConfig(K8sConfig)
 	if err != nil {
 		logger.Error(err.Error())

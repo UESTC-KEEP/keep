@@ -2,7 +2,7 @@ package main
 
 import (
 	"keep/cloud/cmd/cloudagent/app"
-	"keep/edge/pkg/common/utils"
+	"keep/cloud/pkg/common/utils"
 	"keep/pkg/util/logs"
 	"os"
 )
