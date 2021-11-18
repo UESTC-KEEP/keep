@@ -46,44 +46,42 @@ func CreatResourcesByYAML(yamlFileName, namespace string) {
 	}
 
 	decoder := yamlutil.NewYAMLOrJSONDecoder(bytes.NewReader(filebytes), 100)
-	for {
-		var rawObj runtime.RawExtension
-		if err = decoder.Decode(&rawObj); err != nil {
-			break
-		}
-		obj, gvk, err := yaml.NewDecodingSerializer(unstructured.UnstructuredJSONScheme).Decode(rawObj.Raw, nil, nil)
-		unstructuredMap, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
-		if err != nil {
-			logger.Fatal(err)
-		}
-
-		unstructuredObj := &unstructured.Unstructured{Object: unstructuredMap}
-
-		if err != nil {
-			logger.Fatal(err)
-		}
-
-		mapper := restmapper.NewDiscoveryRESTMapper(config.GR)
-		mapping, err := mapper.RESTMapping(gvk.GroupKind(), gvk.Version)
-		if err != nil {
-			logger.Error(err)
-		}
-
-		var dri dynamic.ResourceInterface
-		if mapping.Scope.Name() == meta.RESTScopeNameNamespace {
-			if unstructuredObj.GetNamespace() == "" {
-				unstructuredObj.SetNamespace(namespace)
-			}
-			dri = config.DD.Resource(mapping.Resource).Namespace(unstructuredObj.GetNamespace())
-		} else {
-			dri = config.DD.Resource(mapping.Resource)
-		}
-
-		obj2, err := dri.Create(context.Background(), unstructuredObj, metav1.CreateOptions{})
-		if err != nil {
-			logger.Error(err)
-		}
-		fmt.Printf("%s/%s created", obj2.GetKind(), obj2.GetName())
+	var rawObj runtime.RawExtension
+	if err = decoder.Decode(&rawObj); err != nil {
+		logger.Error(err)
 	}
+	obj, gvk, err := yaml.NewDecodingSerializer(unstructured.UnstructuredJSONScheme).Decode(rawObj.Raw, nil, nil)
+	unstructuredMap, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		logger.Fatal(err)
+	}
+
+	unstructuredObj := &unstructured.Unstructured{Object: unstructuredMap}
+
+	if err != nil {
+		logger.Fatal(err)
+	}
+
+	mapper := restmapper.NewDiscoveryRESTMapper(config.GR)
+	mapping, err := mapper.RESTMapping(gvk.GroupKind(), gvk.Version)
+	if err != nil {
+		logger.Error(err)
+	}
+
+	var dri dynamic.ResourceInterface
+	if mapping.Scope.Name() == meta.RESTScopeNameNamespace {
+		if unstructuredObj.GetNamespace() == "" {
+			unstructuredObj.SetNamespace(namespace)
+		}
+		dri = config.DD.Resource(mapping.Resource).Namespace(unstructuredObj.GetNamespace())
+	} else {
+		dri = config.DD.Resource(mapping.Resource)
+	}
+	obj2, err := dri.Create(context.Background(), unstructuredObj, metav1.CreateOptions{})
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+	fmt.Printf("%s/%s created", obj2.GetKind(), obj2.GetName())
 
 }
