@@ -43,11 +43,11 @@ func StartMertricsServer(port int) {
 		temp_topic := "clock_sensor"
 		client_name := (uuid.NewV4()).String()
 		mqtt_cli := mqtt.CreateMqttClient(client_name, "192.168.1.40", "1883")
-		mqtt_cli.RegistSubscribeTopic(temp_topic)
+		mqtt_cli.RegistSubscribeTopic(&mqtt.MqttTopicConf{Topic_name: temp_topic, Timeout_ms: 5000})
 		for {
 			// 设置 gauge 的值为
-			data_rec := mqtt_cli.GetTopicData(temp_topic) //直接获取二进制数据，GetTopicData本身不做解析
-			if nil == data_rec {                          //TODO这个地方得考虑超时处理，算是检验设备是否在线的一部分
+			data_rec, err := mqtt_cli.GetTopicData(temp_topic) //直接获取二进制数据，GetTopicData本身不做解析
+			if nil != err {                                    //TODO这个地方得考虑超时处理，算是检验设备是否在线的一部分
 				logger.Error(LOG_TAG + ": Read mqtt err")
 				time.Sleep(5 * time.Second)
 				continue
