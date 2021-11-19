@@ -1,25 +1,24 @@
 package watchengine
 
-import "k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+import (
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"time"
+)
 
 type WatcherEngineInterface interface {
-	// GetSecret 获取secret信息
+	//WriteStructIntoYAML 将传入的结构体转化为指定路径下的yaml文件
 	/*
-		传入参数：secretName:所需查询的secret名字
-		        namespace:所需查询的secret所属命名空间
+		传入参数：filepath：期望写入的文件路径
+				expireTime:期望文件的保存时间 传入-1代表永久
+				resource:传入需要进行转化yaml的结构体
 	*/
-	GetSecret(secretName, namespace string) (unstructured.Unstructured, error)
-	// ListPods 得到某个命名空间下所有的Pod
-	/*
-		传入参数：namespace：所需查询的命名空间  如果是""则使用constant.DefaultNameSpace
-		返回值：得到的list   有错返回 无错nil
-	*/
-	ListPods(namespace string) (unstructured.UnstructuredList, error)
-	// GetPodInfoByPodName 根据podname在指定的ns中查询pod的详细内容
-	/*
-		传入参数：podName:查询的pod的名字 考虑到一个pod可能多副本返回list
-	*/
-	GetPodInfoByPodName(podName string) (unstructured.UnstructuredList, error)
+	WriteStructIntoYAML(resource interface{}, filepath string, expireTime time.Duration) error
+	//ReadStructFromYAML 将yaml文件中的yaml对象转化成结构体
+	ReadStructFromYAML(resource interface{}, filepath string) (unstructured.Unstructured, error)
+	// InitK8sClientWatchEngine 初始化K8sClientWatchEngine
+	/**/
+	InitK8sClientWatchEngine()
+
 	// CreatResourcesByYAML 根据yaml文件创建资源
 	/*
 		传入参数：yamlFilepath:所需创建的资源的定义yaml文件

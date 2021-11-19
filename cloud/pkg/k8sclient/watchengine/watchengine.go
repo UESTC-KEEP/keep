@@ -18,10 +18,9 @@ type WatcherEngine struct {
 	DeploymentInfo *appsv1.Deployment
 }
 
-func InitK8sClientWatchEngine(engin WatcherEngineInterface) {}
+func initK8sClientWatchEngine(engin WatcherEngineInterface) {}
 func init() {
-	var watchEngin WatcherEngine
-	InitK8sClientWatchEngine(watchEngin)
+	//initK8sClientWatchEngine(watchEngin)
 }
 
 func (we WatcherEngine) ListPods(namespace string) (unstructured.UnstructuredList, error) {
