@@ -1,0 +1,36 @@
+database:
+  drivername: ""
+  aliasname: ""
+  datasource: /var/lib/keepedge/keep.db
+modules:
+  healthzagent:
+    enable: true
+    hostinfostat: null
+    cpu: null
+    cpuusage: 0
+    mem: null
+    diskpartitionstat: null
+    diskiocountersstat: null
+    netiocountersstat: null
+    defaultedgehealthinterval: 30
+    defaultmqttcachequeuesize: 10
+  logsagent:
+    enable: true
+    loglevel: 6
+    logtime: 2021-11-18T17:29:08.442643597+08:00
+    logfilename: ""
+    loginfo: ""
+    logfiles:
+    - /var/log/keepedge/keep_edgeagent_logs.log
+  edgepublisher:
+    enable: true
+    httpserver: http://192.168.1.140
+    port: 20000
+    serveport: 20350
+    heartbeat: 15
+    edgemsgqueens:
+    - keep_log_topic
+    - keep_data_topic
+    tlscafile: ""
+    tlscertfile: ""
+    tlsprivatekeyfile: ""
