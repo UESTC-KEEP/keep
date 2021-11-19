@@ -2,7 +2,6 @@ package k8sclient
 
 import (
 	"github.com/gomodule/redigo/redis"
-	"github.com/kubeedge/beehive/pkg/core"
 	"github.com/wonderivan/logger"
 	v1 "k8s.io/api/core/v1"
 	"keep/cloud/pkg/common/modules"
@@ -10,6 +9,7 @@ import (
 	naive_engine "keep/cloud/pkg/k8sclient/naive-engine"
 	"keep/constants"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
+	"keep/pkg/util/core"
 	"os"
 	"strconv"
 )
@@ -31,6 +31,10 @@ func Register(k *cloudagent.K8sClient) {
 	}
 	core.Register(k8sclient)
 
+}
+
+func (k *K8sClient) Cleanup() {
+	//logger.Debug("准备清理模块：",modules.K8sClientModule)
 }
 
 func (k *K8sClient) Name() string {

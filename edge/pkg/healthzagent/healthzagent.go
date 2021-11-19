@@ -1,7 +1,6 @@
 package healthzagent
 
 import (
-	"github.com/kubeedge/beehive/pkg/core"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/host"
@@ -12,6 +11,7 @@ import (
 	"keep/edge/pkg/healthzagent/config"
 	prome "keep/edge/pkg/healthzagent/promethus"
 	"keep/edge/pkg/healthzagent/server"
+	"keep/pkg/util/core"
 
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 
@@ -40,6 +40,10 @@ func Register(h *edgeagent.HealthzAgent) {
 		return
 	}
 	core.Register(healthzagent)
+}
+
+func (h *HealthzAgent) Cleanup() {
+	//logger.Debug("准备清理模块：",modules.HealthzAgentModule)
 }
 
 func (h *HealthzAgent) Name() string {

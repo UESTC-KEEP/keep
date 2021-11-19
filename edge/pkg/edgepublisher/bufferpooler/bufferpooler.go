@@ -3,7 +3,8 @@ package bufferpooler
 import (
 	"encoding/json"
 	"fmt"
-	beehiveContext "github.com/kubeedge/beehive/pkg/core/context"
+	beehiveContext "keep/pkg/util/core/context"
+	//beehiveContext "github.com/kubeedge/beehive/pkg/core/context"
 	"github.com/wonderivan/logger"
 	"keep/constants"
 	"keep/edge/pkg/common/modules"

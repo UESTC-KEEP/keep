@@ -1,7 +1,6 @@
 package app
 
 import (
-	"github.com/kubeedge/beehive/pkg/core"
 	"github.com/spf13/cobra"
 	"github.com/wonderivan/logger"
 	"gopkg.in/yaml.v2"
@@ -11,6 +10,7 @@ import (
 	"keep/constants"
 	"keep/edge/pkg/common/utils"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
+	"keep/pkg/util/core"
 	"os"
 )
 

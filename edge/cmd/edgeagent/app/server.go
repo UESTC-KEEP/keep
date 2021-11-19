@@ -2,7 +2,6 @@ package app
 
 import (
 	"fmt"
-	"github.com/kubeedge/beehive/pkg/core"
 	"github.com/spf13/cobra"
 	"github.com/wonderivan/logger"
 	"gopkg.in/yaml.v2"
@@ -14,6 +13,7 @@ import (
 	"keep/edge/pkg/healthzagent"
 	"keep/edge/pkg/logsagent"
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
+	"keep/pkg/util/core"
 	"os"
 )
 

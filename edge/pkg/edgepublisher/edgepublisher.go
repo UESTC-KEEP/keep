@@ -1,15 +1,14 @@
 package edgepublisher
 
 import (
-	"github.com/kubeedge/beehive/pkg/core"
 	"github.com/wonderivan/logger"
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/edgepublisher/bufferpooler"
 	"keep/edge/pkg/edgepublisher/chanmsgqueen"
 	edgepublisherconfig "keep/edge/pkg/edgepublisher/config"
 	"keep/edge/pkg/edgepublisher/publisher"
-
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
+	"keep/pkg/util/core"
 
 	"os"
 	"sync"
@@ -36,6 +35,11 @@ func Register(ep *edgeagent.EdgePublisher) {
 		return
 	}
 	core.Register(edgepublisher)
+}
+
+func (ep *EdgePublisher) Cleanup() {
+	//logger.Debug("准备清理模块：",modules.EdgePublisherModule)
+	bufferpooler.StopReceiveMessageForAllModules <- true
 }
 
 func (ep *EdgePublisher) Name() string {
