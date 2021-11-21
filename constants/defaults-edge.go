@@ -1,8 +1,14 @@
 package constants
 
 const (
+	KeepBasepath     = "/etc/keepedge/"
+	KeepBaseConfPath = KeepBasepath + "config/"
+	KeepBaseLogPath  = "/var/log/keepedge/"
+)
+
+const (
 	// DefaultConfigDir 默认的存储文件位置
-	DefaultEdgeagentConfigFile = "/etc/keepedge/config/edgecore.yml"
+	DefaultEdgeagentConfigFile = KeepBaseConfPath + "/edgecore.yml"
 	//KeepEdgeVersion	keepedge 版本信息
 	KeepEdgeVersion = "0.0.1"
 )
@@ -14,8 +20,9 @@ const (
 
 //
 const (
-	DefaultEdgeLogFiles  = "/var/log/keepedge/keep_edgeagent_logs.log"
-	DefaultCloudLogFiles = "/var/log/keepedge/keep_edgeagent_logs.log"
+	DefaultEdgeLogFiles       = KeepBaseLogPath + "keep_edgeagent_logs.log"
+	DefaultCloudLogFiles      = KeepBaseLogPath + "keep_edgeagent_logs.log"
+	DefaultEdgeLoggerConfFile = KeepBaseConfPath + "logger_conf.json"
 )
 
 // EdgePublisher 全局配置

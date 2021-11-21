@@ -1,10 +1,9 @@
 package mqtt
 
 import (
+	"keep/pkg/util/kelogger"
 	"testing"
 	"time"
-
-	"github.com/wonderivan/logger"
 )
 
 func TestSubscribeMqtt(t *testing.T) {
@@ -16,7 +15,7 @@ func TestSubscribeMqtt(t *testing.T) {
 		if nil != err {
 			time.Sleep(time.Second) //如果试图读取不存在的主题，就会高速刷日志，在vscode下会大量占用内存，而且不接收信号
 		} else {
-			logger.Debug("TEST: mqtt rec=", string(dataRec))
+			kelogger.Debug("TEST: mqtt rec=", string(dataRec))
 		}
 	}
 }
