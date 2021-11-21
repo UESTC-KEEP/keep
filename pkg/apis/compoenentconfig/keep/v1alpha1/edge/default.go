@@ -43,7 +43,6 @@ func NewDefaultEdgeAgentConfig() *EdgeAgentConfig {
 				DiskPartitionStat:         nil,
 				DiskIOCountersStat:        nil,
 				NetIOCountersStat:         nil,
-				DefaultMqttCacheQueueSize: constants.DefaultMqttCacheQueueSize,
 			},
 			LogsAgent: &LogsAgent{
 				Enable:      true,
@@ -63,6 +62,10 @@ func NewDefaultEdgeAgentConfig() *EdgeAgentConfig {
 				TLSCAFile:         "",
 				TLSCertFile:       "",
 				TLSPrivateKeyFile: "",
+			},
+			EdgeTwin: &EdgeTwin{
+				Enable:         true,
+				SqliteFilePath: constants.DefaultEdgeTwinSqliteFilePath,
 			},
 		},
 	}

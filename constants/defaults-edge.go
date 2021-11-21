@@ -9,9 +9,7 @@ const (
 
 // healthzagent 全局静态配置
 const (
-	DefaultEdgeHealthInterval     = 30
-	DefaultHealthzToCloudInterval = 60
-	DefaultMqttCacheQueueSize     = 10
+	DefaultEdgeHealthInterval = 30
 )
 
 //
@@ -32,4 +30,17 @@ const (
 	DefaultLogsQueenSize = 100
 	// DefaultDataQueenSize 数据缓冲队列默认大小
 	DefaultDataQueenSize = 100
+)
+
+// mqtt配置
+const (
+	DefaultTestingMQTTServer = "192.168.1.40"
+	DefaultTestingMQTTPort   = 1883
+	DefaultMqttChanSize      = 4
+	DefaultMqttLogTag        = "<MQTT>"
+)
+
+// EdgeTwin配置
+const (
+	DefaultEdgeTwinSqliteFilePath = "/var/lib/keepedge/edgeagent.db"
 )

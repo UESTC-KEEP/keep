@@ -65,11 +65,11 @@ func (h *HealthzAgent) Start() {
 	server.GetMachineStatus()
 	logger.Debug(server.DescribeMachine(&server.Healagent))
 	// 启动周期性任务轮询本机用量
-	cron := server.StartMetricEdgeInterval(config.Config.DefaultEdgeHealthInterval)
+	//cron := server.StartMetricEdgeInterval(config.Config.DefaultEdgeHealthInterval)
 	// 启动本机StartMertricsServer
 	go prome.StartMertricsServer(8080)
 	//os.Exit(1)
-	defer cron.Stop()
+	//defer cron.Stop()
 }
 
 // NewHealthzAgent 创建新的healthzagent对象  并且初始化它

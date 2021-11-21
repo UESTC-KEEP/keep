@@ -5,4 +5,5 @@ const (
 	HealthzAgentGroup  = "healthz"
 	LogsAgentGroup     = "Logs"
 	EdgePublisherGroup = "edgepublisher"
+	EdgeTwinGroup      = "edgetwin"
 )

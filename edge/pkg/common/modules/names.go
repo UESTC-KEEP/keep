@@ -5,4 +5,5 @@ const (
 	HealthzAgentModule  = "healthzagent"
 	LogsAgentModule     = "logsagent"
 	EdgePublisherModule = "edgepublisher"
+	EdgeTwinModule      = "edgetwin"
 )

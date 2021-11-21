@@ -11,6 +11,8 @@ import (
 	"keep/edge/pkg/common/utils"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"keep/pkg/util/core"
+	"net/http"
+	_ "net/http/pprof"
 	"os"
 )
 
@@ -21,6 +23,10 @@ func NewCloudAgentCommand() *cobra.Command {
 		Use:  "cloudagent",
 		Long: `keep description,however there is nothing in our code for now,so there is nothing in description`,
 		Run: func(cmd *cobra.Command, args []string) {
+			// 性能监控
+			go func() {
+				logger.Debug(http.ListenAndServe(":6060", nil))
+			}()
 			config, err := opts.Config()
 			text, err := yaml.Marshal(&config)
 			// 写入配置文件

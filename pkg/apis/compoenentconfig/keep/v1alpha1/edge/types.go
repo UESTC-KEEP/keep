@@ -59,6 +59,7 @@ type Modules struct {
 	HealthzAgent  *HealthzAgent  `json:"healthzAgent,omitempty"`
 	LogsAgent     *LogsAgent     `json:"logsagent,omitempty"`
 	EdgePublisher *EdgePublisher `json:"edgepublisher,omitempty"`
+	EdgeTwin      *EdgeTwin      `json:"edgetwin,omitempty"`
 }
 
 // HealthzAgent 是该模块的说明
@@ -75,7 +76,6 @@ type HealthzAgent struct {
 	DiskIOCountersStat        *map[string]disk.IOCountersStat `json:"disk_io_counters_stat"`
 	NetIOCountersStat         *[]net.IOCountersStat           `json:"net_io_counters_stat"`
 	DefaultEdgeHealthInterval int                             `json:"defaultEdgeHealthInterval,omitempty"`
-	DefaultMqttCacheQueueSize int                             `json:"defaultMqttCacheQueueSize,omitempty"`
 }
 
 // LogsAgent logsagent模块结构定义
@@ -99,4 +99,10 @@ type EdgePublisher struct {
 	TLSCAFile         string   `json:"tlsCaFile,omitempty"`
 	TLSCertFile       string   `json:"tlsCertFile,omitempty"`
 	TLSPrivateKeyFile string   `json:"tlsPrivateKeyFile,omitempty"`
+}
+
+//EdgeTwin 模块定义
+type EdgeTwin struct {
+	Enable         bool   `json:"enable"`
+	SqliteFilePath string `json:"sqlite_file_path"`
 }

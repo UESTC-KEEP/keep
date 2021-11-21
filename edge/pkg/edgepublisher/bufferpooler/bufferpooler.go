@@ -68,15 +68,14 @@ func StartListenLogMsg() {
 				PermissionOfSending = false
 				return
 			default:
-				ReceiveFromBehiveAndPublish()
-
+				ReceiveFromBeehiveAndPublish()
 			}
 		}
 	}()
 }
 
-// ReceiveFromBehiveAndPublish 接收来自behivee的通信  同时返回响应 之后发布到消息队列
-func ReceiveFromBehiveAndPublish() {
+// ReceiveFromBeehiveAndPublish 接收来自behivee的通信  同时返回响应 之后发布到消息队列
+func ReceiveFromBeehiveAndPublish() {
 	msg, err := beehiveContext.Receive(modules.EdgePublisherModule)
 	if err != nil {
 		logger.Error(err)
@@ -87,7 +86,7 @@ func ReceiveFromBehiveAndPublish() {
 		beehiveContext.SendResp(*resp)
 
 		topic := constants.DefaultLogsTopic
-		fmt.Println(chanmsgqueen.EdgePublishQueens)
+		//fmt.Println(chanmsgqueen.EdgePublishQueens)
 		cli := chanmsgqueen.EdgePublishQueens[topic]
 		err = cli.Publish(topic, msg.Content)
 		if err != nil {

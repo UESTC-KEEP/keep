@@ -49,15 +49,15 @@ func FilterLogsByLevel(log string) {
 			messsage := model.NewMessage("")
 			counter++
 			messsage.Content = log
-			fmt.Println("+++++++++++++++++++++++  ", log)
+			//fmt.Println("+++++++++++++++++++++++  ", log)
 			if bufferpooler.PermissionOfSending {
 				go func() {
 					resp, err := beehiveContext.SendSync(modules.EdgePublisherModule, *messsage, 5*time.Second)
 					if err != nil {
 						logger.Error(err)
 					} else {
-						fmt.Printf(modules.EdgePublisherModule+" 响应: %v, error: %v\n", resp, err)
-						fmt.Println("发送日志至bufferpooler成功...")
+						logger.Trace(modules.EdgePublisherModule+" 响应: %v, error: %v\n", resp, err)
+						logger.Trace("发送日志至bufferpooler成功...")
 					}
 				}()
 			}

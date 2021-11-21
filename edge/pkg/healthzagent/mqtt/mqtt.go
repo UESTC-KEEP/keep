@@ -1,172 +1,176 @@
 package mqtt
 
 import (
-	"time"
-
+	"fmt"
+	_ "github.com/mattn/go-sqlite3"
 	uuid "github.com/satori/go.uuid"
 	"github.com/wonderivan/logger"
 	"github.com/yosssi/gmq/mqtt"
 	"github.com/yosssi/gmq/mqtt/client"
+	"keep/constants"
+	_ "net/http/pprof"
+	"time"
 )
 
 //config
-const MQTT_QOS = mqtt.QoS0
-const MQTT_CHAN_SIZE = 4
 
-const LOG_TAG = "<MQTT>"
-const MQTT_FOREVER = 0 //0表示无限等待
+const MqttForever = 0 //0表示无限等待
 
-type MqttErrCode_t int
+type MqtterrcodeT int
 
 const (
-	MQTT_OK MqttErrCode_t = iota
-	MQTT_CHAN_CLOSED
-	MQTT_TIMEOUT
-	MQTT_TOPIC_UNEXIST
+	MQTT_OK MqtterrcodeT = iota
+	MqttChanClosed
+	MqttTimeout
+	MqttTopicUnexist
 )
 
-type MqttErrRet_t struct {
-	err_code MqttErrCode_t
+type MqtterrretT struct {
+	errCode MqtterrcodeT
 }
 
-func (err *MqttErrRet_t) Error() string {
-	return LOG_TAG //TODO 以后写点详细信息
+func (err *MqtterrretT) Error() string {
+	return constants.DefaultMqttLogTag //TODO 以后写点详细信息
 }
 
-type MqttTopicInfo_t struct {
-	data_chan     chan []byte
-	time_limit_ms uint
+type MqtttopicinfoT struct {
+	dataChan    chan []byte
+	timeLimitMs uint
 }
 
-type MqttTopicMap map[string]*MqttTopicInfo_t
-type MqttClient_t struct {
-	p_mqtt_client *client.Client
-	topic_map     MqttTopicMap
+type TopicMap map[string]*MqtttopicinfoT
+type MqttclientT struct {
+	pMqttClient *client.Client
+	topicMap    TopicMap
 }
 
-type MqttTopicConf struct {
-	Topic_name string
-	Timeout_ms uint
+type TopicConf struct {
+	TopicName string
+	TimeoutMs uint
 }
 
-func CreateMqttClient(client_name string, broker_ip string, broker_port string) *MqttClient_t {
-
-	var mqtt_cli = client.New(&client.Options{
+func CreateMqttClient(clientName string, brokerIp string, brokerPort string) *MqttclientT {
+	var mqttCli = client.New(&client.Options{
 		ErrorHandler: func(err error) {
 			logger.Error("连接mqttbroker失败...", err)
 		},
 	})
-	defer mqtt_cli.Terminate()
+	defer mqttCli.Terminate()
 
-	conn_opt := client.ConnectOptions{
+	connOpt := client.ConnectOptions{
 		Network:  "tcp",
-		Address:  broker_ip + ":" + broker_port,
-		ClientID: []byte(client_name),
+		Address:  brokerIp + ":" + brokerPort,
+		ClientID: []byte(clientName),
 	}
-	err := mqtt_cli.Connect(&conn_opt)
+	err := mqttCli.Connect(&connOpt)
 
 	if nil != err {
 		logger.Fatal(err)
 		panic(err)
 	}
 
-	p_cli := new(MqttClient_t)
+	pCli := new(MqttclientT)
 
-	p_cli.p_mqtt_client = mqtt_cli
-	p_cli.topic_map = make(MqttTopicMap)
+	pCli.pMqttClient = mqttCli
+	pCli.topicMap = make(TopicMap)
 
-	return p_cli
+	return pCli
 }
 
-func CreateMqttClientNoName(broker_ip string, broker_port string) *MqttClient_t { //随机生成客户端名字
-	return CreateMqttClient((uuid.NewV4()).String(), broker_ip, broker_port)
+func CreateMqttClientNoName(brokerIp string, brokerPort string) *MqttclientT { //随机生成客户端名字
+	return CreateMqttClient((uuid.NewV4()).String(), brokerIp, brokerPort)
 }
 
-//只要调用一次就行，其后等着自己的回调函数就行，不用反复注册订阅
-func (mqtt_cli *MqttClient_t) RegistSubscribeTopic(p_conf *MqttTopicConf) {
-	topic_name := p_conf.Topic_name
-	p_cli := mqtt_cli.p_mqtt_client
+var countr = 0
 
-	_, exist := mqtt_cli.topic_map[topic_name]
+// RegistSubscribeTopic 只要调用一次就行，其后等着自己的回调函数就行，不用反复注册订阅
+func (mqttCli *MqttclientT) RegistSubscribeTopic(pConf *TopicConf) {
+	//hubCli:= healthzhub.NewHealzHub()
+	topicName := pConf.TopicName
+	pCli := mqttCli.pMqttClient
+	_, exist := mqttCli.topicMap[topicName]
 	if exist { //不能重复订阅同一主题
-		logger.Warn(LOG_TAG + ": Skip subscribeing duplicated topic " + topic_name)
+		logger.Warn(constants.DefaultMqttLogTag + ": Skip subscribeing duplicated topic " + topicName)
 		return
 	}
 
-	err := p_cli.Subscribe(&client.SubscribeOptions{
+	err := pCli.Subscribe(&client.SubscribeOptions{
 		SubReqs: []*client.SubReq{
 			{
-				TopicFilter: []byte(topic_name),
-				QoS:         MQTT_QOS,
+				TopicFilter: []byte(topicName),
+				QoS:         mqtt.QoS0,
 				Handler: func(topicName, message []byte) {
-					logger.Trace(LOG_TAG+": Topic= "+string(topicName)+"\tData=", message)
-					mqtt_cli.topic_map[string(topicName)].data_chan <- message //TODO 这个地方得先设法获取通道是否满了，不然会在满了后一直阻塞
+					fmt.Println(countr)
+					countr++
+					fmt.Println(constants.DefaultMqttLogTag+": Topic= "+string(topicName)+"\tData=", message)
+					// 存入sqlite进行有限制的持久化
+					//hubCli.InsertIntoSqlite(message)
+					mqttCli.topicMap[string(topicName)].dataChan <- message //TODO 这个地方得先设法获取通道是否满了，不然会在满了后一直阻塞
 				},
 			},
 		},
 	})
 	if nil != err {
-		logger.Error(LOG_TAG, ":Failed to subscribe topic: ", topic_name, " error=", err)
+		logger.Error(constants.DefaultMqttLogTag, ":Failed to subscribe topic: ", topicName, " error=", err)
 		return
 	}
 
-	mqtt_cli.topic_map[topic_name] = &MqttTopicInfo_t{
-		data_chan:     make(chan []byte, MQTT_CHAN_SIZE),
-		time_limit_ms: p_conf.Timeout_ms,
+	mqttCli.topicMap[topicName] = &MqtttopicinfoT{
+		dataChan:    make(chan []byte, constants.DefaultMqttChanSize),
+		timeLimitMs: pConf.TimeoutMs,
 	}
 }
 
-func (mqtt_cli *MqttClient_t) GetTopicData(topic string) ([]byte, error) {
-	topic_info, exist := mqtt_cli.topic_map[topic]
+func (mqttCli *MqttclientT) GetTopicData(topic string) ([]byte, error) {
+	topicInfo, exist := mqttCli.topicMap[topic]
 	if exist {
-		if MQTT_FOREVER == topic_info.time_limit_ms { //TODO 不知道怎么复用select，凑合一下
-			data := <-topic_info.data_chan
+		if MqttForever == topicInfo.timeLimitMs { //TODO 不知道怎么复用select，凑合一下
+			data := <-topicInfo.dataChan
 			if data == nil {
-				logger.Warn(LOG_TAG + ":The data channel of topic \"" + topic + "\" was closed")
-				return nil, &MqttErrRet_t{MQTT_CHAN_CLOSED}
+				logger.Warn(constants.DefaultMqttLogTag + ":The data channel of topic \"" + topic + "\" was closed")
+				return nil, &MqtterrretT{MqttChanClosed}
 			} else {
 				return data, nil
 			}
 		} else {
-
 			select {
-			case data := <-topic_info.data_chan:
+			case data := <-topicInfo.dataChan:
 				if data == nil {
-					logger.Warn(LOG_TAG + ":The data channel of topic \"" + topic + "\" was closed")
-					return nil, &MqttErrRet_t{MQTT_CHAN_CLOSED}
+					logger.Warn(constants.DefaultMqttLogTag + ":The data channel of topic \"" + topic + "\" was closed")
+					return nil, &MqtterrretT{MqttChanClosed}
 				} else {
 					return data, nil
 				}
-			case <-time.After(time.Duration(topic_info.time_limit_ms) * time.Millisecond):
-				logger.Error(LOG_TAG, ": TIMEOUT while reading topic: ", topic)
-				return nil, &MqttErrRet_t{MQTT_TIMEOUT}
+			case <-time.After(time.Duration(topicInfo.timeLimitMs) * time.Millisecond):
+				logger.Error(constants.DefaultMqttLogTag, ": TIMEOUT while reading topic: ", topic)
+				return nil, &MqtterrretT{MqttTimeout}
 			}
 		}
 
 	} else {
-		logger.Error(LOG_TAG + "try to read unregisted topic " + topic)
-		return nil, &MqttErrRet_t{MQTT_TOPIC_UNEXIST}
+		logger.Error(constants.DefaultMqttLogTag + "try to read unregisted topic " + topic)
+		return nil, &MqtterrretT{MqttTopicUnexist}
 	}
 }
 
-func (mqtt_cli *MqttClient_t) UnSubscribeTopic(topic string) {
-	topic_info, exist := mqtt_cli.topic_map[topic]
+func (mqttCli *MqttclientT) UnSubscribeTopic(topic string) {
+	topicInfo, exist := mqttCli.topicMap[topic]
 	if exist {
-		mqtt_cli.p_mqtt_client.Unsubscribe(
+		mqttCli.pMqttClient.Unsubscribe(
 			&client.UnsubscribeOptions{
 				TopicFilters: [][]byte{
 					[]byte(topic)},
 			})
-		close(topic_info.data_chan)
+		close(topicInfo.dataChan)
 		//chan 关闭时的原则是：不要在接收协程中关闭，并且，如果有多个发送者时就不要关闭chan了。
 		//https://studygolang.com/articles/9478
-		delete(mqtt_cli.topic_map, topic)
+		delete(mqttCli.topicMap, topic)
 	} else {
-		logger.Warn(LOG_TAG + "try to UnSubscribe unexist topic: " + topic)
+		logger.Warn(constants.DefaultMqttLogTag + "try to UnSubscribe unexist topic: " + topic)
 	}
 }
 
-func (mqtt_cli *MqttClient_t) PublishMsg(topic string, data []byte) {
+func (mqttCli *MqttclientT) PublishMsg(topic string, data []byte) {
 	logger.Fatal("unimplemented function")
 	panic(nil)
 }
