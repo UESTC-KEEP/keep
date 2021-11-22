@@ -6,7 +6,8 @@ import (
 )
 
 type Modules struct {
-	K8sClient *K8sClient `json:"k8s_client"`
+	K8sClient  *K8sClient  `json:"k8s_client"`
+	PromServer *PromServer `json:"prom_server"`
 }
 
 type CloudAgentConfig struct {
@@ -22,4 +23,8 @@ type K8sClient struct {
 	RedisPort      int                `json:"redis_port"`
 	PodInfo        *v1.Pod            `json:"pod_info"`
 	DeploymentInfo *appsv1.Deployment `json:"deployment_info"`
+}
+
+type PromServer struct {
+	Enable bool `json:"enable"`
 }

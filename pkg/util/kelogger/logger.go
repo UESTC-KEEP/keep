@@ -35,21 +35,16 @@ func loadDefaultLoggerConf() *logConfig { //读default
 
 //把配置写入文件中，供logger包读取
 func WirteLoggerConfigToFile(file_path string, p_cfg *logConfig) { //覆盖
-	cfg_file, err := os.OpenFile(file_path, os.O_CREATE, 0774) //TODO 以后改成default配置权限？
-	if nil != err {
-		Error(LOG_TAG + "cannont  create logger config file:" + err.Error())
-	}
 	data, err := json.Marshal(p_cfg)
-	Infof("%s, data=%s", LOG_TAG, string(data))
+
 	if nil != err {
 		Error(LOG_TAG + "cannont   Marshal config :" + err.Error())
 	} else {
-		_, err = cfg_file.Write(data) //TODO 不知道有什么高级的错误处理写法
-		Error(LOG_TAG + "cannont  write logger config file:" + err.Error())
-	}
-	err = cfg_file.Close()
-	if nil != err {
-		Error(LOG_TAG + "cannont  close logger config file:" + err.Error())
+		Infof("%s, data=%s", LOG_TAG, string(data))
+		err := os.WriteFile(file_path, data, 0664) //TODO 以后改成default配置权限？
+		if nil != err {
+			Error(LOG_TAG + "cannont  write logger config file:" + err.Error())
+		}
 	}
 }
 
@@ -68,12 +63,12 @@ func CreateLogFile(file_path string) {
 }
 
 func CheckAndCreateFile(file_path string, createor_handle func(string)) { //TODO 也许应该放utils里面
-	if "" == file_path {
+	if (0 == len(file_path)) || ('/' != file_path[0]) { //不支持windows的路径格式 TODO
 		return
 	}
 
 	_, err := os.Stat(file_path)
-	if os.IsExist(err) {
+	if nil == err {
 		return
 	}
 

@@ -7,7 +7,6 @@ import (
 	"keep/edge/pkg/logsagent/tailf"
 	"keep/pkg/util/core"
 
-	"github.com/kubeedge/beehive/pkg/core"
 	"github.com/wonderivan/logger"
 
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
