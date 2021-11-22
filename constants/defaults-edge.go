@@ -10,6 +10,11 @@ const (
 )
 
 const (
+	DefaultUnixDirectoryPermit = 0660 //不可执行，非本组成员不能访问
+	DefaultUnixFilePermit      = 0660 //不可执行，非本组成员不能访问
+)
+
+const (
 	// DefaultConfigDir 默认的存储文件位置
 	DefaultEdgeagentConfigFile = KeepBaseConfPath + "/edgecore.yml"
 	//KeepEdgeVersion	keepedge 版本信息

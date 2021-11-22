@@ -41,7 +41,7 @@ func WirteLoggerConfigToFile(file_path string, p_cfg *logConfig) { //覆盖
 		Error(LOG_TAG + "cannont   Marshal config :" + err.Error())
 	} else {
 		Infof("%s, data=%s", LOG_TAG, string(data))
-		err := os.WriteFile(file_path, data, 0664) //TODO 以后改成default配置权限？
+		err := os.WriteFile(file_path, data, constants.DefaultUnixFilePermit)
 		if nil != err {
 			Error(LOG_TAG + "cannont  write logger config file:" + err.Error())
 		}
@@ -75,7 +75,7 @@ func CheckAndCreateFile(file_path string, createor_handle func(string)) { //TODO
 	Warnf("%s:cannont find %s,creating a new one now", LOG_TAG, file_path)
 
 	paths, _ := filepath.Split(file_path)
-	err = os.MkdirAll(paths, 0774)
+	err = os.MkdirAll(paths, constants.DefaultUnixDirectoryPermit)
 	if nil == err {
 		createor_handle(file_path)
 	} else {
