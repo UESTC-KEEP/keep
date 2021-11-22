@@ -21,6 +21,7 @@ import (
 	"keep/constants"
 	"keep/pkg/util"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -43,6 +44,7 @@ func NewDefaultEdgeAgentConfig() *EdgeAgentConfig {
 				DiskPartitionStat:         nil,
 				DiskIOCountersStat:        nil,
 				NetIOCountersStat:         nil,
+				DeviceMqttTopics:          strings.Split(constants.DefaultDeviceMqttTopics, ";"),
 			},
 			LogsAgent: &LogsAgent{
 				Enable:      true,

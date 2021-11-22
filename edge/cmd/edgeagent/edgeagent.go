@@ -9,9 +9,8 @@ import (
 
 func main() {
 	//defer utils.GracefulExit()
-	logs.InitKeepLogger()
 	command := app.NewEdgeAgentCommand()
-
+	logs.InitKeepLogger()
 	if err := command.Execute(); err != nil {
 		os.Exit(1)
 	}

@@ -14,6 +14,7 @@ import (
 	"keep/edge/pkg/healthzagent"
 	"keep/edge/pkg/logsagent"
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
+	commonutil "keep/pkg/util"
 	"keep/pkg/util/core"
 	"net/http"
 	"os"
@@ -39,6 +40,7 @@ func NewEdgeAgentCommand() *cobra.Command {
 		Use:  "keep",
 		Long: `keep description,however there is nothing in our code for now,so there is nothing in description`,
 		Run: func(cmd *cobra.Command, args []string) {
+			commonutil.OrganizeConfigurationFile(constants.EdgeAgentName)
 			// 性能监控
 			go func() {
 				logger.Debug(http.ListenAndServe(":6060", nil))
@@ -48,7 +50,8 @@ func NewEdgeAgentCommand() *cobra.Command {
 			// 写入配置文件
 			err = ioutil.WriteFile(constants.DefaultEdgeagentConfigFile, text, 0777)
 			if err != nil {
-				logger.Fatal(err)
+				logger.Error(err)
+				os.Exit(1)
 			}
 			utils.PrintKEEPLogo()
 			err = utils.EnvironmentCheck()

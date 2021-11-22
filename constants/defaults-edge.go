@@ -1,5 +1,8 @@
 package constants
 
+const EdgeAgentName = "EdgeAgent"
+const EdgeConfigeFilesSourceDir = "../../../edge/shells/confs/keepedge"
+
 const (
 	// DefaultConfigDir 默认的存储文件位置
 	DefaultEdgeagentConfigFile = "/etc/keepedge/config/edgecore.yml"
@@ -38,6 +41,8 @@ const (
 	DefaultTestingMQTTPort   = 1883
 	DefaultMqttChanSize      = 4
 	DefaultMqttLogTag        = "<MQTT>"
+	// DefaultDeviceMqttTopics 默认想要监听的设备mqtt主题 以; 进行分割多个主题
+	DefaultDeviceMqttTopics = "clock_sensor"
 )
 
 // EdgeTwin配置

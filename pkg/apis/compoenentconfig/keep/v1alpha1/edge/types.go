@@ -76,6 +76,7 @@ type HealthzAgent struct {
 	DiskIOCountersStat        *map[string]disk.IOCountersStat `json:"disk_io_counters_stat"`
 	NetIOCountersStat         *[]net.IOCountersStat           `json:"net_io_counters_stat"`
 	DefaultEdgeHealthInterval int                             `json:"defaultEdgeHealthInterval,omitempty"`
+	DeviceMqttTopics          []string                        `json:"device_mqtt_topics,omitempty"`
 }
 
 // LogsAgent logsagent模块结构定义

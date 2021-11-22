@@ -6,7 +6,7 @@ import (
 
 func InitKeepLogger() {
 	//logger.SetLogger(`{"Console": {"level": "TRAC"}}`)
-	err := logger.SetLogger("/etc/keepedge/logger_conf.json")
+	err := logger.SetLogger("../../../pkg/util/logs/logger_conf.json")
 	if err != nil {
 		logger.Error("Keeploger初始化失败:" + err.Error())
 		return

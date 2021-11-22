@@ -1,5 +1,8 @@
 package constants
 
+const CloudAgentName = "CloudAgent"
+const CloudConfigeFilesSourceDir = "../../../cloud/shells/confs/keepedge"
+
 // 全局配置
 const (
 	DefaultKubeConfigPath  = "/home/et/.kube/config"
