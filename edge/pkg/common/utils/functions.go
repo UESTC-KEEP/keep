@@ -35,10 +35,10 @@ func FindProcess(name string) (bool, error) {
 // if Check failed,  return errors
 func EnvironmentCheck() error {
 	// if kubelet is running, return error
-	if find, err := FindProcess("edgecore"); err != nil {
+	if find, err := FindProcess("cloudcore"); err != nil {
 		return err
 	} else if !find {
-		return errors.New("kubeedge edgecore未在运行,请检查")
+		return errors.New("kubeedge cloudcore未在运行,请检查")
 	}
 	logger.Debug("环境检测通过...")
 	return nil

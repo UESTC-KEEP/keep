@@ -1,7 +1,7 @@
 package mqtt
 
 import (
-	"keep/pkg/util/kelogger"
+	"keep/pkg/util/kplogger"
 	"sync"
 	"time"
 
@@ -92,7 +92,7 @@ type MqttClient struct {
 func CreateMqttClient(clientName string, broker_ip string, brokerPort string) *MqttClient {
 	var mqttCli = client.New(&client.Options{
 		ErrorHandler: func(err error) {
-			kelogger.Error("连接mqttbroker失败...", err)
+			kplogger.Error("连接mqttbroker失败...", err)
 		},
 	})
 	defer mqttCli.Terminate()
@@ -105,7 +105,7 @@ func CreateMqttClient(clientName string, broker_ip string, brokerPort string) *M
 	err := mqttCli.Connect(&connOpt)
 
 	if nil != err {
-		kelogger.Fatal(err)
+		kplogger.Fatal(err)
 		panic(err)
 	}
 
@@ -122,7 +122,7 @@ func CreateMqttClientNoName(broker_ip string, brokerPort string) *MqttClient { /
 }
 
 func (mqttCli *MqttClient) clientReceivehandle(topicName, message []byte) {
-	kelogger.Trace(constants.DefaultMqttLogTag+": Topic= "+string(topicName)+"\tData=", message)
+	kplogger.Trace(constants.DefaultMqttLogTag+": Topic= "+string(topicName)+"\tData=", message)
 
 	p_data_tmp := &(mqttCli.topicMap[string(topicName)].data)
 	switch (*p_data_tmp).(type) { //类型断言
@@ -148,7 +148,7 @@ func (mqttCli *MqttClient) RegistSubscribeTopic(pConf *TopicConf) {
 	pCli := mqttCli.pMqttClient
 	_, exist := mqttCli.topicMap[topic_name]
 	if exist { //不能重复订阅同一主题
-		kelogger.Warn(constants.DefaultMqttLogTag + ": Skip subscribeing duplicated topic " + topic_name)
+		kplogger.Warn(constants.DefaultMqttLogTag + ": Skip subscribeing duplicated topic " + topic_name)
 		return
 	}
 
@@ -182,7 +182,7 @@ func (mqttCli *MqttClient) RegistSubscribeTopic(pConf *TopicConf) {
 	err := pCli.Subscribe(&sub_opt)
 	if nil != err {
 		delete(mqttCli.topicMap, topic_name)
-		kelogger.Error(constants.DefaultMqttLogTag, ":Failed to subscribe topic: ", topic_name, " error=", err)
+		kplogger.Error(constants.DefaultMqttLogTag, ":Failed to subscribe topic: ", topic_name, " error=", err)
 		return
 	}
 }
@@ -196,7 +196,7 @@ func (mqttCli *MqttClient) getDataBlockMode(topic string, topicInfo *mqttTopicIn
 	if MqttForever == topicInfo.timeLimitMs { //TODO 不知道怎么复用select，凑合一下
 		data := <-data_b.data_chan
 		if data == nil {
-			kelogger.Warn(constants.DefaultMqttLogTag + ":The data channel of topic \"" + topic + "\" was closed")
+			kplogger.Warn(constants.DefaultMqttLogTag + ":The data channel of topic \"" + topic + "\" was closed")
 			return nil, &MqttErrRet{MQTT_CHAN_CLOSED}
 		} else {
 			return data, nil
@@ -205,13 +205,13 @@ func (mqttCli *MqttClient) getDataBlockMode(topic string, topicInfo *mqttTopicIn
 		select {
 		case data := <-data_b.data_chan:
 			if data == nil {
-				kelogger.Warn(constants.DefaultMqttLogTag + ":The data channel of topic \"" + topic + "\" was closed")
+				kplogger.Warn(constants.DefaultMqttLogTag + ":The data channel of topic \"" + topic + "\" was closed")
 				return nil, &MqttErrRet{MQTT_CHAN_CLOSED}
 			} else {
 				return data, nil
 			}
 		case <-time.After(time.Duration(topicInfo.timeLimitMs) * time.Millisecond):
-			kelogger.Error(constants.DefaultMqttLogTag, ": TIMEOUT while reading topic: ", topic)
+			kplogger.Error(constants.DefaultMqttLogTag, ": TIMEOUT while reading topic: ", topic)
 			return nil, &MqttErrRet{MQTT_TIME_OUT}
 		}
 	}
@@ -228,12 +228,12 @@ func (mqttCli *MqttClient) getDataCacheMode(topic string, topicInfo *mqttTopicIn
 	defer data_c.cache_lock.RUnlock()
 
 	if !(data_c.is_visited) { //也许以后用nil就行，让外面读数据的去判断数据是否有效？TODO
-		kelogger.Error(constants.DefaultMqttLogTag, ":  topic: ", topic, "  no data")
+		kplogger.Error(constants.DefaultMqttLogTag, ":  topic: ", topic, "  no data")
 		return nil, &MqttErrRet{MQTT_NO_DATA} //这个地方就只有开始那一瞬间用用处了
 	}
 
 	if topicInfo.timeLimitMs < time.Now().UnixMilli()-data_c.time_stamp {
-		kelogger.Error(constants.DefaultMqttLogTag, ": TIMEOUT while reading topic: ", topic)
+		kplogger.Error(constants.DefaultMqttLogTag, ": TIMEOUT while reading topic: ", topic)
 		return nil, &MqttErrRet{MQTT_TIME_OUT}
 	}
 	data_ret := data_c.data_cache
@@ -253,7 +253,7 @@ func (mqttCli *MqttClient) GetTopicData(topic string) ([]byte, error) {
 			return nil, &MqttErrRet{MQTT_SYS_ERROR}
 		}
 	} else {
-		kelogger.Error(constants.DefaultMqttLogTag + "try to read unregisted topic " + topic)
+		kplogger.Error(constants.DefaultMqttLogTag + "try to read unregisted topic " + topic)
 		return nil, &MqttErrRet{MQTT_TOPIC_UNEXIST}
 	}
 }
@@ -272,7 +272,7 @@ func (mqttCli *MqttClient) UnSubscribeTopic(topic string) {
 			if is_block_mode {
 				close(data_b.data_chan)
 			} else {
-				kelogger.Errorf("%s,data mode error", constants.DefaultMqttLogTag)
+				kplogger.Errorf("%s,data mode error", constants.DefaultMqttLogTag)
 			}
 
 		case mqttCachedData_t: //FIXME 可以直接什么都不做？golang没free？
@@ -282,7 +282,7 @@ func (mqttCli *MqttClient) UnSubscribeTopic(topic string) {
 		//https://studygolang.com/articles/9478
 		delete(mqttCli.topicMap, topic)
 	} else {
-		kelogger.Warn(constants.DefaultMqttLogTag + "try to UnSubscribe unexist topic: " + topic)
+		kplogger.Warn(constants.DefaultMqttLogTag + "try to UnSubscribe unexist topic: " + topic)
 	}
 }
 
@@ -291,6 +291,6 @@ func (mqtt_cli *MqttClient) GetTopicNum() int { //返回当前监听的topic数�
 }
 
 func (mqtt_cli *MqttClient) PublishMsg(topic string, data []byte) {
-	kelogger.Fatal("unimplemented function")
+	kplogger.Fatal("unimplemented function")
 	panic(nil)
 }

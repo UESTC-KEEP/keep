@@ -3,7 +3,7 @@ package main
 import (
 	"keep/edge/cmd/edgeagent/app"
 	"keep/edge/pkg/common/utils"
-	"keep/pkg/util/kelogger"
+	kplogger "keep/pkg/util/kplogger"
 	_ "net/http/pprof"
 	"os"
 )
@@ -11,7 +11,7 @@ import (
 func main() {
 	defer utils.GracefulExit()
 
-	kelogger.InitKeepLogger()
+	kplogger.InitKeepLogger()
 
 	command := app.NewEdgeAgentCommand()
 
