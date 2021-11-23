@@ -1,13 +1,11 @@
 package kafka
 
-import "time"
-
 // KafkaMsg kafka发送的消息格式   可以自行增删  如果kafka客户端有自己的则用之
-type KafkaMsg struct {
-	content  []byte
-	datetime time.Time
-	QoS      int
-}
+//type KafkaMsg struct {
+//	content  []byte
+//	datetime time.Time		// 保存在集群时，会有一个时间戳 ProducerMessage.Timestamp
+//	QoS      int
+//}
 
 type KafkaInterface interface {
 	// Subscribe  订阅kafka
@@ -16,14 +14,14 @@ type KafkaInterface interface {
 			    topic: 需要订阅的kafka主题
 		返回值：表征订阅行为结果
 	*/
-	Subscribe(host, topic string) error
+	Subscribe() error
 	// UnSubscribe 取消订阅
 	/*
 		输入参数：host：kafka集群服务地址，为空就用默认地址
 				topic:要取消订阅的topic
 		返回值：表征取消订阅行为的结果
 	*/
-	UnSubscribe(host, topic string) error
+	UnSubscribe() error
 	// Publish 向kafka集群扔消息
 	/*
 		输入参数：msg:传递的消息结构
@@ -31,7 +29,7 @@ type KafkaInterface interface {
 				Qos:期望的服务质量
 		返回值：表征发布结果
 	*/
-	Publish(msg *KafkaMsg, topic string, Qos int) error
+	Publish() error
 	// GenerateConsumerGroup 新建订阅者组
 	/*
 		输入参数：groupname:生成订阅者组名
