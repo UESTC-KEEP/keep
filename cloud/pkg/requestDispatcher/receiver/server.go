@@ -11,11 +11,11 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"keep/constants"
+	"keep/pkg/util/kplogger"
+
 	"github.com/gorilla/mux"
 	certutil "k8s.io/client-go/util/cert"
-	"k8s.io/klog/v2"
-
-	"keep/constants"
 
 	hubconfig "keep/cloud/pkg/requestDispatcher/config"
 )
@@ -39,7 +39,7 @@ func StartHTTPServer() {
 	cert, err := tls.X509KeyPair(pem.EncodeToMemory(&pem.Block{Type: certutil.CertificateBlockType, Bytes: hubconfig.Config.Cert}), pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: hubconfig.Config.Key}))
 
 	if err != nil {
-		klog.Exit(err)
+		kplogger.Fatal(err)
 	}
 	// 创建一个http server
 	server := &http.Server{
@@ -51,16 +51,16 @@ func StartHTTPServer() {
 		},
 	}
 	// TLS
-	klog.Info("listening....")
-	klog.Exit(server.ListenAndServeTLS("", ""))
+	kplogger.Info("listening....")
+	kplogger.Fatal(server.ListenAndServeTLS("", ""))
 }
 
 // getCA returns the caCertDER
 func getCA(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("getting ca...")
+	kplogger.Info("getting ca...")
 	caCertDER := hubconfig.Config.Ca
 	if _, err := w.Write(caCertDER); err != nil {
-		klog.Errorf("failed to write caCertDER, err: %v", err)
+		kplogger.Errorf("failed to write caCertDER, err: %v", err)
 	}
 }
 
@@ -82,13 +82,13 @@ func EncodeCertPEM(cert *x509.Certificate) []byte {
 
 // edgeCoreClientCert will verify the certificate of EdgeCore or token then create EdgeCoreCert and return it
 func edgeCoreClientCert(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("getting cert...")
+	kplogger.Info("getting cert...")
 	if cert := r.TLS.PeerCertificates; len(cert) > 0 {
 		if err := verifyCert(cert[0]); err != nil {
-			klog.Errorf("failed to sign the certificate for edgenode: %s, failed to verify the certificate", r.Header.Get(constants.NodeName))
+			kplogger.Errorf("failed to sign the certificate for edgenode: %s, failed to verify the certificate", r.Header.Get(constants.NodeName))
 			w.WriteHeader(http.StatusUnauthorized)
 			if _, err := w.Write([]byte(err.Error())); err != nil {
-				klog.Errorf("failed to write response, err: %v", err)
+				kplogger.Errorf("failed to write response, err: %v", err)
 			}
 		} else {
 			signEdgeCert(w, r)
@@ -98,7 +98,7 @@ func edgeCoreClientCert(w http.ResponseWriter, r *http.Request) {
 	if verifyAuthorization(w, r) {
 		signEdgeCert(w, r)
 	} else {
-		klog.Errorf("failed to sign the certificate for edgenode: %s, invalid token", r.Header.Get(constants.NodeName))
+		kplogger.Errorf("failed to sign the certificate for edgenode: %s, invalid token", r.Header.Get(constants.NodeName))
 	}
 }
 
@@ -173,12 +173,12 @@ func verifyAuthorization(w http.ResponseWriter, r *http.Request) bool {
 func signEdgeCert(w http.ResponseWriter, r *http.Request) {
 	csrContent, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		klog.Errorf("fail to read file when signing the cert for edgenode:%s! error:%v", r.Header.Get(constants.NodeName), err)
+		kplogger.Errorf("fail to read file when signing the cert for edgenode:%s! error:%v", r.Header.Get(constants.NodeName), err)
 		return
 	}
 	csr, err := x509.ParseCertificateRequest(csrContent)
 	if err != nil {
-		klog.Errorf("fail to ParseCertificateRequest of edgenode: %s! error:%v", r.Header.Get(constants.NodeName), err)
+		kplogger.Errorf("fail to ParseCertificateRequest of edgenode: %s! error:%v", r.Header.Get(constants.NodeName), err)
 		return
 	}
 	usagesStr := r.Header.Get("ExtKeyUsages")
@@ -188,19 +188,19 @@ func signEdgeCert(w http.ResponseWriter, r *http.Request) {
 	} else {
 		err := json.Unmarshal([]byte(usagesStr), &usages)
 		if err != nil {
-			klog.Errorf("unmarshal http header ExtKeyUsages fail, err: %v", err)
+			kplogger.Errorf("unmarshal http header ExtKeyUsages fail, err: %v", err)
 			return
 		}
 	}
-	klog.V(4).Infof("receive sign crt request, ExtKeyUsages: %v", usages)
+	kplogger.Infof("receive sign crt request, ExtKeyUsages: %v", usages)
 	clientCertDER, err := signCerts(csr.Subject, csr.PublicKey, usages)
 	if err != nil {
-		klog.Errorf("fail to signCerts for edgenode:%s! error:%v", r.Header.Get(constants.NodeName), err)
+		kplogger.Errorf("fail to signCerts for edgenode:%s! error:%v", r.Header.Get(constants.NodeName), err)
 		return
 	}
 
 	if _, err := w.Write(clientCertDER); err != nil {
-		klog.Errorf("write error %v", err)
+		kplogger.Errorf("write error %v", err)
 	}
 }
 

@@ -1,17 +1,14 @@
 package requestDispatcher
 
 import (
-	"fmt"
 	"keep/cloud/pkg/common/modules"
 	requestDispatcherconfig "keep/cloud/pkg/requestDispatcher/config"
 	"keep/cloud/pkg/requestDispatcher/receiver"
 	"keep/constants"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"keep/pkg/util/core"
+	"keep/pkg/util/kplogger"
 	"os"
-
-	"github.com/wonderivan/logger"
-	"k8s.io/klog/v2"
 )
 
 type RequestDispatcher struct {
@@ -24,7 +21,7 @@ func Register(r *cloudagent.RequestDispatcher) {
 	requestDispatcherconfig.InitConfigure(r)
 	rd, err := NewRequestDispatcher(r.Enable)
 	if err != nil {
-		logger.Error("初始化RequestDispatcher失败...:", err)
+		kplogger.Error("初始化RequestDispatcher失败...:", err)
 		os.Exit(1)
 	}
 	core.Register(rd)
@@ -46,12 +43,12 @@ func (r *RequestDispatcher) Group() string {
 }
 func (r *RequestDispatcher) Start() {
 
-	fmt.Println("begin..")
+	kplogger.Info("RequestDispatcher begin..")
 
 	// check whether the certificates exist in the local directory,
 	// and then check whether certificates exist in the secret, generate if they don't exist
 	if err := receiver.PrepareAllCerts(); err != nil {
-		klog.Exit(err)
+		kplogger.Error(err)
 	}
 	//TODO: Will improve in the future
 	//DoneTLSTunnelCerts <- true
@@ -67,7 +64,6 @@ func (r *RequestDispatcher) Start() {
 
 	receiver.StartWebsocketServer()
 
-	fmt.Println("start....")
 }
 func (r *RequestDispatcher) Enable() bool {
 	return r.enable
