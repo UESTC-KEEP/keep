@@ -61,3 +61,12 @@ const (
 const (
 	DefaultEdgeTwinSqliteFilePath = "/var/lib/keepedge/edgeagent.db"
 )
+
+const (
+	// Certificates
+	DefaultConfigDir = "/etc/kubeedge/config/"
+	DefaultCAFile    = "/etc/kubeedge/ca/rootCA.crt"
+	DefaultCAKeyFile = "/etc/kubeedge/ca/rootCA.key"
+	DefaultCertFile  = "/etc/kubeedge/certs/server.crt"
+	DefaultKeyFile   = "/etc/kubeedge/certs/server.key"
+)

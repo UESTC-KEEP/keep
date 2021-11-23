@@ -1,9 +1,6 @@
 package app
 
 import (
-	"github.com/spf13/cobra"
-	"github.com/wonderivan/logger"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"keep/cloud/cmd/cloudagent/app/options"
 	"keep/cloud/pkg/k8sclient"
@@ -14,7 +11,10 @@ import (
 	"keep/pkg/util/core"
 	"net/http"
 	_ "net/http/pprof"
-	"os"
+
+	"github.com/spf13/cobra"
+	"github.com/wonderivan/logger"
+	"gopkg.in/yaml.v2"
 )
 
 // NewCloudAgentCommand   create keep cmd
@@ -36,11 +36,11 @@ func NewCloudAgentCommand() *cobra.Command {
 				logger.Fatal(err)
 			}
 			utils.PrintKEEPLogo()
-			err = utils.EnvironmentCheck()
-			if err != nil {
-				logger.Fatal(err)
-				os.Exit(1)
-			}
+			// err = utils.EnvironmentCheck()
+			// if err != nil {
+			// 	logger.Fatal(err)
+			// 	os.Exit(1)
+			// }
 			registerModules(config)
 			core.Run()
 		},
