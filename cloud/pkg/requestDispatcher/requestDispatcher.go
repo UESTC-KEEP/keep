@@ -1,13 +1,42 @@
-package main
+package requestDispatcher
 
 import (
 	"fmt"
 	"keep/cloud/pkg/requestDispatcher/receiver"
+	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
+	"keep/pkg/util/core"
+	"os"
 
+	"github.com/wonderivan/logger"
 	"k8s.io/klog/v2"
 )
 
-func Start() {
+type RequestDispatcher struct {
+	enable bool
+}
+
+func Register(r *cloudagent.RequestDispatcher) {
+	rd, err := NewRequestDispatcher(r.enbale)
+	if err != nil {
+		logger.Error("初始化RequestDispatcher失败...:", err)
+		os.Exit(1)
+	}
+	core.Register(rd)
+}
+
+func NewRequestDispatcher(enable bool) (*RequestDispatcher, error) {
+	return &RequestDispatcher{
+		enable: enable,
+	}, nil
+}
+
+func (r *RequestDispatcher) Name() string {
+	return ""
+}
+func (r *RequestDispatcher) Group() string {
+	return ""
+}
+func (r *RequestDispatcher) Start() {
 
 	fmt.Println("begin..")
 
@@ -16,7 +45,7 @@ func Start() {
 	if err := receiver.PrepareAllCerts(); err != nil {
 		klog.Exit(err)
 	}
-	// TODO: Will improve in the future
+	//TODO: Will improve in the future
 	//DoneTLSTunnelCerts <- true
 	//close(DoneTLSTunnelCerts)
 
@@ -32,7 +61,13 @@ func Start() {
 
 	fmt.Println("start....")
 }
-
-func main() {
-	Start()
+func (r *RequestDispatcher) Enable() bool {
+	return true
 }
+func (r *RequestDispatcher) Cleanup() {
+
+}
+
+// func main() {
+// 	Start()
+// }
