@@ -5,6 +5,7 @@ import (
 	"keep/cloud/cmd/cloudagent/app/options"
 	"keep/cloud/pkg/k8sclient"
 	"keep/cloud/pkg/promserver"
+	"keep/cloud/pkg/requestDispatcher"
 	"keep/constants"
 	"keep/edge/pkg/common/utils"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
@@ -54,4 +55,5 @@ func NewCloudAgentCommand() *cobra.Command {
 func registerModules(config *cloudagent.CloudAgentConfig) {
 	k8sclient.Register(config.Modules.K8sClient)
 	promserver.Register(config.Modules.PromServer)
+	requestDispatcher.Register(config.Modules.RequestDispatcher)
 }

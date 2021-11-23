@@ -6,8 +6,9 @@ import (
 )
 
 type Modules struct {
-	K8sClient  *K8sClient  `json:"k8s_client"`
-	PromServer *PromServer `json:"prom_server"`
+	K8sClient         *K8sClient         `json:"k8s_client"`
+	PromServer        *PromServer        `json:"prom_server"`
+	RequestDispatcher *RequestDispatcher `json:"request_dispatcher"`
 }
 
 type CloudAgentConfig struct {
@@ -29,4 +30,10 @@ type K8sClient struct {
 
 type PromServer struct {
 	Enable bool `json:"enable"`
+}
+
+type RequestDispatcher struct {
+	Enable        bool `json:"enable"`
+	HTTPPort      int  `json:"http_port"`
+	WebSocketPort int  `json:"web_socket_port"`
 }

@@ -51,7 +51,7 @@ func StartWebsocketServer() {
 		Handler:   &myhandler{},
 		// AutoRoute:  true,
 		// ConnNotify: handler.CloudhubHandler.OnRegister,
-		Addr: (":2022"),
+		Addr: (":20000"),
 		// ExOpts:     api.WSServerOption{Path: "/"},
 	}
 	// klog.Infof("Starting cloudhub %s server", api.ProtocolTypeWS)

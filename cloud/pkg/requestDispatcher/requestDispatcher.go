@@ -2,7 +2,10 @@ package requestDispatcher
 
 import (
 	"fmt"
+	"keep/cloud/pkg/common/modules"
+	requestDispatcherconfig "keep/cloud/pkg/requestDispatcher/config"
 	"keep/cloud/pkg/requestDispatcher/receiver"
+	"keep/constants"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"keep/pkg/util/core"
 	"os"
@@ -12,11 +15,14 @@ import (
 )
 
 type RequestDispatcher struct {
-	enable bool
+	enable        bool
+	HTTPPort      int
+	WebSocketPort int
 }
 
 func Register(r *cloudagent.RequestDispatcher) {
-	rd, err := NewRequestDispatcher(r.enbale)
+	requestDispatcherconfig.InitConfigure(r)
+	rd, err := NewRequestDispatcher(r.Enable)
 	if err != nil {
 		logger.Error("初始化RequestDispatcher失败...:", err)
 		os.Exit(1)
@@ -26,15 +32,17 @@ func Register(r *cloudagent.RequestDispatcher) {
 
 func NewRequestDispatcher(enable bool) (*RequestDispatcher, error) {
 	return &RequestDispatcher{
-		enable: enable,
+		enable:        enable,
+		HTTPPort:      constants.DefaultHTTPPort,
+		WebSocketPort: constants.DefaultWebSocketPort,
 	}, nil
 }
 
 func (r *RequestDispatcher) Name() string {
-	return ""
+	return modules.RequestDispatcherModule
 }
 func (r *RequestDispatcher) Group() string {
-	return ""
+	return modules.RequestDispatcherGroup
 }
 func (r *RequestDispatcher) Start() {
 
@@ -62,7 +70,7 @@ func (r *RequestDispatcher) Start() {
 	fmt.Println("start....")
 }
 func (r *RequestDispatcher) Enable() bool {
-	return true
+	return r.enable
 }
 func (r *RequestDispatcher) Cleanup() {
 

@@ -22,7 +22,7 @@ import (
 
 const (
 	Address = "0.0.0.0"
-	Port    = 2021
+	Port    = constants.DefaultHTTPPort
 )
 
 // StartHTTPServer starts the http service
