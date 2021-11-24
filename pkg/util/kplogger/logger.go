@@ -1,4 +1,4 @@
-package kelogger
+package kplogger
 
 import (
 	"encoding/json"

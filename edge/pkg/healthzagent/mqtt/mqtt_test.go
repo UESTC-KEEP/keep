@@ -2,7 +2,7 @@ package mqtt
 
 import (
 	"fmt"
-	"keep/pkg/util/kelogger"
+	"keep/pkg/util/kplogger"
 	"testing"
 	"time"
 )
@@ -17,7 +17,7 @@ func TestSubscribeMqttBlockMode(t *testing.T) {
 			fmt.Println(err.Error())
 			time.Sleep(time.Second) //如果试图读取不存在的主题，就会高速刷日志，在vscode下会大量占用内存，而且不接收信号
 		} else {
-			kelogger.Debug("TEST: mqtt rec=", string(dataRec))
+			kplogger.Debug("TEST: mqtt rec=", string(dataRec))
 		}
 	}
 }
@@ -29,10 +29,10 @@ func TestSubscribeMqttCacheMode(t *testing.T) {
 	for {
 		dataRec, err := mqttCli.GetTopicData(tempTopic) //直接获取二进制数据，GetTopicData本身不做解析
 		if nil != err {
-			kelogger.Error(err.Error())
+			kplogger.Error(err.Error())
 			time.Sleep(time.Millisecond * 400) //如果试图读取不存在的主题，就会高速刷日志，在vscode下会大量占用内存，而且不接收信号
 		} else {
-			kelogger.Debug("TEST: mqtt rec=", string(dataRec))
+			kplogger.Debug("TEST: mqtt rec=", string(dataRec))
 			time.Sleep(time.Millisecond * 400)
 		}
 	}
