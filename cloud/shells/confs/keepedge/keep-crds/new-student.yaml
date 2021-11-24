@@ -1,0 +1,7 @@
+apiVersion: bolingcavalry.k8s.io/v1
+kind: Student
+metadata:
+  name: new-student
+spec:
+  name: "李四"
+  school: "深圳小学"

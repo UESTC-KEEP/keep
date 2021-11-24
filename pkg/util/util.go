@@ -205,6 +205,19 @@ func CopyFile(src, dst string) error {
 	return os.Chmod(dst, srcinfo.Mode())
 }
 
+func AllFilesOfDir(Dir string, files *[]string) error {
+	files_, err := ioutil.ReadDir(Dir)
+	if err != nil {
+		return err
+	}
+	// 获取文件，并输出它们的名字
+	for _, file := range files_ {
+		*files = append(*files, file.Name())
+	}
+	logger.Trace(*files)
+	return nil
+}
+
 //// GetPodSandboxImage return snadbox image name based on arch, default image is for amd64.
 //func GetPodSandboxImage() string {
 //	switch runtime.GOARCH {

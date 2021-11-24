@@ -62,11 +62,7 @@ func CreatResourcesByYAML(yamlFileName, namespace string) error {
 
 	unstructuredObj := &unstructured.Unstructured{Object: unstructuredMap}
 
-	if err != nil {
-		logger.Fatal(err)
-	}
-
-	mapper := restmapper.NewDiscoveryRESTMapper(config.GR)
+	mapper := restmapper.NewDiscoveryRESTMapper(config.ApiGroupResources)
 	mapping, err := mapper.RESTMapping(gvk.GroupKind(), gvk.Version)
 	if err != nil {
 		logger.Error(err)
@@ -77,9 +73,9 @@ func CreatResourcesByYAML(yamlFileName, namespace string) error {
 		if unstructuredObj.GetNamespace() == "" {
 			unstructuredObj.SetNamespace(namespace)
 		}
-		dri = config.DD.Resource(mapping.Resource).Namespace(unstructuredObj.GetNamespace())
+		dri = config.DynamicClient.Resource(mapping.Resource).Namespace(unstructuredObj.GetNamespace())
 	} else {
-		dri = config.DD.Resource(mapping.Resource)
+		dri = config.DynamicClient.Resource(mapping.Resource)
 	}
 	obj2, err := dri.Create(context.Background(), unstructuredObj, metav1.CreateOptions{})
 	if err != nil {
@@ -100,7 +96,7 @@ func DeleteResourceByYAML(filename string, namespace string) error {
 	}
 	d := yamlutil.NewYAMLOrJSONDecoder(f, 4096)
 
-	restMapperRes, err := restmapper.GetAPIGroupResources(config.DCI)
+	restMapperRes, err := restmapper.GetAPIGroupResources(config.DiscoveryClient)
 	if err != nil {
 		logger.Error(err)
 		return err
@@ -150,13 +146,13 @@ func DeleteResourceByYAML(filename string, namespace string) error {
 		logger.Info("删除资源名：: " + tmpName + ", 资源种类: " + tmpKind + ", 所属命名空间: " + namespace)
 
 		if namespace == "" {
-			err := config.DD.Resource(mapping.Resource).Delete(context.TODO(), tmpName, metav1.DeleteOptions{})
+			err := config.DynamicClient.Resource(mapping.Resource).Delete(context.TODO(), tmpName, metav1.DeleteOptions{})
 			if err != nil {
 				logger.Error(err)
 				return err
 			}
 		} else {
-			err := config.DD.Resource(mapping.Resource).Namespace(namespace).Delete(context.TODO(), tmpName, metav1.DeleteOptions{})
+			err := config.DynamicClient.Resource(mapping.Resource).Namespace(namespace).Delete(context.TODO(), tmpName, metav1.DeleteOptions{})
 			if err != nil {
 				logger.Error(err)
 				return err

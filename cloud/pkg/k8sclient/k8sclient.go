@@ -6,12 +6,15 @@ import (
 	v1 "k8s.io/api/core/v1"
 	"keep/cloud/pkg/common/modules"
 	k8sclientconfig "keep/cloud/pkg/k8sclient/config"
+	crd_engin "keep/cloud/pkg/k8sclient/crd-engin"
 	naive_engine "keep/cloud/pkg/k8sclient/naive-engine"
 	"keep/constants"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"keep/pkg/util/core"
+	"keep/pkg/util/kelogger"
 	"os"
 	"strconv"
+	"sync"
 )
 
 type K8sClient struct {
@@ -35,6 +38,9 @@ func Register(k *cloudagent.K8sClient) {
 
 func (k *K8sClient) Cleanup() {
 	//logger.Debug("准备清理模块：",modules.K8sClientModule)
+	deleteRedis()
+	naive_engine.DeleteResourceByYAML(constants.DefaultCrdsDir+"/"+"stuCrd.yaml", constants.DefaultNameSpace)
+	naive_engine.DeleteResourceByYAML(constants.DefaultCrdsDir+"/"+"new-student.yaml", constants.DefaultNameSpace)
 }
 
 func (k *K8sClient) Name() string {
@@ -55,6 +61,10 @@ func (k *K8sClient) Start() {
 	// 检查k8s集群apiserver状态
 	// 检查redis在线状态 如果不在线就由naive_engine 在master集群中创建statefulset
 	checkRedisAliveness()
+	err := crd_engin.NewCrdEngineImpl().CreateCrd(constants.DefaultCrdsDir)
+	if err != nil {
+		kelogger.Error("创建crd失败：", err)
+	}
 	//var count int
 	//for {
 	//	count++
@@ -85,4 +95,26 @@ func checkRedisAliveness() {
 		logger.Debug("redis 在线运行中.....")
 	}
 	logger.Debug("redis初始化成功...")
+}
+
+// deleteRedis 删除redis各组件
+func deleteRedis() {
+	ns := constants.DefaultNameSpace
+	var compoenents = []string{constants.DefaultRedisConfigMap, constants.DefaultRedisSVC, constants.DefaultRedisStatefulSet}
+	var wg sync.WaitGroup
+	for i := 0; i < len(compoenents); i++ {
+		wg.Add(1)
+		go func(i int) {
+			logger.Debug("开始删除redis组件 " + compoenents[i] + " ...")
+			err := naive_engine.DeleteResourceByYAML(compoenents[i], ns)
+			if err != nil {
+				wg.Done()
+				logger.Error(err)
+				return
+			} else {
+				wg.Done()
+			}
+		}(i)
+	}
+	wg.Wait()
 }
