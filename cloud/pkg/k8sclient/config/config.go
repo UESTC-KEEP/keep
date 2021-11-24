@@ -2,7 +2,10 @@ package config
 
 import (
 	"github.com/wonderivan/logger"
+	"k8s.io/apimachinery/pkg/api/meta"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/discovery"
+	memory "k8s.io/client-go/discovery/cached"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 	restclient "k8s.io/client-go/rest"
@@ -56,6 +59,22 @@ func GetClient() {
 		logger.Error(err.Error())
 		err = nil
 	}
+}
+func GetGVRdyClient(gvk *schema.GroupVersionKind,namespace string)(dr dynamic.ResourceInterface,err error)  {
+	//et GVK GVR mapper
+	GetClient()
+
+	mapperGVRGVK :=restmapper.NewDeferredDiscoveryRESTMapper(memory.NewMemCacheClient(DCI))
+	resourceMapper, err := mapperGVRGVK.RESTMapping(gvk.GroupKind(), gvk.Version)
+	if err!=nil{
+		logger.Error(err.Error())
+	}
+	if resourceMapper.Scope.Name()==meta.RESTScopeNameNamespace{
+		dr =DD.Resource(resourceMapper.Resource).Namespace(namespace)
+	}else {
+		dr =DD.Resource(resourceMapper.Resource)
+	}
+	return dr,err
 }
 
 func Get() *Configure {

@@ -20,7 +20,7 @@ type WatcherEngine struct {
 
 func InitK8sClientWatchEngine(engin WatcherEngineInterface) {}
 func init() {
-	var watchEngin WatcherEngine
+	var watchEngin WatcherEngineInterface
 	InitK8sClientWatchEngine(watchEngin)
 }
 

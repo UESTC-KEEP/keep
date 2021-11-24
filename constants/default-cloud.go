@@ -2,7 +2,7 @@ package constants
 
 // 全局配置
 const (
-	DefaultKubeConfigPath  = "/home/et/.kube/config"
+	DefaultKubeConfigPath  = "/root/.kube/config"
 	DefaultCloudConfigFile = "/etc/keepedge/config/cloudagent.yml"
 )
 
