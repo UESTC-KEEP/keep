@@ -11,7 +11,7 @@ import (
 	"keep/constants"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"keep/pkg/util/core"
-	"keep/pkg/util/kelogger"
+	"keep/pkg/util/kplogger"
 	"os"
 	"strconv"
 	"sync"
@@ -63,7 +63,7 @@ func (k *K8sClient) Start() {
 	checkRedisAliveness()
 	err := crd_engin.NewCrdEngineImpl().CreateCrd(constants.DefaultCrdsDir)
 	if err != nil {
-		kelogger.Error("创建crd失败：", err)
+		kplogger.Error("创建crd失败：", err)
 	}
 	//var count int
 	//for {

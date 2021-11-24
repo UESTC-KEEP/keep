@@ -36,7 +36,7 @@ func NewDefaultEdgeAgentConfig() *EdgeAgentConfig {
 		},
 		Modules: &Modules{
 			HealthzAgent: &HealthzAgent{
-				Enable:                    true,
+				Enable:                    false,
 				CpuUsage:                  0.0,
 				DefaultEdgeHealthInterval: constants.DefaultEdgeHealthInterval,
 				Cpu:                       nil,

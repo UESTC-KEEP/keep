@@ -3,6 +3,7 @@ package prome
 import (
 	"encoding/json"
 	"fmt"
+	"keep/constants"
 	"keep/edge/pkg/healthzagent/config"
 	"keep/edge/pkg/healthzagent/mqtt"
 	"keep/edge/pkg/healthzagent/server"
@@ -34,8 +35,7 @@ func UnmarshalMqttData(data []byte) string {
 var mqttCli *mqtt.MqttClient
 
 func InitMqttClient() {
-
-	mqttCli = mqtt.CreateMqttClientNoName("192.168.1.40", "1883")
+	mqttCli = mqtt.CreateMqttClientNoName(constants.DefaultTestingMQTTServer, strconv.Itoa(constants.DefaultTestingMQTTPort))
 	DeviceMqttTopic := config.Config.DeviceMqttTopics
 	for i := 0; i < len(DeviceMqttTopic); i++ {
 		//MQTT_CACHE_MODE不会阻塞当前协程，而是返回最新缓存的数据，不一定是当前时刻的
@@ -46,9 +46,7 @@ func InitMqttClient() {
 func StartMertricsServer(port int) {
 	//temp.
 	// 暴露指标
-
 	InitMqttClient()
-
 	http.HandleFunc("/metrics", reportMetricOfEdge)
 	kplogger.Debug(LOG_TAG + ": metricsServer启动成功...")
 	err := http.ListenAndServe(":"+strconv.Itoa(port), nil)
@@ -58,7 +56,7 @@ func StartMertricsServer(port int) {
 }
 
 func reportMetricOfEdge(resp http.ResponseWriter, req *http.Request) {
-	kplogger.Debug("请求方：", req.RemoteAddr)
+	//kplogger.Debug("请求方：", req.RemoteAddr)
 	DeviceMqttTopic := config.Config.DeviceMqttTopics
 
 	retMap := Metrics_t{}

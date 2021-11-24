@@ -17,10 +17,9 @@ limitations under the License.
 package options
 
 import (
+	"github.com/wonderivan/logger"
 	"keep/constants"
-
 	"keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
-
 )
 
 type EdgeAgentOptions struct {
@@ -35,8 +34,11 @@ func NewDefaultEdgeAgentOptions() *EdgeAgentOptions {
 
 func (o *EdgeAgentOptions) Config() (*v1alpha1.EdgeAgentConfig, error) {
 	cfg := v1alpha1.NewDefaultEdgeAgentConfig()
+	logger.Error(cfg.Modules.HealthzAgent.Enable)
 	if err := cfg.Parse(o.ConfigFile); err != nil {
+		logger.Error(err)
 		return nil, err
 	}
+	//logger.Fatal(cfg.Modules.HealthzAgent.Enable)
 	return cfg, nil
 }

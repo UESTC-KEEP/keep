@@ -38,6 +38,7 @@ func GracefulShutdown() {
 		logger.Info("准备清理模块：", name)
 		module.Cleanup()
 		beehiveContext.Cleanup(name)
+		logger.Error("============ ", name, "   done")
 	}
 }
 

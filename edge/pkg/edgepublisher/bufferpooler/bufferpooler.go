@@ -50,7 +50,7 @@ func StartEdgePublisher() {
 	logger.Debug("edgepublisher  :" + strconv.Itoa(int(config.Config.ServePort)) + " 服务启动中...")
 	err := http.ListenAndServe(":"+strconv.Itoa(int(config.Config.ServePort)), mux)
 	if err != nil {
-		logger.Error(err)
+		logger.Fatal(err)
 	}
 }
 

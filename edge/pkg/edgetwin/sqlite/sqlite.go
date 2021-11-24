@@ -7,7 +7,9 @@ import (
 	"github.com/wonderivan/logger"
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/edgetwin/config"
+	edgetwinconfig "keep/edge/pkg/edgetwin/config"
 	beehiveContext "keep/pkg/util/core/context"
+	"keep/pkg/util/kplogger"
 	"time"
 )
 
@@ -53,19 +55,24 @@ func NewSqliteCli() *Sqlite {
 func ReceiveFromBeehiveAndInsert() {
 	cli := NewSqliteCli()
 	for {
-		msg, err := beehiveContext.Receive(modules.EdgeTwinModule)
-		if err != nil {
-			logger.Error(err)
-			time.Sleep(5 * time.Second)
-		} else {
-			logger.Trace("接收消息 msg: ", msg)
-			resp := msg.NewRespByMessage(&msg, " message received ")
-			beehiveContext.SendResp(*resp)
-			err := cli.InserBlobIntoMetricsSqlite(msg.Content.([]byte))
+		select {
+		case <-edgetwinconfig.ListenBeehiveChannel:
+			// 接到退出信号 即停止收消息
+			break
+		default:
+			msg, err := beehiveContext.Receive(modules.EdgeTwinModule)
 			if err != nil {
-				logger.Error(err)
+				kplogger.Error(err)
+				time.Sleep(5 * time.Second)
+			} else {
+				logger.Trace("接收消息 msg: ", msg)
+				resp := msg.NewRespByMessage(&msg, " message received ")
+				beehiveContext.SendResp(*resp)
+				err := cli.InserBlobIntoMetricsSqlite(msg.Content.([]byte))
+				if err != nil {
+					logger.Error(err)
+				}
 			}
 		}
 	}
-
 }

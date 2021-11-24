@@ -45,6 +45,8 @@ const (
 	DefaultLogsQueenSize = 100
 	// DefaultDataQueenSize 数据缓冲队列默认大小
 	DefaultDataQueenSize = 100
+	// DefaultMetricsPort metrics暴露端口
+	DefaultMetricsPort = 8080
 )
 
 // mqtt配置

@@ -8,6 +8,7 @@ import (
 
 var Config Configure
 var once sync.Once
+var ListenBeehiveChannel chan bool
 
 type Configure struct {
 	edgeagent.EdgeTwin

@@ -30,6 +30,7 @@ func Register(et *edgeagent.EdgeTwin) {
 
 func (et *EdgeTwin) Cleanup() {
 	//logger.Debug("准备清理模块：",modules.LogsAgentModule)
+	edgetwinconfig.ListenBeehiveChannel <- false
 }
 
 func (et *EdgeTwin) Name() string {

@@ -7,6 +7,7 @@ import (
 	"github.com/shirou/gopsutil/mem"
 	"github.com/shirou/gopsutil/net"
 	"github.com/wonderivan/logger"
+	"keep/constants"
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/healthzagent/config"
 	prome "keep/edge/pkg/healthzagent/promethus"
@@ -67,7 +68,7 @@ func (h *HealthzAgent) Start() {
 	// 启动周期性任务轮询本机用量
 	//cron := server.StartMetricEdgeInterval(config.Config.DefaultEdgeHealthInterval)
 	// 启动本机StartMertricsServer
-	go prome.StartMertricsServer(8080)
+	go prome.StartMertricsServer(constants.DefaultMetricsPort)
 	//os.Exit(1)
 	//defer cron.Stop()
 }

@@ -4,7 +4,7 @@ database:
   datasource: /var/lib/keepedge/edgeagent.db
 modules:
   healthzagent:
-    enable: true
+    enable: false
     hostinfostat: null
     cpu: null
     cpuusage: 0
