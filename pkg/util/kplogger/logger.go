@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/wonderivan/logger"
+	logger "github.com/wonderivan/logger"
 )
 
 const LOG_TAG = "<LOGGER>:"
@@ -90,6 +90,7 @@ func InitKeepLogger() {
 	logger_cfg_path := constants.DefaultEdgeLoggerConfFile
 	CheckAndCreateFile(logger_cfg_path, CreateDefaultLoggerConfigFile)
 	err := logger.SetLogger(logger_cfg_path)
+	logger.GetlocalLogger().SetCallDepth(4) //TODO 临时补一下，以后迟早要自己全部重写
 	if err != nil {
 		Error(LOG_TAG + "Keeploger初始化失败:" + err.Error())
 		return
