@@ -1,10 +1,11 @@
 package cloud
 
 import (
-	flag "github.com/spf13/pflag"
-	"k8s.io/client-go/util/homedir"
 	"keep/constants"
 	"path/filepath"
+
+	flag "github.com/spf13/pflag"
+	"k8s.io/client-go/util/homedir"
 )
 
 // NewDefaultEdgeAgentConfig returns a full EdgeCoreConfig object
@@ -33,6 +34,11 @@ func NewDefaultEdgeAgentConfig() *CloudAgentConfig {
 			},
 			PromServer: &PromServer{
 				Enable: true,
+			},
+			RequestDispatcher: &RequestDispatcher{
+				Enable:        true,
+				HTTPPort:      constants.DefaultHTTPPort,
+				WebSocketPort: constants.DefaultWebSocketPort,
 			},
 		},
 	}

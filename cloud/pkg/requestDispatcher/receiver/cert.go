@@ -13,12 +13,11 @@ import (
 
 	certutil "k8s.io/client-go/util/cert"
 
+	"keep/pkg/util/kplogger"
 	"math"
 	"math/big"
 	"net"
 	"time"
-
-	"k8s.io/klog"
 )
 
 const validalityPeriod time.Duration = 365 * 100
@@ -26,16 +25,16 @@ const validalityPeriod time.Duration = 365 * 100
 func PrepareAllCerts() error {
 	// Check whether the ca exists in the local directory
 	if hubconfig.Config.Ca == nil && hubconfig.Config.CaKey == nil {
-		klog.Info("Ca and CaKey creating...")
+		kplogger.Info("Ca and CaKey creating...")
 		caDER, caKey, err := NewCertificateAuthorityDer()
 		if err != nil {
-			klog.Errorf("failed to create Certificate Authority, error: %v", err)
+			kplogger.Errorf("failed to create Certificate Authority, error: %v", err)
 			return err
 		}
 
 		caKeyDER, err := x509.MarshalECPrivateKey(caKey.(*ecdsa.PrivateKey))
 		if err != nil {
-			klog.Errorf("failed to convert an EC private key to SEC 1, ASN.1 DER form, error: %v", err)
+			kplogger.Errorf("failed to convert an EC private key to SEC 1, ASN.1 DER form, error: %v", err)
 			return err
 		}
 
@@ -44,11 +43,11 @@ func PrepareAllCerts() error {
 	}
 
 	if hubconfig.Config.Key == nil && hubconfig.Config.Cert == nil {
-		klog.Infof("CloudCoreCert and key creating...")
+		kplogger.Infof("CloudCoreCert and key creating...")
 
 		certDER, keyDER, err := SignCerts()
 		if err != nil {
-			klog.Errorf("failed to sign a certificate, error: %v", err)
+			kplogger.Errorf("failed to sign a certificate, error: %v", err)
 			return err
 		}
 		UpdateConfig(nil, nil, certDER, keyDER)
@@ -101,21 +100,21 @@ func NewSelfSignedCACertDERBytes(key crypto.Signer) ([]byte, error) {
 func UpdateConfig(ca, caKey, cert, key []byte) {
 	if ca != nil {
 		hubconfig.Config.Ca = ca
-		fmt.Println("update ca...")
+		kplogger.Info("update ca...")
 	}
 	if caKey != nil {
 		hubconfig.Config.CaKey = caKey
-		fmt.Println("update caKey...")
+		kplogger.Info("update caKey...")
 
 	}
 	if cert != nil {
 		hubconfig.Config.Cert = cert
-		fmt.Println("update cert...")
+		kplogger.Info("update cert...")
 
 	}
 	if key != nil {
 		hubconfig.Config.Key = key
-		fmt.Println("update key...")
+		kplogger.Info("update key...")
 
 	}
 }
