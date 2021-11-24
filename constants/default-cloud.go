@@ -8,6 +8,7 @@ const (
 	DefaultKubeConfigPath    = "/home/et/.kube/config"
 	DefaultCloudConfigFile   = "/etc/keepedge/config/cloudagent.yml"
 	DefaultDecoderBufferSize = 100
+	NodeName = "NodeName"
 )
 
 // k8sclient配置
@@ -22,4 +23,9 @@ const (
 	DefaultRedisStatefulSet = "/etc/keepedge/ymls/redis-statefulset.yaml"
 	DefaultNameSpace        = "default"
 	DefaultCrdsDir          = "/etc/keepedge/keep-crds"
+)
+
+const (
+	DefaultCAURL   = "/ca.crt"
+	DefaultCertURL = "/edge.crt"
 )
