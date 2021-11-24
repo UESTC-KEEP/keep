@@ -40,7 +40,6 @@ func NewEdgeAgentCommand() *cobra.Command {
 		Use:  "keep",
 		Long: `keep description,however there is nothing in our code for now,so there is nothing in description`,
 		Run: func(cmd *cobra.Command, args []string) {
-			commonutil.OrganizeConfigurationFile(constants.EdgeAgentName)
 			// 性能监控
 			go func() {
 				logger.Debug(http.ListenAndServe(":6060", nil))
@@ -49,6 +48,8 @@ func NewEdgeAgentCommand() *cobra.Command {
 			text, err := yaml.Marshal(&config)
 			// 写入配置文件
 			err = ioutil.WriteFile(constants.DefaultEdgeagentConfigFile, text, 0777)
+			// 下发配置文件
+			commonutil.OrganizeConfigurationFile(constants.EdgeAgentName)
 			if err != nil {
 				logger.Error(err)
 				os.Exit(1)

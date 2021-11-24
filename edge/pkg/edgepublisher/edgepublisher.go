@@ -78,7 +78,7 @@ func Register(ep *edgeagent.EdgePublisher) {
 
 func (ep *EdgePublisher) Cleanup() {
 	logger.Debug("准备清理模块：", modules.EdgePublisherModule)
-	//bufferpooler.StopReceiveMessageForAllModules <- true
+	bufferpooler.StopReceiveMessageForAllModules <- true
 }
 
 func (ep *EdgePublisher) Name() string {

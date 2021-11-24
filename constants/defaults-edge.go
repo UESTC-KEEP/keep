@@ -15,8 +15,8 @@ const (
 )
 
 const (
-	// DefaultConfigDir 默认的存储文件位置
-	DefaultEdgeagentConfigFile = KeepBaseConfPath + "/edgecore.yml"
+	// DefaultEdgeagentConfigFile  默认的存储文件位置
+	DefaultEdgeagentConfigFile = EdgeConfigeFilesSourceDir + "/config/edgeagent.yaml"
 	//KeepEdgeVersion	keepedge 版本信息
 	KeepEdgeVersion = "0.0.1"
 )
