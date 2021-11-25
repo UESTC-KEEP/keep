@@ -32,7 +32,7 @@ func UnmarshalMqttData(data []byte) string {
 	return strTemp
 }
 
-var mqttCli *mqtt.MqttClient
+var mqttCli *mqtt.MqttClient = nil
 
 func InitMqttClient() {
 	mqttCli = mqtt.CreateMqttClientNoName(constants.DefaultTestingMQTTServer, strconv.Itoa(constants.DefaultTestingMQTTPort))
@@ -48,10 +48,19 @@ func StartMertricsServer(port int) {
 	// 暴露指标
 	InitMqttClient()
 	http.HandleFunc("/metrics", reportMetricOfEdge)
-	kplogger.Debug(LOG_TAG + ": metricsServer启动成功...")
+
 	err := http.ListenAndServe(":"+strconv.Itoa(port), nil)
 	if err != nil {
 		kplogger.Error(err)
+	}
+	kplogger.Debug(LOG_TAG + ": metricsServer启动成功...")
+}
+
+func StopMertricsServer() {
+	if nil != mqttCli {
+
+		mqttCli.DestroyMqttClient()
+		//TODO  应该还有停止http的东西
 	}
 }
 

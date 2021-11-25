@@ -74,6 +74,7 @@ type mqttCachedData_t struct { //缓存模式下需要记录收集到数据的�
 }
 
 type mqttBlockedData_t struct {
+	stop_chan chan struct{}
 	data_chan chan []byte
 }
 
@@ -95,7 +96,6 @@ func CreateMqttClient(clientName string, broker_ip string, brokerPort string) *M
 			kplogger.Error("连接mqttbroker失败...", err)
 		},
 	})
-	defer mqttCli.Terminate()
 
 	connOpt := client.ConnectOptions{
 		Network:  "tcp",
@@ -119,6 +119,28 @@ func CreateMqttClient(clientName string, broker_ip string, brokerPort string) *M
 
 func CreateMqttClientNoName(broker_ip string, brokerPort string) *MqttClient { //随机生成客户端名字
 	return CreateMqttClient((uuid.NewV4()).String(), broker_ip, brokerPort)
+}
+
+func (mqttCli *MqttClient) DestroyMqttClient() {
+	err := mqttCli.pMqttClient.Disconnect()
+	if nil == err {
+		kplogger.Infof("%s: mqtt client disconnected", constants.DefaultMqttLogTag)
+	} else {
+		kplogger.Errorf("%s: Error occured while disconnecting mqtt client", constants.DefaultMqttLogTag)
+	}
+
+	mqttCli.pMqttClient.Terminate()
+	//通过Go的内部函数mapclear方法删除。这个函数并没有显示的调用方法，
+	//当使用for循环遍历删除所有元素时，Go的编译器会优化成Go内部函数mapclear。
+	for topic, topicInfo := range mqttCli.topicMap {
+
+		if topicInfo.dataMode == MQTT_BLOCK_MODE {
+			data_b, _ := topicInfo.data.(*mqttBlockedData_t)
+			data_b.stop_chan <- struct{}{}
+		}
+
+		delete(mqttCli.topicMap, topic)
+	}
 }
 
 func (mqttCli *MqttClient) clientReceivehandle(topicName, message []byte) {
@@ -169,6 +191,7 @@ func (mqttCli *MqttClient) RegistSubscribeTopic(pConf *TopicConf) {
 	switch pConf.DataMode {
 	case MQTT_BLOCK_MODE:
 		mqttCli.topicMap[topic_name].data = &mqttBlockedData_t{ //以后通过类型断言做判断
+			stop_chan: make(chan struct{}),
 			data_chan: make(chan []byte, constants.DefaultMqttChanSize),
 		}
 	case MQTT_CACHE_MODE:
@@ -194,13 +217,19 @@ func (mqttCli *MqttClient) getDataBlockMode(topic string, topicInfo *mqttTopicIn
 	}
 
 	if MqttForever == topicInfo.timeLimitMs { //TODO 不知道怎么复用select，凑合一下
-		data := <-data_b.data_chan
-		if data == nil {
+		select {
+		case data := <-data_b.data_chan:
+			if data == nil {
+				kplogger.Warn(constants.DefaultMqttLogTag + ":The data channel of topic \"" + topic + "\" was closed")
+				return nil, &MqttErrRet{MQTT_CHAN_CLOSED}
+			} else {
+				return data, nil
+			}
+		case <-data_b.stop_chan:
 			kplogger.Warn(constants.DefaultMqttLogTag + ":The data channel of topic \"" + topic + "\" was closed")
 			return nil, &MqttErrRet{MQTT_CHAN_CLOSED}
-		} else {
-			return data, nil
 		}
+
 	} else {
 		select {
 		case data := <-data_b.data_chan:
@@ -213,6 +242,9 @@ func (mqttCli *MqttClient) getDataBlockMode(topic string, topicInfo *mqttTopicIn
 		case <-time.After(time.Duration(topicInfo.timeLimitMs) * time.Millisecond):
 			kplogger.Error(constants.DefaultMqttLogTag, ": TIMEOUT while reading topic: ", topic)
 			return nil, &MqttErrRet{MQTT_TIME_OUT}
+		case <-data_b.stop_chan:
+			kplogger.Warn(constants.DefaultMqttLogTag + ":The data channel of topic \"" + topic + "\" was closed")
+			return nil, &MqttErrRet{MQTT_CHAN_CLOSED}
 		}
 	}
 }
