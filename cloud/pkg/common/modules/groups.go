@@ -1,5 +1,6 @@
 package modules
 
 const (
-	K8sClientGroup = "k8sclient"
+	K8sClientGroup  = "k8sclient"
+	PromServerGroup = "promserver"
 )

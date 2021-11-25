@@ -1,11 +1,14 @@
 package utils
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
 	"github.com/mitchellh/go-ps"
 	"github.com/wonderivan/logger"
+	"io"
 	"keep/edge/pkg/edgepublisher/bufferpooler"
+	"os"
 )
 
 func GracefulExit() {
@@ -39,6 +42,31 @@ func EnvironmentCheck() error {
 	}
 	logger.Debug("环境检测通过...")
 	return nil
+}
+
+func copyFile(dstFileName string, srcFileName string) (written int64, err error) {
+	srcFile, err := os.Open(srcFileName)
+	if err != nil {
+		fmt.Printf("open file err = %v\n", err)
+		return
+	}
+	defer srcFile.Close()
+	//通过srcFile，获取到Reader
+	reader := bufio.NewReader(srcFile)
+	//打开dstFileName
+	dstFile, err := os.OpenFile(dstFileName, os.O_WRONLY|os.O_CREATE, 0666)
+	if err != nil {
+		fmt.Printf("open file err = %v\n", err)
+		return
+	}
+	writer := bufio.NewWriter(dstFile)
+	defer func() {
+		writer.Flush() //把缓冲区的内容写入到文件
+		dstFile.Close()
+
+	}()
+	return io.Copy(writer, reader)
+
 }
 
 func PrintKEEPLogo() {

@@ -21,6 +21,7 @@ import (
 	"keep/constants"
 	"keep/pkg/util"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -43,7 +44,7 @@ func NewDefaultEdgeAgentConfig() *EdgeAgentConfig {
 				DiskPartitionStat:         nil,
 				DiskIOCountersStat:        nil,
 				NetIOCountersStat:         nil,
-				DefaultMqttCacheQueueSize: constants.DefaultMqttCacheQueueSize,
+				DeviceMqttTopics:          strings.Split(constants.DefaultDeviceMqttTopics, ";"),
 			},
 			LogsAgent: &LogsAgent{
 				Enable:      true,
@@ -63,6 +64,10 @@ func NewDefaultEdgeAgentConfig() *EdgeAgentConfig {
 				TLSCAFile:         "",
 				TLSCertFile:       "",
 				TLSPrivateKeyFile: "",
+			},
+			EdgeTwin: &EdgeTwin{
+				Enable:         true,
+				SqliteFilePath: constants.DefaultEdgeTwinSqliteFilePath,
 			},
 		},
 	}

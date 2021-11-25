@@ -1,23 +1,36 @@
 package constants
 
+const EdgeAgentName = "EdgeAgent"
+const EdgeConfigeFilesSourceDir = "../../../edge/shells/confs/keepedge"
+
+const (
+	KeepBasepath     = "/etc/keepedge/"
+	KeepBaseConfPath = KeepBasepath + "config/"
+	KeepBaseLogPath  = "/var/log/keepedge/"
+)
+
+const (
+	DefaultUnixDirectoryPermit = 0660 //不可执行，非本组成员不能访问
+	DefaultUnixFilePermit      = 0660 //不可执行，非本组成员不能访问
+)
+
 const (
 	// DefaultConfigDir 默认的存储文件位置
-	DefaultEdgeagentConfigFile = "/etc/keepedge/config/edgecore.yml"
+	DefaultEdgeagentConfigFile = KeepBaseConfPath + "/edgecore.yml"
 	//KeepEdgeVersion	keepedge 版本信息
 	KeepEdgeVersion = "0.0.1"
 )
 
 // healthzagent 全局静态配置
 const (
-	DefaultEdgeHealthInterval     = 30
-	DefaultHealthzToCloudInterval = 60
-	DefaultMqttCacheQueueSize     = 10
+	DefaultEdgeHealthInterval = 30
 )
 
 //
 const (
-	DefaultEdgeLogFiles  = "/var/log/keepedge/keep_edgeagent_logs.log"
-	DefaultCloudLogFiles = "/var/log/keepedge/keep_edgeagent_logs.log"
+	DefaultEdgeLogFiles       = KeepBaseLogPath + "keep_edgeagent_logs.log"
+	DefaultCloudLogFiles      = KeepBaseLogPath + "keep_edgeagent_logs.log"
+	DefaultEdgeLoggerConfFile = KeepBaseConfPath + "logger_conf.json"
 )
 
 // EdgePublisher 全局配置
@@ -32,4 +45,28 @@ const (
 	DefaultLogsQueenSize = 100
 	// DefaultDataQueenSize 数据缓冲队列默认大小
 	DefaultDataQueenSize = 100
+)
+
+// mqtt配置
+const (
+	DefaultTestingMQTTServer = "192.168.1.40"
+	DefaultTestingMQTTPort   = 1883
+	DefaultMqttChanSize      = 4
+	DefaultMqttLogTag        = "<MQTT>"
+	// DefaultDeviceMqttTopics 默认想要监听的设备mqtt主题 以; 进行分割多个主题
+	DefaultDeviceMqttTopics = "clock_sensor"
+)
+
+// EdgeTwin配置
+const (
+	DefaultEdgeTwinSqliteFilePath = "/var/lib/keepedge/edgeagent.db"
+)
+
+const (
+	// Certificates
+	DefaultConfigDir = "/etc/kubeedge/config/"
+	DefaultCAFile    = "/etc/kubeedge/ca/rootCA.crt"
+	DefaultCAKeyFile = "/etc/kubeedge/ca/rootCA.key"
+	DefaultCertFile  = "/etc/kubeedge/certs/server.crt"
+	DefaultKeyFile   = "/etc/kubeedge/certs/server.key"
 )

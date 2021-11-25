@@ -1,9 +1,14 @@
 package constants
 
+const CloudAgentName = "CloudAgent"
+const CloudConfigeFilesSourceDir = "../../../cloud/shells/confs/keepedge"
+
 // 全局配置
 const (
 	DefaultKubeConfigPath  = "/root/.kube/config"
 	DefaultCloudConfigFile = "/etc/keepedge/config/cloudagent.yml"
+
+	NodeName = "NodeName"
 )
 
 // k8sclient配置
@@ -17,4 +22,9 @@ const (
 	DefaultRedisSVC         = "/etc/keepedge/ymls/redis-svc.yml"
 	DefaultRedisStatefulSet = "/etc/keepedge/ymls/redis-statefulset.yml"
 	DefaultNameSpace        = "default"
+)
+
+const (
+	DefaultCAURL   = "/ca.crt"
+	DefaultCertURL = "/edge.crt"
 )

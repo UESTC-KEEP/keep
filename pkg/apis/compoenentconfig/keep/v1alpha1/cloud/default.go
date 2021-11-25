@@ -15,6 +15,9 @@ func NewDefaultEdgeAgentConfig() *CloudAgentConfig {
 				PodInfo:        nil,
 				DeploymentInfo: nil,
 			},
+			PromServer: &PromServer{
+				Enable: true,
+			},
 		},
 	}
 }

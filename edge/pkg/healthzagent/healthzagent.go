@@ -1,7 +1,6 @@
 package healthzagent
 
 import (
-	"github.com/kubeedge/beehive/pkg/core"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/host"
@@ -12,6 +11,7 @@ import (
 	"keep/edge/pkg/healthzagent/config"
 	prome "keep/edge/pkg/healthzagent/promethus"
 	"keep/edge/pkg/healthzagent/server"
+	"keep/pkg/util/core"
 
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 
@@ -42,6 +42,10 @@ func Register(h *edgeagent.HealthzAgent) {
 	core.Register(healthzagent)
 }
 
+func (h *HealthzAgent) Cleanup() {
+	//logger.Debug("准备清理模块：",modules.HealthzAgentModule)
+}
+
 func (h *HealthzAgent) Name() string {
 	return modules.HealthzAgentModule
 }
@@ -61,11 +65,11 @@ func (h *HealthzAgent) Start() {
 	server.GetMachineStatus()
 	logger.Debug(server.DescribeMachine(&server.Healagent))
 	// 启动周期性任务轮询本机用量
-	cron := server.StartMetricEdgeInterval(config.Config.DefaultEdgeHealthInterval)
+	//cron := server.StartMetricEdgeInterval(config.Config.DefaultEdgeHealthInterval)
 	// 启动本机StartMertricsServer
 	go prome.StartMertricsServer(8080)
 	//os.Exit(1)
-	defer cron.Stop()
+	//defer cron.Stop()
 }
 
 // NewHealthzAgent 创建新的healthzagent对象  并且初始化它

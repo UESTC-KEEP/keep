@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  serviceName: redis
+  selector:
+    matchLabels:
+      name: redis
+  template:
+    metadata:
+      labels:
+        name: redis
+    spec:
+      nodeName: cloud-master1
+      initContainers:
+        - name: init-redis
+          image: busybox
+          command: ['sh', '-c', 'mkdir -p /data/k8s/mnt/redis/log/;mkdir -p /data/k8s/mnt/redis/conf/;mkdir -p /data/k8s/mnt/redis/data/']
+          volumeMounts:
+            - name: data
+              mountPath: /data/k8s/mnt/redis/
+      containers:
+        - name: redis
+          image: redis:5.0.8
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+            - -c
+            - "exec redis-server /data/k8s/mnt/redis/conf/redis.conf"
+          ports:
+            - containerPort: 6379
+              name: redis
+              protocol: TCP
+          volumeMounts:
+            - name: redis-config
+              mountPath: /data/k8s/mnt/redis/conf/
+            - name: data
+              mountPath: /data/k8s/mnt/redis/
+      volumes:
+        - name: redis-config
+          configMap:
+            name: redis-conf
+        - name: data
+          hostPath:
+            path: /data/k8s/mnt/redis/

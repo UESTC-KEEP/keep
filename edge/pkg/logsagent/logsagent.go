@@ -1,12 +1,13 @@
 package logsagent
 
 import (
-	"github.com/kubeedge/beehive/pkg/core"
-	"github.com/wonderivan/logger"
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/logsagent/config"
 	logsagentconfig "keep/edge/pkg/logsagent/config"
 	"keep/edge/pkg/logsagent/tailf"
+	"keep/pkg/util/core"
+
+	"github.com/wonderivan/logger"
 
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 
@@ -32,6 +33,10 @@ func Register(l *edgeagent.LogsAgent) {
 		return
 	}
 	core.Register(healthzagent)
+}
+
+func (l *LogsAgent) Cleanup() {
+	//logger.Debug("准备清理模块：",modules.LogsAgentModule)
 }
 
 func (l *LogsAgent) Name() string {

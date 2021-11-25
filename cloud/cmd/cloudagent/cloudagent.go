@@ -3,13 +3,13 @@ package main
 import (
 	"keep/cloud/cmd/cloudagent/app"
 	"keep/cloud/pkg/common/utils"
-	"keep/pkg/util/logs"
+	"keep/pkg/util/kelogger"
 	"os"
 )
 
 func main() {
 	command := app.NewCloudAgentCommand()
-	logs.InitKeepLogger()
+	kelogger.InitKeepLogger()
 	defer utils.GracefulExit()
 
 	if err := command.Execute(); err != nil {
