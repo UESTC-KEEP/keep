@@ -57,13 +57,14 @@ func ReceiveFromBeehiveAndInsert() {
 	cli := NewSqliteCli()
 	go func() {
 		for {
-			logger.Error("---------------")
+			//logger.Error("---------------")
 			select {
 			case <-ListenBeehiveChannel:
 				// 接到退出信号 即停止收消息
-				logger.Fatal("收到退出信号....")
+				logger.Warn("收到退出信号....")
 				return
-			default:
+			//设置超时时间 超时就不管了
+			case <-time.After(config.Config.BeehiveTimeout):
 				msg, err := beehiveContext.Receive(modules.EdgeTwinModule)
 				if err != nil {
 					kplogger.Error(err)
@@ -81,6 +82,8 @@ func ReceiveFromBeehiveAndInsert() {
 						}
 					}
 				}
+			default:
+				time.Sleep(100 * time.Millisecond)
 			}
 		}
 	}()

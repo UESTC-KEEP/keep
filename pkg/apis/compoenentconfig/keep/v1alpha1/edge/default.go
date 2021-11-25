@@ -68,6 +68,7 @@ func NewDefaultEdgeAgentConfig() *EdgeAgentConfig {
 			EdgeTwin: &EdgeTwin{
 				Enable:         true,
 				SqliteFilePath: constants.DefaultEdgeTwinSqliteFilePath,
+				BeehiveTimeout: constants.DefaultBeehiveTimeout * time.Millisecond,
 			},
 		},
 	}

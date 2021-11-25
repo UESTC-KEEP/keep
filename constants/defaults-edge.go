@@ -62,6 +62,8 @@ const (
 // EdgeTwin配置
 const (
 	DefaultEdgeTwinSqliteFilePath = "/var/lib/keepedge/edgeagent.db"
+	// DefaultBeehiveTimeout	等待接收消息时间上限 ms
+	DefaultBeehiveTimeout = 1000
 )
 
 const (

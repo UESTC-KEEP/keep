@@ -18,7 +18,7 @@ modules:
   logsagent:
     enable: true
     loglevel: 6
-    logtime: 2021-11-24T20:11:26.77194292+08:00
+    logtime: 2021-11-25T10:38:00.232670781+08:00
     logfilename: ""
     loginfo: ""
     logfiles:
@@ -38,3 +38,4 @@ modules:
   edgetwin:
     enable: true
     sqlitefilepath: /var/lib/keepedge/edgeagent.db
+    beehivetimeout: 1s

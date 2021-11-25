@@ -104,6 +104,7 @@ type EdgePublisher struct {
 
 //EdgeTwin 模块定义
 type EdgeTwin struct {
-	Enable         bool   `json:"enable"`
-	SqliteFilePath string `json:"sqlite_file_path"`
+	Enable         bool          `json:"enable"`
+	SqliteFilePath string        `json:"sqlite_file_path"`
+	BeehiveTimeout time.Duration `json:"beehive_timeout"`
 }

@@ -29,9 +29,9 @@ func Register(et *edgeagent.EdgeTwin) {
 }
 
 func (et *EdgeTwin) Cleanup() {
-	logger.Info("准备清理模块：", modules.EdgeTwinModule)
+	logger.Warn("准备清理模块：", modules.EdgeTwinModule)
 	sqlite.ListenBeehiveChannel <- false
-	logger.Info("信号发送成功")
+	logger.Warn("信号发送成功")
 }
 
 func (et *EdgeTwin) Name() string {
