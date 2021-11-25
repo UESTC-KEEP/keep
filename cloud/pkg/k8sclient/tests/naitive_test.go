@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"io/ioutil"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -16,16 +17,68 @@ import (
 	"k8s.io/client-go/restmapper"
 	"k8s.io/client-go/tools/clientcmd"
 	"keep/cloud/pkg/k8sclient/config"
-	naive_engine "keep/cloud/pkg/k8sclient/naive-engine"
-	"keep/constants"
 	"log"
 	"os/user"
 	"testing"
 )
+const metaCRD = `
+apiVersion: "apiextensions.k8s.io/v1beta1"
+kind: "CustomResourceDefinition"
+metadata:
+  name: "projects.example.lnf.com"
+spec:
+  group: "example.lnf.com"
+  version: "v1alpha1"
+  scope: "Namespaced"
+  names:
+    plural: "projects"
+    singular: "project"
+    kind: "Project"
+  validation:
+    openAPIV3Schema:
+      required: ["spec"]
+      properties:
+        spec:
+          required: ["replicas"]
+          properties:
+            replicas:
+              type: "integer"
+              minimum: 1
+`
 
 func TestCreatResourcesByYAML(t *testing.T) {
 	config.GetClient()
-	naive_engine.CreatResourcesByYAML(constants.DefaultRedisConfigMapConfigMap, "default")
+	//CreatResourcesByYAML(constants.DefaultRedisConfigMapConfigMap, "default")
+}
+
+func TestOpCRD(t *testing.T) {
+	obj:=&unstructured.Unstructured{}
+	_, gvk,err := yaml.NewDecodingSerializer(unstructured.UnstructuredJSONScheme).Decode([]byte(metaCRD), nil, obj)
+	if err!=nil {
+		log.Fatal(err)
+	}
+	dr, err := config.GetGVRdyClient(gvk, obj.GetNamespace())
+	//if err!=nil{
+	//	panic(fmt.Errorf("failed to get dr: %v",err))
+	//}
+	//objCreate, err := dr.Create(context.TODO(),obj, metav1.CreateOptions{})
+	//if err!=nil{
+	//	panic(fmt.Errorf("failed to createCrd"))
+	//}
+	//log.Print("Create: : ",objCreate)
+	unstructuredList, err := dr.List(context.TODO(), metav1.ListOptions{})
+	if err!=nil{
+		log.Fatal(err.Error())
+	}
+	content := unstructuredList.UnstructuredContent()
+	CRDList:=&v1.PodList{}
+	runtime.DefaultUnstructuredConverter.FromUnstructured(content, CRDList)
+	for _ ,item :=range CRDList.Items{
+		t.Logf("%v\t %v\t %v\n",
+			item.Namespace,
+			item.Status.Phase,
+			item.Name)
+	}
 }
 
 func TestCreation(t *testing.T) {
@@ -105,3 +158,5 @@ func GetHomePath() string {
 	}
 	return ""
 }
+
+
