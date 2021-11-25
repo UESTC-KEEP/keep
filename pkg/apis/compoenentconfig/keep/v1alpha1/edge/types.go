@@ -91,15 +91,16 @@ type LogsAgent struct {
 
 //EdgePublisher 模块定义
 type EdgePublisher struct {
-	Enable            bool     `json:"enable"`
-	HTTPServer        string   `json:"httpServer,omitempty"`
-	Port              int32    `json:"port,omitempty"`
-	ServePort         int32    `json:"servePort,omitempty"`
-	Heartbeat         int32    `json:"heartbeat,omitempty"`
-	EdgeMsgQueens     []string `json:"edge_msg_queens"`
-	TLSCAFile         string   `json:"tlsCaFile,omitempty"`
-	TLSCertFile       string   `json:"tlsCertFile,omitempty"`
-	TLSPrivateKeyFile string   `json:"tlsPrivateKeyFile,omitempty"`
+	Enable            bool          `json:"enable"`
+	HTTPServer        string        `json:"httpServer,omitempty"`
+	Port              int32         `json:"port,omitempty"`
+	ServePort         int32         `json:"servePort,omitempty"`
+	Heartbeat         int32         `json:"heartbeat,omitempty"`
+	EdgeMsgQueens     []string      `json:"edge_msg_queens"`
+	TLSCAFile         string        `json:"tlsCaFile,omitempty"`
+	TLSCertFile       string        `json:"tlsCertFile,omitempty"`
+	TLSPrivateKeyFile string        `json:"tlsPrivateKeyFile,omitempty"`
+	BeehiveTimeout    time.Duration `json:"beehive_timeout"`
 }
 
 //EdgeTwin 模块定义

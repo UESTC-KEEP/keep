@@ -1,7 +1,6 @@
 package bufferpooler
 
 import (
-	"encoding/json"
 	"fmt"
 	beehiveContext "keep/pkg/util/core/context"
 	//beehiveContext "github.com/kubeedge/beehive/pkg/core/context"
@@ -9,9 +8,7 @@ import (
 	"keep/constants"
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/edgepublisher/chanmsgqueen"
-	"keep/edge/pkg/edgepublisher/config"
-	"net/http"
-	"strconv"
+	//"keep/edge/pkg/edgepublisher/config"
 	"time"
 )
 
@@ -22,36 +19,8 @@ import (
 //
 //}
 
-type response struct {
-	Content string `json:"content"`
-	Errinfo string `json:"errinfo,omitempty"`
-}
-
-func EdgeAgentHealthCheck(w http.ResponseWriter, r *http.Request) {
-	res := response{
-		Content: "edgeagent工作中",
-		Errinfo: "",
-	}
-	w.Header().Set("Content-Type", "application/json")
-	err := json.NewEncoder(w).Encode(&res)
-	if err != nil {
-		logger.Error(err)
-	}
-}
-
 func InitCachePools() {
 
-}
-
-// StartEdgePublisher 边端健康检测 20350端口的/用于云端对边端进行健康性  存活性检测
-func StartEdgePublisher() {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", EdgeAgentHealthCheck)
-	logger.Debug("edgepublisher  :" + strconv.Itoa(int(config.Config.ServePort)) + " 服务启动中...")
-	err := http.ListenAndServe(":"+strconv.Itoa(int(config.Config.ServePort)), mux)
-	if err != nil {
-		logger.Fatal("publisher启动失败,端口占用：", err)
-	}
 }
 
 var StopReceiveMessageForAllModules = make(chan bool)
@@ -66,6 +35,7 @@ func StartListenLogMsg() {
 				// 收到信息停止接收所有消息
 				logger.Debug("收到退出信息，清理通道...")
 				PermissionOfSending = false
+				close(StopReceiveMessageForAllModules)
 				return
 			default:
 				ReceiveFromBeehiveAndPublish()
@@ -84,7 +54,6 @@ func ReceiveFromBeehiveAndPublish() {
 		fmt.Printf("接收消息 msg: %v\n", msg)
 		resp := msg.NewRespByMessage(&msg, " message received ")
 		beehiveContext.SendResp(*resp)
-
 		topic := constants.DefaultLogsTopic
 		//fmt.Println(chanmsgqueen.EdgePublishQueens)
 		cli := chanmsgqueen.EdgePublishQueens[topic]

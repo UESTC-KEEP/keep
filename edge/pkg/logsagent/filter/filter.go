@@ -3,6 +3,8 @@ package filter
 import (
 	"fmt"
 	beehiveContext "keep/pkg/util/core/context"
+	"time"
+
 	//beehiveContext "github.com/kubeedge/beehive/pkg/core/context"
 	"keep/pkg/util/core/model"
 
@@ -11,7 +13,6 @@ import (
 	"keep/edge/pkg/edgepublisher/bufferpooler"
 	"keep/edge/pkg/logsagent/config"
 	"strings"
-	"time"
 )
 
 var counter = 0
@@ -54,7 +55,7 @@ func FilterLogsByLevel(log string) {
 				go func() {
 					resp, err := beehiveContext.SendSync(modules.EdgePublisherModule, *messsage, 5*time.Second)
 					if err != nil {
-						logger.Error(err)
+						logger.Error("logsagent消息发送超时:", err)
 					} else {
 						logger.Trace(modules.EdgePublisherModule+" 响应: %v, error: %v\n", resp, err)
 						logger.Trace("发送日志至bufferpooler成功...")

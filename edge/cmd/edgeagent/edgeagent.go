@@ -10,11 +10,8 @@ import (
 
 func main() {
 	defer utils.GracefulExit()
-
 	kplogger.InitKeepLogger()
-
 	command := app.NewEdgeAgentCommand()
-
 	if err := command.Execute(); err != nil {
 		os.Exit(1)
 	}

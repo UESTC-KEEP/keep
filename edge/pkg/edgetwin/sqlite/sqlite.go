@@ -8,7 +8,6 @@ import (
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/edgetwin/config"
 	beehiveContext "keep/pkg/util/core/context"
-	"keep/pkg/util/kplogger"
 	"time"
 )
 
@@ -61,13 +60,14 @@ func ReceiveFromBeehiveAndInsert() {
 			select {
 			case <-ListenBeehiveChannel:
 				// 接到退出信号 即停止收消息
-				logger.Warn("收到退出信号....")
+				//logger.Warn("收到退出信号....")
+				close(ListenBeehiveChannel)
 				return
 			//设置超时时间 超时就不管了
 			case <-time.After(config.Config.BeehiveTimeout):
 				msg, err := beehiveContext.Receive(modules.EdgeTwinModule)
 				if err != nil {
-					kplogger.Error(err)
+					logger.Error(err)
 					time.Sleep(5 * time.Second)
 				} else {
 					logger.Trace("接收消息 msg: ", msg)
