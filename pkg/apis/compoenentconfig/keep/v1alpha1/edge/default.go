@@ -64,10 +64,12 @@ func NewDefaultEdgeAgentConfig() *EdgeAgentConfig {
 				TLSCAFile:         "",
 				TLSCertFile:       "",
 				TLSPrivateKeyFile: "",
+				BeehiveTimeout:    constants.DefaultBeehiveTimeout * time.Millisecond,
 			},
 			EdgeTwin: &EdgeTwin{
 				Enable:         true,
 				SqliteFilePath: constants.DefaultEdgeTwinSqliteFilePath,
+				BeehiveTimeout: constants.DefaultBeehiveTimeout * time.Millisecond,
 			},
 		},
 	}

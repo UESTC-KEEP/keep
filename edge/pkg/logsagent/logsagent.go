@@ -36,7 +36,7 @@ func Register(l *edgeagent.LogsAgent) {
 }
 
 func (l *LogsAgent) Cleanup() {
-	//logger.Debug("准备清理模块：",modules.LogsAgentModule)
+	//logger.Warn("准备清理模块：",modules.LogsAgentModule)
 }
 
 func (l *LogsAgent) Name() string {

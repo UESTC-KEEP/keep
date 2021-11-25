@@ -35,12 +35,10 @@ func GracefulShutdown() {
 	beehiveContext.Cancel()
 	modules := GetModules()
 	for name, module := range modules {
-		logger.Info("准备清理模块：", name)
-		logger.Error("11111")
+		logger.Warn("准备清理模块：", name)
 		module.Cleanup()
-		logger.Error("22222")
 		beehiveContext.Cleanup(name)
-		logger.Info("模块：" + name + " 清理完成...")
+		logger.Warn("模块：" + name + " 清理完成...")
 	}
 }
 

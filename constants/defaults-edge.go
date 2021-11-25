@@ -7,6 +7,8 @@ const (
 	KeepBasepath     = "/etc/keepedge/"
 	KeepBaseConfPath = KeepBasepath + "config/"
 	KeepBaseLogPath  = "/var/log/keepedge/"
+	// DefaultBeehiveTimeout	等待接收消息时间上限 ms
+	DefaultBeehiveTimeout = 500
 )
 
 const (
