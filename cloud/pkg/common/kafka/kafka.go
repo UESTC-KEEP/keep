@@ -44,7 +44,7 @@ func (k * KafkaMsg) Publish() error {
 	producer, e := sarama.NewAsyncProducer(Address, config)
 	if e != nil {
 		fmt.Println(e)
-		return
+		return e
 	}
 	defer producer.AsyncClose()		// 异步关闭，可继续读
 

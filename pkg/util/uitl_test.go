@@ -33,3 +33,9 @@ func TestSpliceErrors(t *testing.T) {
 		return
 	}
 }
+
+func TestAllFilesOfDir(t *testing.T) {
+	var files []string
+	AllFilesOfDir("/etc/keepedge/ymls", &files)
+	fmt.Println(files)
+}

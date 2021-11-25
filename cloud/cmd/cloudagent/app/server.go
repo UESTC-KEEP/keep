@@ -5,9 +5,11 @@ import (
 	"keep/cloud/cmd/cloudagent/app/options"
 	"keep/cloud/pkg/k8sclient"
 	"keep/cloud/pkg/promserver"
+	"keep/cloud/pkg/requestDispatcher"
 	"keep/constants"
 	"keep/edge/pkg/common/utils"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
+	commonutil "keep/pkg/util"
 	"keep/pkg/util/core"
 	"net/http"
 	_ "net/http/pprof"
@@ -28,6 +30,7 @@ func NewCloudAgentCommand() *cobra.Command {
 			go func() {
 				logger.Debug(http.ListenAndServe(":6060", nil))
 			}()
+			commonutil.OrganizeConfigurationFile(constants.CloudAgentName)
 			config, err := opts.Config()
 			text, err := yaml.Marshal(&config)
 			// 写入配置文件
@@ -52,4 +55,5 @@ func NewCloudAgentCommand() *cobra.Command {
 func registerModules(config *cloudagent.CloudAgentConfig) {
 	k8sclient.Register(config.Modules.K8sClient)
 	promserver.Register(config.Modules.PromServer)
+	requestDispatcher.Register(config.Modules.RequestDispatcher)
 }

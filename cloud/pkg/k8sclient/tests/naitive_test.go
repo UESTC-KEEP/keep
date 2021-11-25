@@ -101,7 +101,7 @@ func TestCreation(t *testing.T) {
 		log.Fatal(err)
 	}
 
-	filebytes, err := ioutil.ReadFile("/etc/keepedge/ymls/redis-standalone-conf.yml")
+	filebytes, err := ioutil.ReadFile("/etc/keepedge/ymls/redis-standalone-conf.yaml")
 	if err != nil {
 		fmt.Printf("%v\n", err)
 	}

@@ -13,11 +13,12 @@ modules:
     diskiocountersstat: null
     netiocountersstat: null
     defaultedgehealthinterval: 10
-    defaultmqttcachequeuesize: 10
+    devicemqtttopics:
+    - clock_sensor
   logsagent:
     enable: true
     loglevel: 6
-    logtime: 2021-11-16T17:22:49.516007588+08:00
+    logtime: 2021-11-24T20:11:26.77194292+08:00
     logfilename: ""
     loginfo: ""
     logfiles:
@@ -34,3 +35,6 @@ modules:
     tlscafile: ""
     tlscertfile: ""
     tlsprivatekeyfile: ""
+  edgetwin:
+    enable: true
+    sqlitefilepath: /var/lib/keepedge/edgeagent.db

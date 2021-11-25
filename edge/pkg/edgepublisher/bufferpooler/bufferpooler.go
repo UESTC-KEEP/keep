@@ -43,14 +43,14 @@ func InitCachePools() {
 
 }
 
-// StartEdgePublisher 边端健康检测
+// StartEdgePublisher 边端健康检测 20350端口的/用于云端对边端进行健康性  存活性检测
 func StartEdgePublisher() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", EdgeAgentHealthCheck)
 	logger.Debug("edgepublisher  :" + strconv.Itoa(int(config.Config.ServePort)) + " 服务启动中...")
 	err := http.ListenAndServe(":"+strconv.Itoa(int(config.Config.ServePort)), mux)
 	if err != nil {
-		logger.Error(err)
+		logger.Fatal("publisher启动失败,端口占用：", err)
 	}
 }
 

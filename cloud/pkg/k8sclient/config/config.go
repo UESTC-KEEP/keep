@@ -11,7 +11,6 @@ import (
 	restclient "k8s.io/client-go/rest"
 	"k8s.io/client-go/restmapper"
 	"k8s.io/client-go/tools/clientcmd"
-	"keep/constants"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"sync"
 )
@@ -19,10 +18,10 @@ import (
 var Config Configure
 var once sync.Once
 var Clientset *kubernetes.Clientset
-var DCI discovery.DiscoveryInterface
+var DiscoveryClient discovery.DiscoveryInterface
 var K8sConfig *restclient.Config
-var DD dynamic.Interface
-var GR []*restmapper.APIGroupResources
+var DynamicClient dynamic.Interface
+var ApiGroupResources []*restmapper.APIGroupResources
 
 type Configure struct {
 	cloudagent.K8sClient
@@ -39,7 +38,7 @@ func InitConfigure(k *cloudagent.K8sClient) {
 
 func GetClient() {
 	var err error
-	K8sConfig, err = clientcmd.BuildConfigFromFlags("", constants.DefaultKubeConfigPath)
+	K8sConfig, err = clientcmd.BuildConfigFromFlags("", Config.KubeConfigFilePath)
 	if err != nil {
 		logger.Error(err.Error())
 	}
@@ -48,13 +47,13 @@ func GetClient() {
 		logger.Error(err.Error())
 		err = nil
 	}
-	DCI = Clientset.Discovery()
-	DD, err = dynamic.NewForConfig(K8sConfig)
+	DiscoveryClient = Clientset.Discovery()
+	DynamicClient, err = dynamic.NewForConfig(K8sConfig)
 	if err != nil {
 		logger.Error(err.Error())
 		err = nil
 	}
-	GR, err = restmapper.GetAPIGroupResources(Clientset.Discovery())
+	ApiGroupResources, err = restmapper.GetAPIGroupResources(Clientset.Discovery())
 	if err != nil {
 		logger.Error(err.Error())
 		err = nil
@@ -64,15 +63,15 @@ func GetGVRdyClient(gvk *schema.GroupVersionKind,namespace string)(dr dynamic.Re
 	//et GVK GVR mapper
 	GetClient()
 
-	mapperGVRGVK :=restmapper.NewDeferredDiscoveryRESTMapper(memory.NewMemCacheClient(DCI))
+	mapperGVRGVK :=restmapper.NewDeferredDiscoveryRESTMapper(memory.NewMemCacheClient(DiscoveryClient))
 	resourceMapper, err := mapperGVRGVK.RESTMapping(gvk.GroupKind(), gvk.Version)
 	if err!=nil{
 		logger.Error(err.Error())
 	}
 	if resourceMapper.Scope.Name()==meta.RESTScopeNameNamespace{
-		dr =DD.Resource(resourceMapper.Resource).Namespace(namespace)
+		dr =DynamicClient.Resource(resourceMapper.Resource).Namespace(namespace)
 	}else {
-		dr =DD.Resource(resourceMapper.Resource)
+		dr =DynamicClient.Resource(resourceMapper.Resource)
 	}
 	return dr,err
 }

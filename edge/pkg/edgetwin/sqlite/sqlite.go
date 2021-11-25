@@ -8,6 +8,7 @@ import (
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/edgetwin/config"
 	beehiveContext "keep/pkg/util/core/context"
+	"keep/pkg/util/kplogger"
 	"time"
 )
 
@@ -50,22 +51,38 @@ func NewSqliteCli() *Sqlite {
 	return new(Sqlite)
 }
 
+var ListenBeehiveChannel = make(chan bool)
+
 func ReceiveFromBeehiveAndInsert() {
 	cli := NewSqliteCli()
-	for {
-		msg, err := beehiveContext.Receive(modules.EdgeTwinModule)
-		if err != nil {
-			logger.Error(err)
-			time.Sleep(5 * time.Second)
-		} else {
-			logger.Trace("接收消息 msg: ", msg)
-			resp := msg.NewRespByMessage(&msg, " message received ")
-			beehiveContext.SendResp(*resp)
-			err := cli.InserBlobIntoMetricsSqlite(msg.Content.([]byte))
-			if err != nil {
-				logger.Error(err)
+	go func() {
+		for {
+			logger.Error("---------------")
+			select {
+			case <-ListenBeehiveChannel:
+				// 接到退出信号 即停止收消息
+				logger.Fatal("收到退出信号....")
+				return
+			default:
+				msg, err := beehiveContext.Receive(modules.EdgeTwinModule)
+				if err != nil {
+					kplogger.Error(err)
+					time.Sleep(5 * time.Second)
+				} else {
+					logger.Trace("接收消息 msg: ", msg)
+					if msg.Content == nil {
+						logger.Warn("消息为空....")
+					} else {
+						resp := msg.NewRespByMessage(&msg, " message received ")
+						beehiveContext.SendResp(*resp)
+						err := cli.InserBlobIntoMetricsSqlite(msg.Content.([]byte))
+						if err != nil {
+							logger.Error(err)
+						}
+					}
+				}
 			}
 		}
-	}
+	}()
 
 }

@@ -1,14 +1,14 @@
 package constants
 
 const CloudAgentName = "CloudAgent"
-const CloudConfigeFilesSourceDir = "../../../cloud/shells/confs/keepedge"
+const CloudConfigeFilesSourceDir = "cloud/shells/confs/keepedge"
 
 // 全局配置
 const (
-	DefaultKubeConfigPath  = "/root/.kube/config"
-	DefaultCloudConfigFile = "/etc/keepedge/config/cloudagent.yml"
-
-	NodeName = "NodeName"
+	DefaultKubeConfigPath    = "/home/et/.kube/config"
+	DefaultCloudConfigFile   = "/etc/keepedge/config/cloudagent.yml"
+	DefaultDecoderBufferSize = 100
+	NodeName                 = "NodeName"
 )
 
 // k8sclient配置
@@ -18,13 +18,20 @@ const (
 	DefaultMasterLBPort     = 6443
 	DefaultRedisServerIp    = "192.168.1.140"
 	DefaultRedisServerPort  = 32379
-	DefaultRedisConfigMap   = "/etc/keepedge/ymls/redis-standalone-conf.yml"
-	DefaultRedisSVC         = "/etc/keepedge/ymls/redis-svc.yml"
-	DefaultRedisStatefulSet = "/etc/keepedge/ymls/redis-statefulset.yml"
+	DefaultRedisConfigMap   = "/etc/keepedge/ymls/redis-standalone-conf.yaml"
+	DefaultRedisSVC         = "/etc/keepedge/ymls/redis-svc.yaml"
+	DefaultRedisStatefulSet = "/etc/keepedge/ymls/redis-statefulset.yaml"
 	DefaultNameSpace        = "default"
+	DefaultCrdsDir          = "/etc/keepedge/keep-crds"
 )
 
+// requestDispatcher配置
 const (
-	DefaultCAURL   = "/ca.crt"
-	DefaultCertURL = "/edge.crt"
+	DefaultHTTPPort      = 20001
+	DefaultWebSocketPort = 20000
+	DefaultCAURL         = "/ca.crt"
+	DefaultCertURL       = "/edge.crt"
 )
+//LogPublisher
+const Url ="192.168.1.140:4560"
+const ContentType ="apllication/json;charset=utf-8"

@@ -1,5 +1,6 @@
 package common
 
+// 用于云边通信使用
 type Header struct {
 	HeaderMap map[string]string `json:"header_map"`
 }

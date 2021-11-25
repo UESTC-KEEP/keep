@@ -6,6 +6,7 @@ import (
 	"encoding/pem"
 	"fmt"
 	hubconfig "keep/cloud/pkg/requestDispatcher/config"
+	"keep/pkg/util/kplogger"
 	"net/http"
 
 	certutil "k8s.io/client-go/util/cert"
@@ -51,11 +52,11 @@ func StartWebsocketServer() {
 		Handler:   &myhandler{},
 		// AutoRoute:  true,
 		// ConnNotify: handler.CloudhubHandler.OnRegister,
-		Addr: (":2022"),
+		Addr: (":20000"),
 		// ExOpts:     api.WSServerOption{Path: "/"},
 	}
 	// klog.Infof("Starting cloudhub %s server", api.ProtocolTypeWS)
-	fmt.Println("websocket listening...")
+	kplogger.Info("websocket listening...")
 	klog.Exit(svc.ListenAndServeTLS("", ""))
-	fmt.Println("stop websocket listen")
+	kplogger.Info("stop websocket listen")
 }

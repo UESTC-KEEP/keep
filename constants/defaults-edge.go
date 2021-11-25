@@ -15,8 +15,8 @@ const (
 )
 
 const (
-	// DefaultConfigDir 默认的存储文件位置
-	DefaultEdgeagentConfigFile = KeepBaseConfPath + "/edgecore.yml"
+	// DefaultEdgeagentConfigFile  默认的存储文件位置
+	DefaultEdgeagentConfigFile = EdgeConfigeFilesSourceDir + "/config/edgeagent.yaml"
 	//KeepEdgeVersion	keepedge 版本信息
 	KeepEdgeVersion = "0.0.1"
 )
@@ -45,6 +45,8 @@ const (
 	DefaultLogsQueenSize = 100
 	// DefaultDataQueenSize 数据缓冲队列默认大小
 	DefaultDataQueenSize = 100
+	// DefaultMetricsPort metrics暴露端口
+	DefaultMetricsPort = 8080
 )
 
 // mqtt配置

@@ -3,10 +3,11 @@ package prome
 import (
 	"encoding/json"
 	"fmt"
+	"keep/constants"
 	"keep/edge/pkg/healthzagent/config"
 	"keep/edge/pkg/healthzagent/mqtt"
 	"keep/edge/pkg/healthzagent/server"
-	"keep/pkg/util/kelogger"
+	"keep/pkg/util/kplogger"
 	"net/http"
 	"strconv"
 	"time"
@@ -24,9 +25,9 @@ func UnmarshalMqttData(data []byte) string {
 	var msg JSONData_t
 	err := json.Unmarshal(data, &msg)
 	if err != nil {
-		kelogger.Error(err)
+		kplogger.Error(err)
 	}
-	kelogger.Debug(LOG_TAG+": 解析的结构体：", msg)
+	kplogger.Debug(LOG_TAG+": 解析的结构体：", msg)
 	strTemp := msg["temp"]
 	return strTemp
 }
@@ -34,8 +35,7 @@ func UnmarshalMqttData(data []byte) string {
 var mqttCli *mqtt.MqttClient
 
 func InitMqttClient() {
-
-	mqttCli = mqtt.CreateMqttClientNoName("192.168.1.40", "1883")
+	mqttCli = mqtt.CreateMqttClientNoName(constants.DefaultTestingMQTTServer, strconv.Itoa(constants.DefaultTestingMQTTPort))
 	DeviceMqttTopic := config.Config.DeviceMqttTopics
 	for i := 0; i < len(DeviceMqttTopic); i++ {
 		//MQTT_CACHE_MODE不会阻塞当前协程，而是返回最新缓存的数据，不一定是当前时刻的
@@ -46,19 +46,17 @@ func InitMqttClient() {
 func StartMertricsServer(port int) {
 	//temp.
 	// 暴露指标
-
 	InitMqttClient()
-
 	http.HandleFunc("/metrics", reportMetricOfEdge)
-	kelogger.Debug(LOG_TAG + ": metricsServer启动成功...")
+	kplogger.Debug(LOG_TAG + ": metricsServer启动成功...")
 	err := http.ListenAndServe(":"+strconv.Itoa(port), nil)
 	if err != nil {
-		kelogger.Error(err)
+		kplogger.Error(err)
 	}
 }
 
 func reportMetricOfEdge(resp http.ResponseWriter, req *http.Request) {
-	kelogger.Debug("请求方：", req.RemoteAddr)
+	//kplogger.Debug("请求方：", req.RemoteAddr)
 	DeviceMqttTopic := config.Config.DeviceMqttTopics
 
 	retMap := Metrics_t{}
@@ -72,14 +70,14 @@ func reportMetricOfEdge(resp http.ResponseWriter, req *http.Request) {
 		dataRec, err := mqttCli.GetTopicData(DeviceMqttTopic[i]) //直接获取二进制数据，GetTopicData本身不做解析
 
 		if nil != err {
-			kelogger.Error(LOG_TAG+": Read mqtt err", err.Error())
+			kplogger.Error(LOG_TAG+": Read mqtt err", err.Error())
 			time.Sleep(time.Millisecond * 100) //TODO 时间有待调整，或者取消
 			continue
 		}
 		tempData := UnmarshalMqttData(dataRec)
 		newTemp, err := strconv.ParseFloat(tempData, 64)
 		if err != nil {
-			kelogger.Error(err)
+			kplogger.Error(err)
 			return
 		}
 		tempFloat, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", newTemp), 64)
@@ -89,6 +87,6 @@ func reportMetricOfEdge(resp http.ResponseWriter, req *http.Request) {
 	resp.Header().Set("Content-Type", "application/json")
 	err := json.NewEncoder(resp).Encode(&retMap)
 	if err != nil {
-		kelogger.Error(err)
+		kplogger.Error(err)
 	}
 }
