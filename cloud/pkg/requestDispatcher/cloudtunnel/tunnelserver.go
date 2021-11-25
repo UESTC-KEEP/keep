@@ -9,6 +9,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/wonderivan/logger"
 	"io/ioutil"
+	"keep/constants"
 	"keep/pkg/stream"
 	beehiveContext "keep/pkg/util/core/context"
 	"net/http"
@@ -43,7 +44,7 @@ func newTunnelServer() *TunnelServer {
 
 func (s *TunnelServer) installDefaultHandler() {
 	ws := new(restful.WebService)
-	ws.Path("/v1/keepedge/connect")
+	ws.Path(constants.DefaultWebSocketUrl)
 	ws.Route(ws.GET("/").
 		To(s.connect))
 	s.container.Add(ws)
@@ -75,8 +76,8 @@ func (s *TunnelServer) getNodeIP(node string) (string, bool) {
 }
 
 func (s *TunnelServer) connect(r *restful.Request, w *restful.Response) {
-	hostnameOverride := r.HeaderParameter("SessionHostNameOverride")
-	internalIP := r.HeaderParameter("SessionInternalIP")
+	hostnameOverride := r.HeaderParameter(constants.SessionKeyHostNameOverride)
+	internalIP := r.HeaderParameter(constants.SessionKeyInternalIP)
 	if internalIP == "" {
 		internalIP = strings.Split(r.Request.RemoteAddr, ":")[0]
 	}
@@ -130,7 +131,7 @@ func (s *TunnelServer) Start() {
 	}
 
 	tunnelServer := &http.Server{
-		Addr:    fmt.Sprintf("%d", 3721),
+		Addr:    fmt.Sprintf(":%d", constants.DefaultWebSocketPort),
 		Handler: s.container,
 		TLSConfig: &tls.Config{
 			ClientCAs:    pool,
@@ -152,7 +153,7 @@ func (s *TunnelServer) Start() {
 func (s *TunnelServer) sendMessageToEdge() {
 	for {
 		msg, err := beehiveContext.Receive("cloudTunnel")
-		logger.Info("[cloudTunnel] send message to edge: ", msg)
+		logger.Info("send message to edge: ", msg)
 		if err != nil {
 			logger.Info("receive not Message format message")
 			continue
@@ -171,7 +172,7 @@ func (s *TunnelServer) sendMessageToEdge() {
 		}
 		err = session.WriteMessageToTunnel(&msg)
 		if err != nil {
-			logger.Error("[cloudtunnel] write to tunnel error, edgenode", nodeID)
+			logger.Error("write to tunnel error, edgenode", nodeID)
 			continue
 		}
 	}

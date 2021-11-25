@@ -31,4 +31,8 @@ const (
 	DefaultWebSocketPort = 20000
 	DefaultCAURL         = "/ca.crt"
 	DefaultCertURL       = "/edge.crt"
+	DefaultWebSocketUrl  = "/v1/keepedge/connect"
+
+	SessionKeyHostNameOverride = "SessionHostNameOverride"
+	SessionKeyInternalIP       = "SessionInternalIP"
 )

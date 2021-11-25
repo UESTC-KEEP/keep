@@ -80,6 +80,7 @@ func ReadMessageFromTunnel(r io.Reader) (msg *model.Message, err error) {
 		return nil, err
 	}
 	logger.Info("receive from tunnel: ", string(data))
+	msg = &model.Message{}
 	err = json.Unmarshal(data, msg)
 	return
 }
