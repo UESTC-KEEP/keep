@@ -28,7 +28,7 @@ func Register(et *edgeagent.EdgeTwin) {
 }
 
 func (et *EdgeTwin) Cleanup() {
-	sqlite.ListenBeehiveChannel <- false
+
 }
 
 func (et *EdgeTwin) Name() string {

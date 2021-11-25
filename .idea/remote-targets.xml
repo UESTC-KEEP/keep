@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteTargetsManager">
+    <targets>
+      <target name="root@192.168.1.140:22" type="ssh/sftp">
+        <config>
+          <option name="projectRootOnTarget" value="/root/keep" />
+          <option name="serverName" value="root@192.168.1.140:22 password" />
+          <option name="useRsync" value="true" />
+        </config>
+        <ContributedStateBase type="GoLanguageRuntime">
+          <config>
+            <option name="goPath" value="/root/go" />
+            <option name="goRoot" value="/usr/local/go/bin/go" />
+            <option name="goVersion" value="go1.17.2 linux/amd64" />
+          </config>
+        </ContributedStateBase>
+      </target>
+      <target name="root@127.0.0.1:22" type="ssh/sftp">
+        <config>
+          <option name="projectRootOnTarget" value="/root/keep" />
+          <option name="serverName" value="root@127.0.0.1:22 password" />
+          <option name="useRsync" value="true" />
+        </config>
+        <ContributedStateBase type="GoLanguageRuntime">
+          <config>
+            <option name="goPath" value="/root/go" />
+            <option name="goRoot" value="/usr/bin/go" />
+            <option name="goVersion" value="go1.17 linux/amd64" />
+          </config>
+        </ContributedStateBase>
+      </target>
+    </targets>
+  </component>
+</project>
