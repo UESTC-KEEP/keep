@@ -3,6 +3,7 @@ package cloud
 import (
 	"keep/constants"
 	"path/filepath"
+	"strings"
 
 	flag "github.com/spf13/pflag"
 	"k8s.io/client-go/util/homedir"
@@ -22,15 +23,17 @@ func NewDefaultEdgeAgentConfig() *CloudAgentConfig {
 	return &CloudAgentConfig{
 		Modules: &Modules{
 			K8sClient: &K8sClient{
-				Enable:             true,
-				MasterLBIp:         constants.DefaultMasterLBIp,
-				MasterLBPort:       constants.DefaultMasterLBPort,
-				RedisIp:            constants.DefaultRedisServerIp,
-				RedisPort:          constants.DefaultRedisServerPort,
-				PodInfo:            nil,
-				DeploymentInfo:     nil,
-				KubeConfigFilePath: *kubeconfig,
-				DecoderBufferSize:  constants.DefaultDecoderBufferSize,
+				Enable:              true,
+				Masters:             strings.Split(constants.DefaultMasterIpPort, ";"),
+				MasterMetricTimeout: constants.DefaultMasterMetricTimeout,
+				MasterLBIp:          constants.DefaultMasterLBIp,
+				MasterLBPort:        constants.DefaultMasterLBPort,
+				RedisIp:             constants.DefaultRedisServerIp,
+				RedisPort:           constants.DefaultRedisServerPort,
+				PodInfo:             nil,
+				DeploymentInfo:      nil,
+				KubeConfigFilePath:  *kubeconfig,
+				DecoderBufferSize:   constants.DefaultDecoderBufferSize,
 			},
 			PromServer: &PromServer{
 				Enable:                   true,
@@ -40,6 +43,9 @@ func NewDefaultEdgeAgentConfig() *CloudAgentConfig {
 				Enable:        true,
 				HTTPPort:      constants.DefaultHTTPPort,
 				WebSocketPort: constants.DefaultWebSocketPort,
+			},
+			CloudImageManager: &CloudImageManager{
+				Enable: true,
 			},
 		},
 	}

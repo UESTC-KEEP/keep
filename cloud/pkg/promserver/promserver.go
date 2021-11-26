@@ -34,7 +34,7 @@ func (ps *PromServer) Name() string {
 	return modules.PromServerModule
 }
 func (ps *PromServer) Group() string {
-	return modules.K8sClientGroup
+	return modules.PromServerGroup
 }
 
 func (ps *PromServer) Enable() bool {

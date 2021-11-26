@@ -3,6 +3,7 @@ package app
 import (
 	"io/ioutil"
 	"keep/cloud/cmd/cloudagent/app/options"
+	"keep/cloud/pkg/cloudimageManager"
 	"keep/cloud/pkg/k8sclient"
 	"keep/cloud/pkg/promserver"
 	"keep/cloud/pkg/requestDispatcher"
@@ -56,4 +57,5 @@ func registerModules(config *cloudagent.CloudAgentConfig) {
 	k8sclient.Register(config.Modules.K8sClient)
 	promserver.Register(config.Modules.PromServer)
 	requestDispatcher.Register(config.Modules.RequestDispatcher)
+	cloudimageManager.Register(config.Modules.CloudImageManager)
 }

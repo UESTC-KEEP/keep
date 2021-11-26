@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"github.com/mitchellh/go-ps"
 	"github.com/wonderivan/logger"
+	"os"
 )
 
 func GracefulExit() {
-	logger.Info("准备退出...")
+	logger.Warn("准备退出...")
+	os.Exit(1)
 }
 
 // FindProcess 根据进程名找当前是不是有进程在执行
