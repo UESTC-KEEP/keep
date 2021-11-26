@@ -33,7 +33,8 @@ func NewDefaultEdgeAgentConfig() *CloudAgentConfig {
 				DecoderBufferSize:  constants.DefaultDecoderBufferSize,
 			},
 			PromServer: &PromServer{
-				Enable: true,
+				Enable:                   true,
+				PromServerPrometheusPort: constants.DefaultPromServerMetricsPort,
 			},
 			RequestDispatcher: &RequestDispatcher{
 				Enable:        true,

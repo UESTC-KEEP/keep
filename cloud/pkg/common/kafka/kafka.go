@@ -10,22 +10,21 @@ var Address = []string{"192.168.1.103:9092", "192.168.1.103:9093"}
 
 type KafkaMsg struct {
 	PublisheMsg sarama.ProducerMessage
-	ReceiveMsg sarama.ConsumerMessage
-
+	ReceiveMsg  sarama.ConsumerMessage
 }
 
 // Subscribe 订阅/接收消息 consumer
-func (k * KafkaMsg) Subscribe() error {
-
+func (k *KafkaMsg) Subscribe() error {
+	return nil
 }
 
 // UnSubscribe 取消订阅 consumer
-func (k * KafkaMsg) UnSubscribe() error {
-
+func (k *KafkaMsg) UnSubscribe() error {
+	return nil
 }
 
 // Publish 向集群发送消息 producer
-func (k * KafkaMsg) Publish() error {
+func (k *KafkaMsg) Publish() error {
 
 	config := sarama.NewConfig()
 	//等待服务器所有副本都保存成功后的响应
@@ -46,14 +45,14 @@ func (k * KafkaMsg) Publish() error {
 		fmt.Println(e)
 		return e
 	}
-	defer producer.AsyncClose()		// 异步关闭，可继续读
+	defer producer.AsyncClose() // 异步关闭，可继续读
 
 	//循环判断哪个通道发送过来数据.
 	fmt.Println("start goroutine")
 	go func(p sarama.AsyncProducer) {
-		for{
+		for {
 			select {
-			case  <-p.Successes():		// 对应上面的 Return.Successes = true
+			case <-p.Successes(): // 对应上面的 Return.Successes = true
 				// fmt.Println("yifasong")
 				// fmt.Println("offset: ", suc.Offset, "timestamp: ", suc.Timestamp.String(), "partitions: ", suc.Partition)
 			case fail := <-p.Errors():
@@ -63,10 +62,10 @@ func (k * KafkaMsg) Publish() error {
 	}(producer)
 
 	var value string
-	for i:=0;;i++ {
-		time.Sleep(500*time.Millisecond)
-		time11:=time.Now()
-		value = "this is a message "+time11.Format("2006-01-02 15:04:05")
+	for i := 0; ; i++ {
+		time.Sleep(500 * time.Millisecond)
+		time11 := time.Now()
+		value = "this is a message " + time11.Format("2006-01-02 15:04:05")
 
 		// 发送的消息,主题。
 		// 注意：这里的msg必须得是新构建的变量，不然你会发现发送过去的消息内容都是一样的，因为批次发送消息的关系。
@@ -83,14 +82,14 @@ func (k * KafkaMsg) Publish() error {
 	}
 }
 
-func (k * KafkaMsg) GenerateConsumerGroup() error {
-
+func (k *KafkaMsg) GenerateConsumerGroup() error {
+	return nil
 }
 
-func (k * KafkaMsg) JoinConsumerGroup() error {
-
+func (k *KafkaMsg) JoinConsumerGroup() error {
+	return nil
 }
 
-func (k * KafkaMsg) DestroyConsumerGroup() error {
-
+func (k *KafkaMsg) DestroyConsumerGroup() error {
+	return nil
 }

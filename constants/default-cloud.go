@@ -36,6 +36,11 @@ const (
 	SessionKeyHostNameOverride = "SessionHostNameOverride"
 	SessionKeyInternalIP       = "SessionInternalIP"
 )
+
+const (
+	DefaultPromServerMetricsPort = 20080
+)
+
 //LogPublisher
-const Url ="192.168.1.140:4560"
-const ContentType ="apllication/json;charset=utf-8"
+const Url = "192.168.1.140:4560"
+const ContentType = "apllication/json;charset=utf-8"

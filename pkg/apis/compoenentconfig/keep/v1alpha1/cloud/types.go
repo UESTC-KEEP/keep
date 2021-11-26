@@ -29,7 +29,8 @@ type K8sClient struct {
 }
 
 type PromServer struct {
-	Enable bool `json:"enable"`
+	Enable                   bool `json:"enable"`
+	PromServerPrometheusPort int  `json:"prom_server_prometheus_port"`
 }
 
 type RequestDispatcher struct {
