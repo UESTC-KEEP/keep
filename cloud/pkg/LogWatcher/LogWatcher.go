@@ -1,32 +1,43 @@
 package LogWatcher
 
 import (
-	"bytes"
-	"encoding/json"
-	"github.com/wonderivan/logger"
+	"github.com/Shopify/sarama"
 	"keep/cloud/pkg/common/kafka"
-	"keep/constants"
-	"net/http"
 )
 
 type LogStruct struct {
-	Logid string `json:"logid"`
+	Logid string `json:logid"`
 
+}
+var Producer sarama.SyncProducer
+
+const(
+	address="192.168.1.111"
+	topic=""
+)
+
+func InitLogPusher(){
+	config := sarama.NewConfig()
+	Producer,_= sarama.NewSyncProducer([]string{address}, config)
 }
 
 func GetLogFromKafka(){
-	err := kafka.KafkaInterface.Subscribe("topic")
-	if err!=nil{
-	logger.Error(err.Error())
-	}
-	ch:=make(chan string)
-	read:=<-ch
-	marshal, err := json.Marshal(read)
-	buffer := bytes.NewBuffer(marshal)
-	_, err = http.Post(constants.Url, constants.ContentType, buffer)
-	if err!=nil{
-		logger.Error(err.Error())
+	messages := make(chan *sarama.ConsumerMessage)
+	kafka.Subscribe([]string{address},topic,"",messages)
+	PushertoKafka(messages)
+}
+func PushertoKafka(get chan *sarama.ConsumerMessage,){
+	read:=<-get
+	for i := 0; i < len(read.Key); i++ {
+		msg:=&sarama.ProducerMessage{
+			Topic: topic,
+			Partition: int32(10),
+			Key: sarama.ByteEncoder{read.Key[i]},
+			Value: sarama.ByteEncoder{read.Value[i]},
+		}
+		Producer.SendMessage(msg)
 	}
 
 }
+
 
