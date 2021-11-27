@@ -59,21 +59,20 @@ func GetClient() {
 		err = nil
 	}
 }
-func GetGVRdyClient(gvk *schema.GroupVersionKind,namespace string)(dr dynamic.ResourceInterface,err error)  {
+func GetGVRdyClient(gvk *schema.GroupVersionKind, namespace string) (dr dynamic.ResourceInterface, err error) {
 	//et GVK GVR mapper
 	GetClient()
-
-	mapperGVRGVK :=restmapper.NewDeferredDiscoveryRESTMapper(memory.NewMemCacheClient(DiscoveryClient))
+	mapperGVRGVK := restmapper.NewDeferredDiscoveryRESTMapper(memory.NewMemCacheClient(DiscoveryClient))
 	resourceMapper, err := mapperGVRGVK.RESTMapping(gvk.GroupKind(), gvk.Version)
-	if err!=nil{
+	if err != nil {
 		logger.Error(err.Error())
 	}
-	if resourceMapper.Scope.Name()==meta.RESTScopeNameNamespace{
-		dr =DynamicClient.Resource(resourceMapper.Resource).Namespace(namespace)
-	}else {
-		dr =DynamicClient.Resource(resourceMapper.Resource)
+	if resourceMapper.Scope.Name() == meta.RESTScopeNameNamespace {
+		dr = DynamicClient.Resource(resourceMapper.Resource).Namespace(namespace)
+	} else {
+		dr = DynamicClient.Resource(resourceMapper.Resource)
 	}
-	return dr,err
+	return dr, err
 }
 
 func Get() *Configure {

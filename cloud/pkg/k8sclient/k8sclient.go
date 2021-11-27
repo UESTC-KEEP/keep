@@ -7,11 +7,11 @@ import (
 	"keep/cloud/pkg/common/modules"
 	k8sclientconfig "keep/cloud/pkg/k8sclient/config"
 	crd_engin "keep/cloud/pkg/k8sclient/crd-engin"
+	metrics_server "keep/cloud/pkg/k8sclient/metrics-server"
 	naive_engine "keep/cloud/pkg/k8sclient/naive-engine"
 	"keep/constants"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"keep/pkg/util/core"
-	"keep/pkg/util/kplogger"
 	"os"
 	"strconv"
 	"sync"
@@ -39,8 +39,8 @@ func Register(k *cloudagent.K8sClient) {
 func (k *K8sClient) Cleanup() {
 	//logger.Debug("准备清理模块：",modules.K8sClientModule)
 	deleteRedis()
-	naive_engine.DeleteResourceByYAML(constants.DefaultCrdsDir+"/"+"stuCrd.yaml", constants.DefaultNameSpace)
-	naive_engine.DeleteResourceByYAML(constants.DefaultCrdsDir+"/"+"new-student.yaml", constants.DefaultNameSpace)
+	//naive_engine.DeleteResourceByYAML(constants.DefaultCrdsDir+"/"+"stuCrd.yaml", constants.DefaultNameSpace)
+	//naive_engine.DeleteResourceByYAML(constants.DefaultCrdsDir+"/"+"new-student.yaml", constants.DefaultNameSpace)
 }
 
 func (k *K8sClient) Name() string {
@@ -63,8 +63,9 @@ func (k *K8sClient) Start() {
 	checkRedisAliveness()
 	err := crd_engin.NewCrdEngineImpl().CreateCrd(constants.DefaultCrdsDir)
 	if err != nil {
-		kplogger.Error("创建crd失败：", err)
+		logger.Error("创建crd失败：", err)
 	}
+	metrics_server.NewMetricServerImpl().CheckCadvisorStatus([]string{"192.168.1.140:6443", "192.168.1.141:6443"})
 	//var count int
 	//for {
 	//	count++
