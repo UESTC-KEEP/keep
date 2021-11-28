@@ -1,0 +1,12 @@
+apiVersion: keepedge.io/v1
+kind: EqualNode
+metadata:
+  name: object-eqnd
+spec:
+  name: "edge-zlj-ubuntu-1"
+  nodes:
+    - edge-mini-1
+    - edge-zlj-1
+
+
+  ../../k8s.io/code-generator/generate-groups.sh all keepcrd/pkg/client keepcrd/pkg/apis keepcrd:v1
