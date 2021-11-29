@@ -37,15 +37,15 @@ func main() {
 		glog.Fatalf("Error building kubernetes clientset: %s", err.Error())
 	}
 
-	studentClient, err := clientset.NewForConfig(cfg)
+	equalnodeClient, err := clientset.NewForConfig(cfg)
 	if err != nil {
-		glog.Fatalf("Error building example clientset: %s", err.Error())
+		glog.Fatalf("Error building  clientset: %s", err.Error())
 	}
 
-	equalnodeInformerFactory := informers.NewSharedInformerFactory(studentClient, time.Second*30)
+	equalnodeInformerFactory := informers.NewSharedInformerFactory(equalnodeClient, time.Second*30)
 
 	//得到controller
-	controller := NewController(kubeClient, studentClient,
+	controller := NewController(kubeClient, equalnodeClient,
 		equalnodeInformerFactory.Keepedge().V1().EqualNodes())
 
 	//启动informer

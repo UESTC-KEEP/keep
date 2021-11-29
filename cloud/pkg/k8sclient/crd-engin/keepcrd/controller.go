@@ -16,6 +16,7 @@ import (
 	"k8s.io/client-go/tools/cache"
 	"k8s.io/client-go/tools/record"
 	"k8s.io/client-go/util/workqueue"
+	//"k8s.io/apimachinery/pkg/watch"
 
 	keepcrdv1 "keepcrd/pkg/apis/keepedge/v1"
 	clientset "keepcrd/pkg/client/clientset/versioned"
@@ -118,7 +119,7 @@ func (c *Controller) runWorker() {
 func (c *Controller) processNextWorkItem() bool {
 
 	obj, shutdown := c.workqueue.Get()
-
+	//event
 	if shutdown {
 		return false
 	}
@@ -172,12 +173,12 @@ func (c *Controller) syncHandler(key string) error {
 			return nil
 		}
 
-		runtime.HandleError(fmt.Errorf("failed to list student by: %s/%s", namespace, name))
+		runtime.HandleError(fmt.Errorf("failed to list equalnode by: %s/%s", namespace, name))
 
 		return err
 	}
 
-	glog.Infof("这里是student对象的期望状态: %#v ...", equalnode)
+	glog.Infof("这里是equalnode对象的期望状态: %#v ...", equalnode)
 	glog.Infof("实际状态是从业务层面得到的，此处应该去的实际状态，与期望状态做对比，并根据差异做出响应(新增或者删除)")
 
 	c.recorder.Event(equalnode, corev1.EventTypeNormal, SuccessSynced, MessageResourceSynced)
