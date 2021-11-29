@@ -56,10 +56,10 @@ func NewEdgeAgentCommand() *cobra.Command {
 			}
 			utils.PrintKEEPLogo()
 			err = utils.EnvironmentCheck()
-			if err != nil {
-				logger.Fatal(err)
-				os.Exit(1)
-			}
+			//if err != nil {
+			//	logger.Fatal(err)
+			//	os.Exit(1)
+			//}
 			registerModules(config)
 			core.Run()
 		},

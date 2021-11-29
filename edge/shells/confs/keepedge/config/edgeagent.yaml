@@ -18,7 +18,7 @@ modules:
   logsagent:
     enable: true
     loglevel: 6
-    logtime: 2021-11-25T20:28:00.803744544+08:00
+    logtime: 2021-11-29T16:26:33.635438914+08:00
     logfilename: ""
     loginfo: ""
     logfiles:
@@ -36,6 +36,8 @@ modules:
     tlscertfile: ""
     tlsprivatekeyfile: ""
     beehivetimeout: 500ms
+    hostnameoverride: thinkbook
+    localip: 192.168.1.144
   edgetwin:
     enable: true
     sqlitefilepath: /var/lib/keepedge/edgeagent.db

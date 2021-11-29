@@ -46,8 +46,9 @@ func (cs *Consumer) Errors() <-chan error {
 	return cs.consumer.Errors()
 }
 
-func Subscribe(address []string, topic string, groupId string, ans chan *sarama.ConsumerMessage)  {
+func Subscribe(address []string, topic string, groupId string ,ans chan string) {
 	config :=NewConfig()
+	// ans := make(chan *sarama.ConsumerMessage)
 	c , err := InitOneConsumerOfGroup(address, topic, groupId, config)
 	if err!=nil{
 		log.Println(err)
@@ -72,7 +73,8 @@ func Subscribe(address []string, topic string, groupId string, ans chan *sarama.
 		select {
 		case msg, ok := <-c.Recv():
 			if ok {
-				ans <- msg
+				
+				ans <- string(msg.Value)
 				//fmt.Fprintf(os.Stdout, "groupId=%s, topic=%s, partion=%d, offset=%d, key=%s, value=%s\n", c.GroupId, msg.Topic, msg.Partition, msg.Offset, msg.Key, msg.Value)
 				//c.MarkOffset(msg, "") // mark message as processed
 			}
