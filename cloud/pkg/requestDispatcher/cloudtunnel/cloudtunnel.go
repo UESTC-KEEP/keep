@@ -1,6 +1,12 @@
 package cloudtunnel
 
+var Server *tunnelServer
+var DoneTLSTunnelCerts = make(chan bool, 1)
+
 func StartWebsocketServer() {
-	ts := newTunnelServer()
-	go ts.Start()
+	ok := <-DoneTLSTunnelCerts
+	if ok {
+		Server = newTunnelServer()
+		Server.Start()
+	}
 }

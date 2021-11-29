@@ -2,9 +2,12 @@ package edgetunnel
 
 import (
 	"crypto/tls"
+	"fmt"
 	"github.com/gorilla/websocket"
 	"github.com/wonderivan/logger"
+	"keep/constants"
 	beehiveContext "keep/pkg/util/core/context"
+	"keep/pkg/util/core/model"
 	"net/http"
 	"net/url"
 	"time"
@@ -16,6 +19,9 @@ type edgeTunnel struct {
 	reconnectChan    chan struct{}
 }
 
+var session *tunnelSession
+var sessionConnected bool
+
 func newEdgeTunnel(hostnameOverride, nodeIP string) *edgeTunnel {
 	return &edgeTunnel{
 		hostnameOverride: hostnameOverride,
@@ -24,16 +30,21 @@ func newEdgeTunnel(hostnameOverride, nodeIP string) *edgeTunnel {
 	}
 }
 
-func (e *edgeTunnel) Start() {
+func (e *edgeTunnel) start() {
 	serverURL := url.URL{
 		Scheme: "wss",
-		Host:   "192.168.1.140:3721",
-		Path:   "/v1/keepedge/connect",
+		Host:   fmt.Sprintf("%s:%d", constants.DefaultMasterLBIp, constants.DefaultWebSocketPort),
+		Path:   constants.DefaultWebSocketUrl,
 	}
 
-	cert, err := tls.LoadX509KeyPair("/etc/kubeedge/certs/server.crt", "/etc/kubeedge/certs/server.key")
+	cert, err := tls.LoadX509KeyPair(constants.DefaultCertFile, constants.DefaultKeyFile)
 	if err != nil {
-		logger.Fatal("Failed to load x509 key pair: ", err)
+		logger.Info("Failed to load x509 key pair: ", err, "try again")
+		time.Sleep(10 * time.Second)
+		cert, err = tls.LoadX509KeyPair(constants.DefaultCertFile, constants.DefaultKeyFile)
+	}
+	if err != nil {
+		logger.Fatal("Failed to load x509 key pair: ", err, "Exiting...")
 	}
 
 	tlsConfig := &tls.Config{
@@ -47,17 +58,20 @@ func (e *edgeTunnel) Start() {
 			return
 		default:
 		}
-		session, err := e.TLSClientConnect(serverURL, tlsConfig)
+		var err error
+		session, err = e.tlsClientConnect(serverURL, tlsConfig)
 		if err != nil {
 			logger.Error("connect failed: ", err)
 			time.Sleep(5 * time.Second)
 			continue
 		}
+		sessionConnected = true
 
 		go session.startPing(e.reconnectChan)
 		go session.routeToEdge(e.reconnectChan)
 
 		<-e.reconnectChan
+		sessionConnected = false
 		session.Close()
 		logger.Warn("connection broken, reconnecting...")
 		time.Sleep(5 * time.Second)
@@ -74,7 +88,7 @@ func (e *edgeTunnel) Start() {
 	}
 }
 
-func (e *edgeTunnel) TLSClientConnect(url url.URL, tlsConfig *tls.Config) (*TunnelSession, error) {
+func (e *edgeTunnel) tlsClientConnect(url url.URL, tlsConfig *tls.Config) (*tunnelSession, error) {
 	logger.Info("Start a new tunnel connection")
 
 	dial := websocket.Dialer{
@@ -82,8 +96,8 @@ func (e *edgeTunnel) TLSClientConnect(url url.URL, tlsConfig *tls.Config) (*Tunn
 		HandshakeTimeout: time.Duration(30) * time.Second,
 	}
 	header := http.Header{}
-	header.Add("SessionHostNameOverride", e.hostnameOverride)
-	header.Add("SessionInternalIP", e.nodeIP)
+	header.Add(constants.SessionKeyHostNameOverride, e.hostnameOverride)
+	header.Add(constants.SessionKeyInternalIP, e.nodeIP)
 
 	con, _, err := dial.Dial(url.String(), header)
 	if err != nil {
@@ -94,6 +108,16 @@ func (e *edgeTunnel) TLSClientConnect(url url.URL, tlsConfig *tls.Config) (*Tunn
 	return session, nil
 }
 
-func (e *edgeTunnel) keepAlive() {
+func StartEdgeTunnel(nodeName, nodeIP string) {
+	edget := newEdgeTunnel(nodeName, nodeIP)
+	edget.start()
+}
+
+func WriteToCloud(msg *model.Message) error {
+	for !sessionConnected {
+		logger.Info("session not connected, waiting")
+		time.Sleep(3 * time.Second)
+	}
+	return session.Tunnel.WriteMessage(msg)
 
 }
