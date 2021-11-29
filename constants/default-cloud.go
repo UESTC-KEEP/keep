@@ -14,7 +14,7 @@ const (
 // k8sclient配置
 const (
 	// DefaultMasterLBIp master集群的负载均衡ip 若是单master集群就是用masterip即可
-	DefaultMasterLBIp = "192.168.1.140"
+	DefaultMasterLBIp = "192.168.122.125"
 	// DefaultMasterIpPort 默认需要进行监控的主机ip:port 多个master主机使用;间隔
 	DefaultMasterIpPort = "192.168.140:6443"
 	// DefaultMasterMetricTimeout 获取每台master  metrics信息的超时时间

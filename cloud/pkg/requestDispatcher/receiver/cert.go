@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	hubconfig "keep/cloud/pkg/requestDispatcher/config"
+	"keep/constants"
 
 	certutil "k8s.io/client-go/util/cert"
 
@@ -134,7 +135,7 @@ func SignCerts() ([]byte, []byte, error) {
 		AltNames: certutil.AltNames{
 			DNSNames: []string{""},
 			// DNSNames: hubconfig.Config.DNSNames,
-			IPs: getIps([]string{"192.168.1.121"}),
+			IPs: getIps([]string{constants.DefaultMasterLBIp}),
 		},
 	}
 

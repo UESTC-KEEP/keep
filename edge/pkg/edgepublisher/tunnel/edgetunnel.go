@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/wonderivan/logger"
 	"keep/constants"
+	"keep/edge/pkg/edgepublisher/tunnel/cert"
 	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/core/model"
 	"net/http"
@@ -36,6 +37,9 @@ func (e *edgeTunnel) start() {
 		Host:   fmt.Sprintf("%s:%d", constants.DefaultMasterLBIp, constants.DefaultWebSocketPort),
 		Path:   constants.DefaultWebSocketUrl,
 	}
+
+	certManager := cert.NewCertManager(e.hostnameOverride)
+	certManager.Start()
 
 	cert, err := tls.LoadX509KeyPair(constants.DefaultCertFile, constants.DefaultKeyFile)
 	if err != nil {

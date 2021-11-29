@@ -1,4 +1,4 @@
-package publisher
+package cert
 
 import (
 	"bytes"
@@ -16,6 +16,7 @@ import (
 	"net"
 	nethttp "net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
@@ -75,7 +76,7 @@ func NewCertManager(nodename string) CertManager {
 	}
 	HTTPServer := (&url.URL{
 		Scheme: "https",
-		Host:   net.JoinHostPort(constants.DefaultMasterLBIp, string(constants.DefaultHTTPPort)),
+		Host:   net.JoinHostPort(constants.DefaultMasterLBIp, strconv.Itoa(constants.DefaultHTTPPort)),
 	}).String()
 	return CertManager{
 		RotateCertificates: true,

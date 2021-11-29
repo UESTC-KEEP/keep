@@ -1,4 +1,4 @@
-package publisher
+package cert
 
 import (
 	"crypto/tls"
