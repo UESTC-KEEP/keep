@@ -29,6 +29,6 @@ spec:
   && go get -u k8s.io/code-generator/... \
   && cd $GOPATH/src/k8s.io/code-generator \
   && ./generate-groups.sh all \
-  keepcrd/pkg/client \
-  keepcrd/pkg/apis \
+  keepedge/pkg/client \
+  keepedge/pkg/apis \
   keepedge:v1

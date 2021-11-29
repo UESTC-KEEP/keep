@@ -2,17 +2,15 @@ package main
 
 import (
 	"flag"
-	"time"
-
 	"github.com/golang/glog"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
+	"keep/cloud/pkg/client/clientset/versioned"
+	"keep/cloud/pkg/client/informers/externalversions"
+	"time"
 	// Uncomment the following line to load the gcp plugin (only required to authenticate against GKE clusters).
 	// _ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
-
-	clientset "keepcrd/pkg/client/clientset/versioned"
-	informers "keepcrd/pkg/client/informers/externalversions"
-	"keepcrd/pkg/signals"
+	"keep/cloud/pkg/k8sclient/crd_engin/keepcrd/pkg/signals"
 )
 
 var (
@@ -37,12 +35,12 @@ func main() {
 		glog.Fatalf("Error building kubernetes clientset: %s", err.Error())
 	}
 
-	equalnodeClient, err := clientset.NewForConfig(cfg)
+	equalnodeClient, err := versioned.NewForConfig(cfg)
 	if err != nil {
 		glog.Fatalf("Error building  clientset: %s", err.Error())
 	}
 
-	equalnodeInformerFactory := informers.NewSharedInformerFactory(equalnodeClient, time.Second*30)
+	equalnodeInformerFactory := externalversions.NewSharedInformerFactory(equalnodeClient, time.Second*30)
 
 	//得到controller
 	controller := NewController(kubeClient, equalnodeClient,

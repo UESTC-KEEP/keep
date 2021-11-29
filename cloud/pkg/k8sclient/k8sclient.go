@@ -6,7 +6,7 @@ import (
 	v1 "k8s.io/api/core/v1"
 	"keep/cloud/pkg/common/modules"
 	k8sclientconfig "keep/cloud/pkg/k8sclient/config"
-	crd_engin "keep/cloud/pkg/k8sclient/crd-engin"
+	crd_engin "keep/cloud/pkg/k8sclient/crd_engin"
 	metrics_server "keep/cloud/pkg/k8sclient/metrics-server"
 	naive_engine "keep/cloud/pkg/k8sclient/naive-engine"
 	"keep/constants"

@@ -1,5 +1,6 @@
 package main
 
+// $GOPATH/src/k8s.io/code-generator/generate-groups.sh all keep/cloud/pkg/client keep/cloud/pkg/k8sclient/crd_engin/keepedge/pkg/apis keepedge:v1
 import (
 	"fmt"
 	"time"
@@ -16,13 +17,12 @@ import (
 	"k8s.io/client-go/tools/cache"
 	"k8s.io/client-go/tools/record"
 	"k8s.io/client-go/util/workqueue"
-	//"k8s.io/apimachinery/pkg/watch"
 
-	keepcrdv1 "keepcrd/pkg/apis/keepedge/v1"
-	clientset "keepcrd/pkg/client/clientset/versioned"
-	equalnodescheme "keepcrd/pkg/client/clientset/versioned/scheme"
-	informers "keepcrd/pkg/client/informers/externalversions/keepedge/v1"
-	listers "keepcrd/pkg/client/listers/keepedge/v1"
+	clientset "keep/cloud/pkg/client/clientset/versioned"
+	equalnodescheme "keep/cloud/pkg/client/clientset/versioned/scheme"
+	informers "keep/cloud/pkg/client/informers/externalversions/keepedge/v1"
+	listers "keep/cloud/pkg/client/listers/keepedge/v1"
+	keepcrdv1 "keep/cloud/pkg/k8sclient/crd_engin/keepcrd/pkg/apis/keepedge/v1"
 )
 
 const controllerAgentName = "student-controller"
