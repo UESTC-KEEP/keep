@@ -18,8 +18,6 @@ type RequestDispatcher struct {
 	WebSocketPort int
 }
 
-var DoneTLSTunnelCerts = make(chan bool, 1)
-
 func Register(r *cloudagent.RequestDispatcher) {
 	requestDispatcherconfig.InitConfigure(r)
 	rd, err := NewRequestDispatcher(r.Enable)
@@ -54,8 +52,8 @@ func (r *RequestDispatcher) Start() {
 		kplogger.Error(err)
 	}
 	//TODO: Will improve in the future
-	DoneTLSTunnelCerts <- true
-	close(DoneTLSTunnelCerts)
+	cloudtunnel.DoneTLSTunnelCerts <- true
+	close(cloudtunnel.DoneTLSTunnelCerts)
 
 	// if err := receiver.GenerateToken(); err != nil {
 	// 	klog.Exit(err)

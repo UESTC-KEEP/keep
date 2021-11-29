@@ -1,13 +1,10 @@
 package cloudtunnel
 
-import (
-	"keep/cloud/pkg/requestDispatcher"
-)
-
 var Server *tunnelServer
+var DoneTLSTunnelCerts = make(chan bool, 1)
 
 func StartWebsocketServer() {
-	ok := <-requestDispatcher.DoneTLSTunnelCerts
+	ok := <-DoneTLSTunnelCerts
 	if ok {
 		Server = newTunnelServer()
 		Server.Start()
