@@ -135,7 +135,7 @@ func SignCerts() ([]byte, []byte, error) {
 		AltNames: certutil.AltNames{
 			DNSNames: []string{""},
 			// DNSNames: hubconfig.Config.DNSNames,
-			IPs: getIps([]string{constants.DefaultMasterLBIp}),
+			IPs: getIps([]string{constants.DefaultKeepCloudIP}),
 		},
 	}
 

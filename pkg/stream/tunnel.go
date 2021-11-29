@@ -19,7 +19,6 @@ package stream
 import (
 	"bufio"
 	"encoding/json"
-	"github.com/wonderivan/logger"
 	"io"
 	"io/ioutil"
 	"sync"
@@ -79,7 +78,6 @@ func ReadMessageFromTunnel(r io.Reader) (msg *model.Message, err error) {
 	if err != nil {
 		return nil, err
 	}
-	logger.Info("receive from tunnel: ", string(data))
 	msg = &model.Message{}
 	err = json.Unmarshal(data, msg)
 	return

@@ -76,7 +76,7 @@ func NewCertManager(nodename string) CertManager {
 	}
 	HTTPServer := (&url.URL{
 		Scheme: "https",
-		Host:   net.JoinHostPort(constants.DefaultMasterLBIp, strconv.Itoa(constants.DefaultHTTPPort)),
+		Host:   net.JoinHostPort(constants.DefaultKeepCloudIP, strconv.Itoa(constants.DefaultHTTPPort)),
 	}).String()
 	return CertManager{
 		RotateCertificates: true,

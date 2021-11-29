@@ -34,7 +34,7 @@ func newEdgeTunnel(hostnameOverride, nodeIP string) *edgeTunnel {
 func (e *edgeTunnel) start() {
 	serverURL := url.URL{
 		Scheme: "wss",
-		Host:   fmt.Sprintf("%s:%d", constants.DefaultMasterLBIp, constants.DefaultWebSocketPort),
+		Host:   fmt.Sprintf("%s:%d", constants.DefaultKeepCloudIP, constants.DefaultWebSocketPort),
 		Path:   constants.DefaultWebSocketUrl,
 	}
 

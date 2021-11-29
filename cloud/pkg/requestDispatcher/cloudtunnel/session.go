@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gorilla/websocket"
 	"github.com/wonderivan/logger"
+	"keep/cloud/pkg/requestDispatcher/Router"
 	"keep/pkg/stream"
 	"keep/pkg/util/core/model"
 )
@@ -48,15 +49,12 @@ func (s *session) Serve() {
 		}
 		message, err := stream.ReadMessageFromTunnel(r)
 		if err != nil {
-			logger.Error("read message from tunnel: ", s.String(), err)
+			logger.Error("read message from tunnel error: ", s.String(), err)
 			return
-		} else if message.Header.ParentID != "" {
-			//beehiveContext.SendResp(*message)
-			logger.Info("received message from tunnel: ", message)
 		} else {
 			//group := message.Router.Group
 			//beehiveContext.SendToGroup(group, *message)
-			logger.Info("received message from tunnel: ", message)
+			Router.MessageDispatcher(message)
 		}
 
 	}
