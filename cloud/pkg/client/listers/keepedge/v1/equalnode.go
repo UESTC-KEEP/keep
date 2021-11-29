@@ -19,11 +19,10 @@ limitations under the License.
 package v1
 
 import (
-	v1 "keep/cloud/pkg/k8sclient/crd_engin/keepcrd/pkg/apis/keepedge/v1"
-
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/client-go/tools/cache"
+	v12 "keep/cloud/pkg/equalnodecontroller/pkg/apis/keepedge/v1"
 )
 
 // EqualNodeLister helps list EqualNodes.
@@ -31,7 +30,7 @@ import (
 type EqualNodeLister interface {
 	// List lists all EqualNodes in the indexer.
 	// Objects returned here must be treated as read-only.
-	List(selector labels.Selector) (ret []*v1.EqualNode, err error)
+	List(selector labels.Selector) (ret []*v12.EqualNode, err error)
 	// EqualNodes returns an object that can list and get EqualNodes.
 	EqualNodes(namespace string) EqualNodeNamespaceLister
 	EqualNodeListerExpansion
@@ -48,9 +47,9 @@ func NewEqualNodeLister(indexer cache.Indexer) EqualNodeLister {
 }
 
 // List lists all EqualNodes in the indexer.
-func (s *equalNodeLister) List(selector labels.Selector) (ret []*v1.EqualNode, err error) {
+func (s *equalNodeLister) List(selector labels.Selector) (ret []*v12.EqualNode, err error) {
 	err = cache.ListAll(s.indexer, selector, func(m interface{}) {
-		ret = append(ret, m.(*v1.EqualNode))
+		ret = append(ret, m.(*v12.EqualNode))
 	})
 	return ret, err
 }
@@ -65,10 +64,10 @@ func (s *equalNodeLister) EqualNodes(namespace string) EqualNodeNamespaceLister 
 type EqualNodeNamespaceLister interface {
 	// List lists all EqualNodes in the indexer for a given namespace.
 	// Objects returned here must be treated as read-only.
-	List(selector labels.Selector) (ret []*v1.EqualNode, err error)
+	List(selector labels.Selector) (ret []*v12.EqualNode, err error)
 	// Get retrieves the EqualNode from the indexer for a given namespace and name.
 	// Objects returned here must be treated as read-only.
-	Get(name string) (*v1.EqualNode, error)
+	Get(name string) (*v12.EqualNode, error)
 	EqualNodeNamespaceListerExpansion
 }
 
@@ -80,21 +79,21 @@ type equalNodeNamespaceLister struct {
 }
 
 // List lists all EqualNodes in the indexer for a given namespace.
-func (s equalNodeNamespaceLister) List(selector labels.Selector) (ret []*v1.EqualNode, err error) {
+func (s equalNodeNamespaceLister) List(selector labels.Selector) (ret []*v12.EqualNode, err error) {
 	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m interface{}) {
-		ret = append(ret, m.(*v1.EqualNode))
+		ret = append(ret, m.(*v12.EqualNode))
 	})
 	return ret, err
 }
 
 // Get retrieves the EqualNode from the indexer for a given namespace and name.
-func (s equalNodeNamespaceLister) Get(name string) (*v1.EqualNode, error) {
+func (s equalNodeNamespaceLister) Get(name string) (*v12.EqualNode, error) {
 	obj, exists, err := s.indexer.GetByKey(s.namespace + "/" + name)
 	if err != nil {
 		return nil, err
 	}
 	if !exists {
-		return nil, errors.NewNotFound(v1.Resource("equalnode"), name)
+		return nil, errors.NewNotFound(v12.Resource("equalnode"), name)
 	}
-	return obj.(*v1.EqualNode), nil
+	return obj.(*v12.EqualNode), nil
 }

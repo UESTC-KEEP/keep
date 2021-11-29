@@ -4,7 +4,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"keep/cloud/pkg/k8sclient/crd_engin/keepcrd/pkg/apis/keepedge"
+	"keep/cloud/pkg/equalnodecontroller/pkg/apis/keepedge"
 )
 
 var SchemeGroupVersion = schema.GroupVersion{

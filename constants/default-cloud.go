@@ -20,7 +20,7 @@ const (
 	// DefaultMasterMetricTimeout 获取每台master  metrics信息的超时时间
 	DefaultMasterMetricTimeout = 5000
 	DefaultMasterLBPort        = 6443
-	DefaultRedisServerIp       = "192.168.1.140"
+	DefaultRedisServerIp       = DefaultMasterLBIp
 	DefaultRedisServerPort     = 32379
 	DefaultRedisConfigMap      = "/etc/keepedge/ymls/redis-standalone-conf.yaml"
 	DefaultRedisSVC            = "/etc/keepedge/ymls/redis-svc.yaml"
@@ -43,6 +43,13 @@ const (
 
 const (
 	DefaultPromServerMetricsPort = 20080
+)
+
+// equalnodeController配置
+const (
+	DefaultMasterURL       = DefaultMasterLBIp
+	DefaultKubeConfig      = "/home/et/.kube/config"
+	DefaultAlsoLogToStdErr = true
 )
 
 //LogPublisher

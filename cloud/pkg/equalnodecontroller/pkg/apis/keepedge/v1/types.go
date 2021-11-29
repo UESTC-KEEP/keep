@@ -24,6 +24,5 @@ type EqualNodeSpec struct {
 type EqualNodeList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata"`
-
-	Items []EqualNode `json:"items"`
+	Items           []EqualNode `json:"items"`
 }

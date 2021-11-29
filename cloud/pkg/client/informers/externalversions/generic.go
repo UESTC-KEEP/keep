@@ -20,10 +20,9 @@ package externalversions
 
 import (
 	"fmt"
-	v1 "keep/cloud/pkg/k8sclient/crd_engin/keepcrd/pkg/apis/keepedge/v1"
-
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
+	"keep/cloud/pkg/equalnodecontroller/pkg/apis/keepedge/v1"
 )
 
 // GenericInformer is type of SharedIndexInformer which will locate and delegate to other

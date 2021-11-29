@@ -23,7 +23,7 @@ import (
 	versioned "keep/cloud/pkg/client/clientset/versioned"
 	internalinterfaces "keep/cloud/pkg/client/informers/externalversions/internalinterfaces"
 	v1 "keep/cloud/pkg/client/listers/keepcrd/v1"
-	keepcrdv1 "keep/cloud/pkg/k8sclient/crd_engin/keepcrd/pkg/apis/keepedge/v1"
+	keepcrdv1 "keep/cloud/pkg/equalnodecontroller/pkg/apis/keepedge/v1"
 	time "time"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

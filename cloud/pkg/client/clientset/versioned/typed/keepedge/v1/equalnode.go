@@ -21,7 +21,7 @@ package v1
 import (
 	"context"
 	scheme "keep/cloud/pkg/client/clientset/versioned/scheme"
-	v1 "keep/cloud/pkg/k8sclient/crd_engin/keepcrd/pkg/apis/keepedge/v1"
+	"keep/cloud/pkg/equalnodecontroller/pkg/apis/keepedge/v1"
 	"time"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

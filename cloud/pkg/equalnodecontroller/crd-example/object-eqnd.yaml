@@ -7,6 +7,3 @@ spec:
   nodes:
     - edge-mini-1
     - edge-zlj-1
-
-
-  ../../k8s.io/code-generator/generate-groups.sh all keepedge/pkg/client keepedge/pkg/apis keepedge:v1

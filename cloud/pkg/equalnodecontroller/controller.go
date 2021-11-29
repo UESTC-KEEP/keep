@@ -1,8 +1,9 @@
-package main
+package equalnodecontroller
 
 // $GOPATH/src/k8s.io/code-generator/generate-groups.sh all keep/cloud/pkg/client keep/cloud/pkg/k8sclient/crd_engin/keepedge/pkg/apis keepedge:v1
 import (
 	"fmt"
+	keepcrdv1 "keep/cloud/pkg/equalnodecontroller/pkg/apis/keepedge/v1"
 	"time"
 
 	"github.com/golang/glog"
@@ -22,7 +23,6 @@ import (
 	equalnodescheme "keep/cloud/pkg/client/clientset/versioned/scheme"
 	informers "keep/cloud/pkg/client/informers/externalversions/keepedge/v1"
 	listers "keep/cloud/pkg/client/listers/keepedge/v1"
-	keepcrdv1 "keep/cloud/pkg/k8sclient/crd_engin/keepcrd/pkg/apis/keepedge/v1"
 )
 
 const controllerAgentName = "student-controller"

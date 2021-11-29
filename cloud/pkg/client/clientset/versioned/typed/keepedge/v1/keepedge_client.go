@@ -19,10 +19,9 @@ limitations under the License.
 package v1
 
 import (
-	"keep/cloud/pkg/client/clientset/versioned/scheme"
-	v1 "keep/cloud/pkg/k8sclient/crd_engin/keepcrd/pkg/apis/keepedge/v1"
-
 	rest "k8s.io/client-go/rest"
+	"keep/cloud/pkg/client/clientset/versioned/scheme"
+	"keep/cloud/pkg/equalnodecontroller/pkg/apis/keepedge/v1"
 )
 
 type KeepedgeV1Interface interface {

@@ -33,7 +33,6 @@ func Register(k *cloudagent.K8sClient) {
 		os.Exit(1)
 	}
 	core.Register(k8sclient)
-
 }
 
 func (k *K8sClient) Cleanup() {

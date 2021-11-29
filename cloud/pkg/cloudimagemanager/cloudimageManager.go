@@ -1,7 +1,7 @@
 package cloudimageManager
 
 import (
-	"keep/cloud/pkg/cloudimageManager/config"
+	"keep/cloud/pkg/cloudimagemanager/config"
 	"keep/cloud/pkg/common/modules"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"keep/pkg/util/core"
