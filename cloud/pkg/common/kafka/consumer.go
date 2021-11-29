@@ -46,8 +46,9 @@ func (cs *Consumer) Errors() <-chan error {
 	return cs.consumer.Errors()
 }
 
-func Subscribe(address []string, topic string, groupId string, ans chan *sarama.ConsumerMessage)  {
+func Subscribe(address []string, topic string, groupId string ,ans chan *ConsumerMessage) {
 	config :=NewConfig()
+	// ans := make(chan *sarama.ConsumerMessage)
 	c , err := InitOneConsumerOfGroup(address, topic, groupId, config)
 	if err!=nil{
 		log.Println(err)
