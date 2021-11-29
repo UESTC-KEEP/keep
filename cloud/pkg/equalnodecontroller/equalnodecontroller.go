@@ -1,7 +1,9 @@
 package equalnodecontroller
 
 import (
+	"fmt"
 	"github.com/golang/glog"
+	flag "github.com/spf13/pflag"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 	"keep/cloud/pkg/client/clientset/versioned"
@@ -37,6 +39,7 @@ func (eqndc *EqualNodeController) Enable() bool {
 }
 
 func (eqndc *EqualNodeController) Start() {
+	flag.Parse()
 	go StartEqualNodecontroller()
 }
 
@@ -47,13 +50,15 @@ func NewEqualNodeLister(enable bool) *EqualNodeController {
 }
 
 func StartEqualNodecontroller() {
-	//flag.Parse()
 
 	// 处理信号量
 	stopCh := signals.SetupSignalHandler()
 	masterURL, kubeconfig := config.Config.MasterURL, config.Config.KubeConfig
+	fmt.Println(masterURL, kubeconfig)
 	// 处理入参
-	cfg, err := clientcmd.BuildConfigFromFlags(masterURL, kubeconfig)
+	//K8sConfig, err = clientcmd.BuildConfigFromFlags("", Config.KubeConfigFilePath)
+	// 在配置文件中有ip不再写ip否则出错
+	cfg, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
 	if err != nil {
 		glog.Fatalf("Error building kubeconfig: %s", err.Error())
 	}

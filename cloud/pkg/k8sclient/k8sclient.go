@@ -7,7 +7,6 @@ import (
 	"keep/cloud/pkg/common/modules"
 	k8sclientconfig "keep/cloud/pkg/k8sclient/config"
 	crd_engin "keep/cloud/pkg/k8sclient/crd_engin"
-	metrics_server "keep/cloud/pkg/k8sclient/metrics-server"
 	naive_engine "keep/cloud/pkg/k8sclient/naive-engine"
 	"keep/constants"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
@@ -64,7 +63,7 @@ func (k *K8sClient) Start() {
 	if err != nil {
 		logger.Error("创建crd失败：", err)
 	}
-	metrics_server.NewMetricServerImpl().CheckCadvisorStatus([]string{"192.168.1.140:6443", "192.168.1.141:6443"})
+	//metrics_server.NewMetricServerImpl().CheckCadvisorStatus([]string{"192.168.1.140:6443", "192.168.1.141:6443"})
 	//var count int
 	//for {
 	//	count++

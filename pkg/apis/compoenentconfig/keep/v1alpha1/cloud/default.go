@@ -50,7 +50,7 @@ func NewDefaultEdgeAgentConfig() *CloudAgentConfig {
 			EqualNodeController: &EqualNodeController{
 				Enable:          true,
 				MasterURL:       constants.DefaultMasterURL,
-				KubeConfig:      constants.DefaultKubeConfig,
+				KubeConfig:      *kubeconfig,
 				AlsoLogToStdErr: constants.DefaultAlsoLogToStdErr,
 			},
 		},
