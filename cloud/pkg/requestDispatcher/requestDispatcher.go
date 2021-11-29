@@ -2,6 +2,7 @@ package requestDispatcher
 
 import (
 	"keep/cloud/pkg/common/modules"
+	"keep/cloud/pkg/requestDispatcher/cloudtunnel"
 	requestDispatcherconfig "keep/cloud/pkg/requestDispatcher/config"
 	"keep/cloud/pkg/requestDispatcher/receiver"
 	"keep/constants"
@@ -16,6 +17,8 @@ type RequestDispatcher struct {
 	HTTPPort      int
 	WebSocketPort int
 }
+
+var DoneTLSTunnelCerts = make(chan bool, 1)
 
 func Register(r *cloudagent.RequestDispatcher) {
 	requestDispatcherconfig.InitConfigure(r)
@@ -51,8 +54,8 @@ func (r *RequestDispatcher) Start() {
 		kplogger.Error(err)
 	}
 	//TODO: Will improve in the future
-	//DoneTLSTunnelCerts <- true
-	//close(DoneTLSTunnelCerts)
+	DoneTLSTunnelCerts <- true
+	close(DoneTLSTunnelCerts)
 
 	// if err := receiver.GenerateToken(); err != nil {
 	// 	klog.Exit(err)
@@ -62,8 +65,7 @@ func (r *RequestDispatcher) Start() {
 	// HttpServer mainly used to issue certificates for the edge
 	// receiver.StartReceiver()
 
-	receiver.StartWebsocketServer()
-
+	go cloudtunnel.StartWebsocketServer()
 }
 func (r *RequestDispatcher) Enable() bool {
 	return r.enable

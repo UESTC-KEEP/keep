@@ -7,6 +7,7 @@ import (
 	"keep/edge/pkg/edgepublisher/chanmsgqueen"
 	edgepublisherconfig "keep/edge/pkg/edgepublisher/config"
 	"keep/edge/pkg/edgepublisher/publisher"
+	edgetunnel "keep/edge/pkg/edgepublisher/tunnel"
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 	"keep/pkg/util/core"
 	"net/http"
@@ -65,12 +66,14 @@ type EdgePublisher struct {
 	tlscertfile       string
 	tlsprivatekeyfile string
 	edgemsgqueens     []string
+	hostnameOverride  string
+	nodeIP            string
 }
 
 // Register 注册healthzagent模块
-func Register(ep *edgeagent.EdgePublisher) {
+func Register(ep *edgeagent.EdgePublisher, nodeName, nodeIP string) {
 	edgepublisherconfig.InitConfigure(ep)
-	edgepublisher, err := NewEdgePublisher(ep.Enable)
+	edgepublisher, err := NewEdgePublisher(ep.Enable, nodeName, nodeIP)
 	if err != nil {
 		logger.Error("初始化logsagent失败...:", err)
 		os.Exit(1)
@@ -106,6 +109,7 @@ func (l *EdgePublisher) Start() {
 	go StartEdgePublisher()
 	bufferpooler.StartListenLogMsg()
 	publisher.ReadQueueAndPublish()
+	go edgetunnel.StartEdgeTunnel(l.hostnameOverride, l.nodeIP)
 }
 
 // StartEdgePublisher 边端健康检测 20350端口的/用于云端对边端进行健康性  存活性检测
@@ -136,8 +140,10 @@ func EdgeAgentHealthCheck(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func NewEdgePublisher(enable bool) (*EdgePublisher, error) {
+func NewEdgePublisher(enable bool, hostnameOverride, nodeIP string) (*EdgePublisher, error) {
 	return &EdgePublisher{
-		enable: enable,
+		enable:           enable,
+		hostnameOverride: hostnameOverride,
+		nodeIP:           nodeIP,
 	}, nil
 }

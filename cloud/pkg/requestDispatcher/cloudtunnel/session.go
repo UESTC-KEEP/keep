@@ -5,11 +5,10 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/wonderivan/logger"
 	"keep/pkg/stream"
-	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/core/model"
 )
 
-type Session struct {
+type session struct {
 	//表示与边缘端的一个连接id
 	sessionID string
 	//云与边缘之间的websocket隧道
@@ -18,11 +17,11 @@ type Session struct {
 	tunnelClosed bool
 }
 
-func (s *Session) WriteMessageToTunnel(m *model.Message) error {
+func (s *session) writeMessageToTunnel(m *model.Message) error {
 	return s.tunnel.WriteMessage(m)
 }
 
-func (s *Session) Close() {
+func (s *session) Close() {
 	err := s.tunnel.Close()
 	if err != nil {
 		logger.Error("close tunnel failed:", err)
@@ -30,11 +29,11 @@ func (s *Session) Close() {
 	s.tunnelClosed = true
 }
 
-func (s *Session) String() string {
+func (s *session) String() string {
 	return fmt.Sprintf("Tunnel session [%v]", s.sessionID)
 }
 
-func (s *Session) Serve() {
+func (s *session) Serve() {
 	defer s.Close()
 
 	for {
@@ -52,10 +51,12 @@ func (s *Session) Serve() {
 			logger.Error("read message from tunnel: ", s.String(), err)
 			return
 		} else if message.Header.ParentID != "" {
-			beehiveContext.SendResp(*message)
+			//beehiveContext.SendResp(*message)
+			logger.Info("received message from tunnel: ", message)
 		} else {
-			group := message.Router.Group
-			beehiveContext.SendToGroup(group, *message)
+			//group := message.Router.Group
+			//beehiveContext.SendToGroup(group, *message)
+			logger.Info("received message from tunnel: ", message)
 		}
 
 	}

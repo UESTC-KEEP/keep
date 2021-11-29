@@ -8,28 +8,30 @@ import (
 	"github.com/emicklei/go-restful"
 	"github.com/gorilla/websocket"
 	"github.com/wonderivan/logger"
-	"io/ioutil"
+	"keep/cloud/pkg/common/modules"
+	"keep/cloud/pkg/requestDispatcher/config"
 	"keep/constants"
 	"keep/pkg/stream"
 	beehiveContext "keep/pkg/util/core/context"
+	"keep/pkg/util/core/model"
 	"net/http"
 	"strings"
 	"sync"
 	"time"
 )
 
-type TunnelServer struct {
+type tunnelServer struct {
 	container  *restful.Container
 	upgrader   websocket.Upgrader
 	sync.Mutex //
-	sessions   map[string]*Session
+	sessions   map[string]*session
 	nodeNameIP sync.Map
 }
 
-func newTunnelServer() *TunnelServer {
-	return &TunnelServer{
+func newTunnelServer() *tunnelServer {
+	return &tunnelServer{
 		container: restful.NewContainer(),
-		sessions:  make(map[string]*Session),
+		sessions:  make(map[string]*session),
 		upgrader: websocket.Upgrader{
 			HandshakeTimeout: time.Second * 2,
 			ReadBufferSize:   1024,
@@ -42,7 +44,7 @@ func newTunnelServer() *TunnelServer {
 	}
 }
 
-func (s *TunnelServer) installDefaultHandler() {
+func (s *tunnelServer) installDefaultHandler() {
 	ws := new(restful.WebService)
 	ws.Path(constants.DefaultWebSocketUrl)
 	ws.Route(ws.GET("/").
@@ -50,24 +52,24 @@ func (s *TunnelServer) installDefaultHandler() {
 	s.container.Add(ws)
 }
 
-func (s *TunnelServer) addSession(key string, session *Session) {
+func (s *tunnelServer) addSession(key string, session *session) {
 	s.Lock()
 	s.sessions[key] = session
 	s.Unlock()
 }
 
-func (s *TunnelServer) getSession(id string) (*Session, bool) {
+func (s *tunnelServer) getSession(id string) (*session, bool) {
 	s.Lock()
 	defer s.Unlock()
 	sess, ok := s.sessions[id]
 	return sess, ok
 }
 
-func (s *TunnelServer) addNodeIP(node, ip string) {
+func (s *tunnelServer) addNodeIP(node, ip string) {
 	s.nodeNameIP.Store(node, ip)
 }
 
-func (s *TunnelServer) getNodeIP(node string) (string, bool) {
+func (s *tunnelServer) getNodeIP(node string) (string, bool) {
 	ip, ok := s.nodeNameIP.Load(node)
 	if !ok {
 		return "", ok
@@ -75,7 +77,7 @@ func (s *TunnelServer) getNodeIP(node string) (string, bool) {
 	return ip.(string), ok
 }
 
-func (s *TunnelServer) connect(r *restful.Request, w *restful.Response) {
+func (s *tunnelServer) connect(r *restful.Request, w *restful.Response) {
 	hostnameOverride := r.HeaderParameter(constants.SessionKeyHostNameOverride)
 	internalIP := r.HeaderParameter(constants.SessionKeyInternalIP)
 	if internalIP == "" {
@@ -86,7 +88,7 @@ func (s *TunnelServer) connect(r *restful.Request, w *restful.Response) {
 		return
 	}
 	logger.Info("get a new tunnel agent: ", hostnameOverride, internalIP)
-	session := &Session{
+	session := &session{
 		tunnel:    stream.NewDefaultTunnel(con),
 		sessionID: hostnameOverride,
 	}
@@ -97,34 +99,13 @@ func (s *TunnelServer) connect(r *restful.Request, w *restful.Response) {
 	session.Serve()
 }
 
-func (s *TunnelServer) Start() {
+func (s *tunnelServer) Start() {
 	s.installDefaultHandler()
-	var data []byte
-	var key []byte
-	var cert []byte
-
-	data, err := ioutil.ReadFile("/etc/keepedge/ca/rootCA.crt")
-	if err == nil {
-		block, _ := pem.Decode(data)
-		data = block.Bytes
-	}
-
-	key, err = ioutil.ReadFile("/etc/keepedge/certs/server.key")
-	if err == nil {
-		block, _ := pem.Decode(key)
-		key = block.Bytes
-	}
-
-	cert, err = ioutil.ReadFile("/etc/keepedge/certs/server.crt")
-	if err == nil {
-		block, _ := pem.Decode(cert)
-		cert = block.Bytes
-	}
 
 	pool := x509.NewCertPool()
-	pool.AppendCertsFromPEM(pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: data}))
+	pool.AppendCertsFromPEM(pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: config.Config.Ca}))
 
-	certificate, err := tls.X509KeyPair(pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: cert}), pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: key}))
+	certificate, err := tls.X509KeyPair(pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: config.Config.Cert}), pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: config.Config.Key}))
 	if err != nil {
 		logger.Error("Failed to load TLSTunnelCert and key")
 		panic(err)
@@ -147,12 +128,13 @@ func (s *TunnelServer) Start() {
 		logger.Fatal("Start tunnelServer error", err)
 		return
 	}
-	go s.sendMessageToEdge()
+	go s.sendBeehiveMessageToEdge()
 }
 
-func (s *TunnelServer) sendMessageToEdge() {
+func (s *tunnelServer) sendBeehiveMessageToEdge() {
+	logger.Info("send message to edge goroutine started")
 	for {
-		msg, err := beehiveContext.Receive("cloudTunnel")
+		msg, err := beehiveContext.Receive(modules.RequestDispatcherModule)
 		logger.Info("send message to edge: ", msg)
 		if err != nil {
 			logger.Info("receive not Message format message")
@@ -170,10 +152,22 @@ func (s *TunnelServer) sendMessageToEdge() {
 			logger.Error("node: ", nodeID, "doesn't exist, send message error")
 			continue
 		}
-		err = session.WriteMessageToTunnel(&msg)
+		err = session.writeMessageToTunnel(&msg)
 		if err != nil {
 			logger.Error("write to tunnel error, edgenode", nodeID)
 			continue
 		}
+	}
+}
+
+func (s *tunnelServer) SendToEdge(edge string, msg *model.Message) {
+	session, ok := s.getSession(edge)
+	if !ok {
+		logger.Error("no such edge node")
+	}
+
+	err := session.writeMessageToTunnel(msg)
+	if err != nil {
+		logger.Error("write tunnel error: ", err)
 	}
 }

@@ -101,6 +101,8 @@ type EdgePublisher struct {
 	TLSCertFile       string        `json:"tlsCertFile,omitempty"`
 	TLSPrivateKeyFile string        `json:"tlsPrivateKeyFile,omitempty"`
 	BeehiveTimeout    time.Duration `json:"beehive_timeout"`
+	HostnameOverride  string        `json:"hostnameOverride"`
+	LocalIP           string        `json:"localIP"`
 }
 
 //EdgeTwin 模块定义
