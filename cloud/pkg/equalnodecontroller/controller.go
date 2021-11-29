@@ -3,7 +3,9 @@ package equalnodecontroller
 // $GOPATH/src/k8s.io/code-generator/generate-groups.sh all keep/cloud/pkg/client keep/cloud/pkg/k8sclient/crd_engin/keepedge/pkg/apis keepedge:v1
 import (
 	"fmt"
+	"github.com/wonderivan/logger"
 	keepcrdv1 "keep/cloud/pkg/equalnodecontroller/pkg/apis/keepedge/v1"
+	"keep/pkg/util/kplogger"
 	"time"
 
 	"github.com/golang/glog"
@@ -54,9 +56,9 @@ func NewController(
 	equalnodeInformer informers.EqualNodeInformer) *Controller {
 
 	utilruntime.Must(equalnodescheme.AddToScheme(scheme.Scheme))
-	glog.V(4).Info("Creating event broadcaster")
+	logger.Info("Creating event broadcaster")
 	eventBroadcaster := record.NewBroadcaster()
-	eventBroadcaster.StartLogging(glog.Infof)
+	eventBroadcaster.StartLogging(kplogger.Infof)
 	eventBroadcaster.StartRecordingToSink(&typedcorev1.EventSinkImpl{Interface: kubeclientset.CoreV1().Events("")})
 	recorder := eventBroadcaster.NewRecorder(scheme.Scheme, corev1.EventSource{Component: controllerAgentName})
 
@@ -69,7 +71,7 @@ func NewController(
 		recorder:           recorder,
 	}
 
-	glog.Info("Setting up event handlers")
+	logger.Info("Setting up event handlers")
 	// Set up an event handler for when Student resources change
 	equalnodeInformer.Informer().AddEventHandler(cache.ResourceEventHandlerFuncs{
 		AddFunc: controller.enqueueEqualNode,
@@ -93,12 +95,12 @@ func (c *Controller) Run(threadiness int, stopCh <-chan struct{}) error {
 	defer runtime.HandleCrash()
 	defer c.workqueue.ShutDown()
 
-	glog.Info("开始controller业务，开始一次缓存数据同步")
+	logger.Info("开始controller业务，开始一次缓存数据同步")
 	if ok := cache.WaitForCacheSync(stopCh, c.equalnodesSynced); !ok {
 		return fmt.Errorf("failed to wait for caches to sync")
 	}
 
-	glog.Info("worker启动")
+	logger.Info("worker启动")
 	for i := 0; i < threadiness; i++ {
 		go wait.Until(c.runWorker, time.Second, stopCh)
 	}
@@ -142,7 +144,7 @@ func (c *Controller) processNextWorkItem() bool {
 		}
 
 		c.workqueue.Forget(obj)
-		glog.Infof("Successfully synced '%s'", key)
+		logger.Info("Successfully synced ", key)
 		return nil
 	}(obj)
 
@@ -168,7 +170,7 @@ func (c *Controller) syncHandler(key string) error {
 	if err != nil {
 		// 如果Student对象被删除了，就会走到这里，所以应该在这里加入执行
 		if errors.IsNotFound(err) {
-			glog.Infof("Student对象被删除，请在这里执行实际的删除业务: %s/%s ...", namespace, name)
+			logger.Info("Student对象被删除，请在这里执行实际的删除业务: %s ", namespace, " ... ", name)
 
 			return nil
 		}
@@ -177,9 +179,8 @@ func (c *Controller) syncHandler(key string) error {
 
 		return err
 	}
-
-	glog.Infof("这里是equalnode对象的期望状态: %#v ...", equalnode)
-	glog.Infof("实际状态是从业务层面得到的，此处应该去的实际状态，与期望状态做对比，并根据差异做出响应(新增或者删除)")
+	logger.Info("这里是equalnode对象的期望状态:  ", equalnode, "  ...")
+	logger.Info("实际状态是从业务层面得到的，此处应该去的实际状态，与期望状态做对比，并根据差异做出响应(新增或者删除)")
 
 	c.recorder.Event(equalnode, corev1.EventTypeNormal, SuccessSynced, MessageResourceSynced)
 	return nil

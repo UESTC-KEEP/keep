@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/golang/glog"
 	flag "github.com/spf13/pflag"
+	"github.com/wonderivan/logger"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 	"keep/cloud/pkg/client/clientset/versioned"
@@ -50,7 +51,6 @@ func NewEqualNodeLister(enable bool) *EqualNodeController {
 }
 
 func StartEqualNodecontroller() {
-
 	// 处理信号量
 	stopCh := signals.SetupSignalHandler()
 	masterURL, kubeconfig := config.Config.MasterURL, config.Config.KubeConfig
@@ -60,17 +60,17 @@ func StartEqualNodecontroller() {
 	// 在配置文件中有ip不再写ip否则出错
 	cfg, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
 	if err != nil {
-		glog.Fatalf("Error building kubeconfig: %s", err.Error())
+		logger.Fatal("Error building kubeconfig: ", err.Error())
 	}
 
 	kubeClient, err := kubernetes.NewForConfig(cfg)
 	if err != nil {
-		glog.Fatalf("Error building kubernetes clientset: %s", err.Error())
+		logger.Fatal("Error building kubernetes clientset:", err.Error())
 	}
 
 	equalnodeClient, err := versioned.NewForConfig(cfg)
 	if err != nil {
-		glog.Fatalf("Error building  clientset: %s", err.Error())
+		logger.Fatal("Error building  clientset:", err.Error())
 	}
 
 	equalnodeInformerFactory := externalversions.NewSharedInformerFactory(equalnodeClient, time.Second*30)
