@@ -1,2 +1,3 @@
 /edge/cmd/edgeagent/edgeagent
 /edge/cmd/edgeagent/go_build_keep_edge_cmd_edgeagent
+/edge/pkg/edgetunnel/
