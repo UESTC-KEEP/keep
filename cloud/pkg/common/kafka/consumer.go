@@ -1,14 +1,8 @@
 package kafka
 
 import (
-	"github.com/Shopify/sarama"
 	saramaCluster "github.com/bsm/sarama-cluster"
-	"log"
 )
-
-type ConsumerMessage = sarama.ConsumerMessage
-type NotifyMessage = saramaCluster.Notification
-type ConsumerError = sarama.ConsumerError
 
 type Consumer struct {
 	consumer *saramaCluster.Consumer
@@ -44,41 +38,5 @@ func (cs *Consumer) Notifications() <-chan *NotifyMessage {		// 发生 consumer 
 
 func (cs *Consumer) Errors() <-chan error {
 	return cs.consumer.Errors()
-}
-
-func Subscribe(address []string, topic string, groupId string ,ans chan *ConsumerMessage) {
-	config :=NewConfig()
-	// ans := make(chan *sarama.ConsumerMessage)
-	c , err := InitOneConsumerOfGroup(address, topic, groupId, config)
-	if err!=nil{
-		log.Println(err)
-		return
-	}
-	defer c.Close()
-
-	go func() {
-		for err := range c.Errors() {
-			log.Printf("groupId=%s, Error= %s\n", c.GroupId, err.Error())
-		}
-	}()
-
-	// consume notifications
-	go func() {
-		for ntf := range c.Notifications() {
-			log.Printf("groupId=%s, Rebalanced Info= %+v \n", c.GroupId, ntf)
-		}
-	}()
-
-	for {
-		select {
-		case msg, ok := <-c.Recv():
-			if ok {
-
-				ans <- msg
-				//fmt.Fprintf(os.Stdout, "groupId=%s, topic=%s, partion=%d, offset=%d, key=%s, value=%s\n", c.GroupId, msg.Topic, msg.Partition, msg.Offset, msg.Key, msg.Value)
-				//c.MarkOffset(msg, "") // mark message as processed
-			}
-		}
-	}
 }
 

@@ -3,94 +3,108 @@ package kafka
 import (
 	"fmt"
 	"github.com/Shopify/sarama"
+	"log"
 	"time"
 )
 
-var Address = []string{"192.168.1.103:9092", "192.168.1.103:9093"}
+type ConsumerConfig struct {
+	Address []string
+	Topic string
+	GroupId string
+	Ans chan *ConsumerMessage
+}
 
-type KafkaMsgImpl struct {
-	KafkaMsg
-	PublisheMsg sarama.ProducerMessage
-	ReceiveMsg  sarama.ConsumerMessage
+type ProducerConfig struct {
+	Address []string
+	Topic string
+	Msg  chan string
 }
 
 // Subscribe 订阅/接收消息 consumer
-func (k *KafkaMsgImpl) Subscribe() error {
-	return nil
-}
+func (k *ConsumerConfig) Subscribe() error {
+	config :=NewConfig()
+	// ans := make(chan *sarama.ConsumerMessage)
+	c , err := InitOneConsumerOfGroup(k.Address, k.Topic, k.GroupId, config)
+	if err!=nil{
+		log.Println(err)
+		return err
+	}
+	defer c.Close()
 
-// UnSubscribe 取消订阅 consumer
-func (k *KafkaMsgImpl) UnSubscribe() error {
-	return nil
+	go func() {
+		for err := range c.Errors() {
+			log.Printf("groupId=%s, Error= %s\n", c.GroupId, err.Error())
+		}
+	}()
+
+	// consume notifications
+	go func() {
+		for ntf := range c.Notifications() {
+			log.Printf("groupId=%s, Rebalanced Info= %+v \n", c.GroupId, ntf)
+		}
+	}()
+
+	for {
+		select {
+		case msg, ok := <-c.Recv():
+			if ok {
+				k.Ans <- msg
+				//fmt.Fprintf(os.Stdout, "groupId=%s, topic=%s, partion=%d, offset=%d, key=%s, value=%s\n", c.GroupId, msg.Topic, msg.Partition, msg.Offset, msg.Key, msg.Value)
+			}
+		}
+	}
 }
 
 // Publish 向集群发送消息 producer
-func (k *KafkaMsgImpl) Publish() error {
+func (k *ProducerConfig) Publish() {
+	config := NewConfig()
 
-	config := sarama.NewConfig()
-	//等待服务器所有副本都保存成功后的响应
-	config.Producer.RequiredAcks = sarama.WaitForAll
-	//随机向partition发送消息
-	config.Producer.Partitioner = sarama.NewRandomPartitioner
-	//是否等待成功和失败后的响应,只有上面的RequireAcks设置不是NoReponse这里才有用.
-	config.Producer.Return.Successes = true
-	config.Producer.Return.Errors = true
-	//设置使用的kafka版本,如果低于V0_10_0_0版本,消息中的timestrap没有作用.需要消费和生产同时配置
-	//注意，版本设置不对的话，kafka会返回很奇怪的错误，并且无法成功发送消息
-	config.Version = sarama.V0_10_0_1
-
-	fmt.Println("start make producer")
-	//使用配置,新建一个异步生产者
-	producer, e := sarama.NewAsyncProducer(Address, config)
-	if e != nil {
-		fmt.Println(e)
-		return e
+	produ, err := InitManualRetryAsyncProducer(k.Address, config)
+	if err != nil {
+		log.Println(err)
+		return
 	}
-	defer producer.AsyncClose() // 异步关闭，可继续读
+	defer produ.Close()
 
-	//循环判断哪个通道发送过来数据.
-	fmt.Println("start goroutine")
-	go func(p sarama.AsyncProducer) {
+	go func(p *AsyncProducer) {
 		for {
 			select {
-			case <-p.Successes(): // 对应上面的 Return.Successes = true
-				// fmt.Println("yifasong")
-				// fmt.Println("offset: ", suc.Offset, "timestamp: ", suc.Timestamp.String(), "partitions: ", suc.Partition)
-			case fail := <-p.Errors():
-				fmt.Println("err: ", fail.Err)
+				case  <-p.Successes():
+				//fmt.Println("发送成功")
+				//fmt.Println("offsetCfg:", suc.Offset, " partitions:", suc.Partition, " metadata:", suc.Metadata, " value:", value)
+				case fail := <-p.Errors():
+					fmt.Println("err: ", fail.Err)
 			}
 		}
-	}(producer)
+	}(produ)
 
-	var value string
-	for i := 0; ; i++ {
-		time.Sleep(500 * time.Millisecond)
-		time11 := time.Now()
-		value = "this is a message " + time11.Format("2006-01-02 15:04:05")
-
-		// 发送的消息,主题。
-		// 注意：这里的msg必须得是新构建的变量，不然你会发现发送过去的消息内容都是一样的，因为批次发送消息的关系。
-		msg := &sarama.ProducerMessage{
-			Topic: "topic001",
+	for msgvalue := range k.Msg {
+		//发送的消息,主题,key
+		msg := &ProducerMessage{
+			Topic: k.Topic,
 		}
-
 		//将字符串转化为字节数组
-		msg.Value = sarama.ByteEncoder(value)
-		//fmt.Println(value)
-
+		msg.Value = sarama.ByteEncoder(msgvalue)
 		//使用通道发送
-		producer.Input() <- msg
+		produ.Send() <- msg
+		time.Sleep(500 * time.Millisecond)
 	}
 }
 
-func (k *KafkaMsgImpl) GenerateConsumerGroup(groupname string, groupUUId string) error {
-	return nil
-}
+//// UnSubscribe 取消订阅 consumer
+//func (k *KafkaMsgImpl) UnSubscribe() error {
+//	return nil
+//}
 
-func (k *KafkaMsgImpl) JoinConsumerGroup(groupname string) error {
-	return nil
-}
-
-func (k *KafkaMsgImpl) DestroyConsumerGroup(groupname string) error {
-	return nil
-}
+//
+//func (k *KafkaMsgImpl) GenerateConsumerGroup(groupname string, groupUUId string) error {
+//	return nil
+//}
+//
+//func (k *KafkaMsgImpl) JoinConsumerGroup(groupname string) error {
+//	return nil
+//}
+//
+//func (k *KafkaMsgImpl) DestroyConsumerGroup(groupname string) error {
+//	return nil
+//}
