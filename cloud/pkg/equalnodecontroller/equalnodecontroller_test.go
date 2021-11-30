@@ -1,7 +1,10 @@
 package equalnodecontroller
 
-import "testing"
+import (
+	"keep/cloud/pkg/equalnodecontroller/controller"
+	"testing"
+)
 
 func TestWorker(t *testing.T) {
-	StartEqualNodecontroller()
+	controller.StartEqualNodecontroller()
 }

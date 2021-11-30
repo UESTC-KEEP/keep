@@ -1,4 +1,4 @@
-package equalnodecontroller
+package controller
 
 // $GOPATH/src/k8s.io/code-generator/generate-groups.sh all keep/cloud/pkg/client keep/cloud/pkg/k8sclient/crd_engin/keepedge/pkg/apis keepedge:v1
 import (
@@ -31,7 +31,7 @@ const controllerAgentName = "student-controller"
 
 const (
 	SuccessSynced         = "Synced"
-	MessageResourceSynced = "Student synced successfully"
+	MessageResourceSynced = "EqualNode synced successfully"
 )
 
 // Controller is the controller implementation for Student resources
