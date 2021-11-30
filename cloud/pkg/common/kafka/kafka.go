@@ -8,23 +8,24 @@ import (
 
 var Address = []string{"192.168.1.103:9092", "192.168.1.103:9093"}
 
-type KafkaMsg struct {
+type KafkaMsgImpl struct {
+	KafkaMsg
 	PublisheMsg sarama.ProducerMessage
 	ReceiveMsg  sarama.ConsumerMessage
 }
 
 // Subscribe 订阅/接收消息 consumer
-func (k *KafkaMsg) Subscribe() error {
+func (k *KafkaMsgImpl) Subscribe() error {
 	return nil
 }
 
 // UnSubscribe 取消订阅 consumer
-func (k *KafkaMsg) UnSubscribe() error {
+func (k *KafkaMsgImpl) UnSubscribe() error {
 	return nil
 }
 
 // Publish 向集群发送消息 producer
-func (k *KafkaMsg) Publish() error {
+func (k *KafkaMsgImpl) Publish() error {
 
 	config := sarama.NewConfig()
 	//等待服务器所有副本都保存成功后的响应
@@ -82,14 +83,14 @@ func (k *KafkaMsg) Publish() error {
 	}
 }
 
-func (k *KafkaMsg) GenerateConsumerGroup() error {
+func (k *KafkaMsgImpl) GenerateConsumerGroup(groupname string, groupUUId string) error {
 	return nil
 }
 
-func (k *KafkaMsg) JoinConsumerGroup() error {
+func (k *KafkaMsgImpl) JoinConsumerGroup(groupname string) error {
 	return nil
 }
 
-func (k *KafkaMsg) DestroyConsumerGroup() error {
+func (k *KafkaMsgImpl) DestroyConsumerGroup(groupname string) error {
 	return nil
 }
