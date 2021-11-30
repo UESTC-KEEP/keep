@@ -11,6 +11,7 @@ import (
 	restclient "k8s.io/client-go/rest"
 	"k8s.io/client-go/restmapper"
 	"k8s.io/client-go/tools/clientcmd"
+	"keep/cloud/pkg/common/client"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"sync"
 )
@@ -43,7 +44,8 @@ func GetClient() {
 	if err != nil {
 		logger.Error(err.Error())
 	}
-	Clientset, err = kubernetes.NewForConfig(K8sConfig)
+	//Clientset, err = kubernetes.NewForConfig(K8sConfig)
+	Clientset = client.GetKubeClient().(*kubernetes.Clientset)
 	if err != nil {
 		logger.Error(err.Error())
 		err = nil
