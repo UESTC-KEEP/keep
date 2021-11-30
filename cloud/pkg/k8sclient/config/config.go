@@ -1,7 +1,6 @@
 package config
 
 import (
-	"github.com/wonderivan/logger"
 	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/discovery"
@@ -13,6 +12,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	"keep/cloud/pkg/common/client"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
+	"keep/pkg/util/loggerv1.0.0"
 	"sync"
 )
 

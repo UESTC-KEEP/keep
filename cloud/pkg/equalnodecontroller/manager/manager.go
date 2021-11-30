@@ -1,9 +1,9 @@
 package manager
 
 import (
-	"github.com/wonderivan/logger"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
+	"keep/pkg/util/loggerv1.0.0"
 )
 
 type Manager interface {

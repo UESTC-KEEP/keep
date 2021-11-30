@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/mitchellh/go-ps"
-	"github.com/wonderivan/logger"
+	"keep/pkg/util/loggerv1.0.0"
 )
 
 func GracefulExit() {

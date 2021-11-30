@@ -16,11 +16,11 @@ import (
 	commonutil "keep/pkg/util"
 	"keep/pkg/util/core"
 	beehiveContext "keep/pkg/util/core/context"
+	"keep/pkg/util/loggerv1.0.0"
 	"net/http"
 	_ "net/http/pprof"
 
 	"github.com/spf13/cobra"
-	"github.com/wonderivan/logger"
 	"gopkg.in/yaml.v2"
 )
 

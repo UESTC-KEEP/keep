@@ -2,13 +2,13 @@ package equalnodecontroller
 
 import (
 	flag "github.com/spf13/pflag"
-	"github.com/wonderivan/logger"
 	"keep/cloud/pkg/common/informers"
 	"keep/cloud/pkg/common/modules"
 	"keep/cloud/pkg/equalnodecontroller/config"
 	"keep/cloud/pkg/equalnodecontroller/controller"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"keep/pkg/util/core"
+	"keep/pkg/util/loggerv1.0.0"
 )
 
 type EqualNodeController struct {

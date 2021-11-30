@@ -19,8 +19,8 @@ import (
 	"fmt"
 	"github.com/hpcloud/tail"
 	"github.com/spf13/cobra"
-	"github.com/wonderivan/logger"
 	"keep/constants"
+	"keep/pkg/util/loggerv1.0.0"
 	"time"
 )
 

@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
-	"github.com/wonderivan/logger"
+	"keep/pkg/util/loggerv1.0.0"
 )
 
 var clit *client.Client

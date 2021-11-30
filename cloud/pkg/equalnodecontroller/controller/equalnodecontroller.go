@@ -2,7 +2,6 @@ package controller
 
 import (
 	"github.com/golang/glog"
-	"github.com/wonderivan/logger"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
@@ -15,6 +14,7 @@ import (
 	"keep/cloud/pkg/equalnodecontroller/manager"
 	"keep/cloud/pkg/equalnodecontroller/pkg/signals"
 	beehiveContext "keep/pkg/util/core/context"
+	"keep/pkg/util/loggerv1.0.0"
 	"reflect"
 	"time"
 )
@@ -44,7 +44,7 @@ func NewEqualNodeController(crdInformerFactory crdinformers.SharedInformerFactor
 }
 
 func (eqndctl *EqualNodeController) TestController() {
-	logger.Error("开始监听......................")
+	logger.Info("Controller 开始监听.........")
 	for {
 		select {
 		case <-beehiveContext.Done():
@@ -74,7 +74,7 @@ func (eqndctl *EqualNodeController) equalNodeAdded(eqnd *crdv1.EqualNode) {
 	eqndctl.equalnodeManager.EqualNode.Store(eqnd.Name, eqnd)
 	logger.Info("----------- crd增加:  ")
 	logger.Info("----------- crd增加:  ", eqnd)
-	logger.Error(eqnd.Spec.Name, "      ", eqnd.Spec.Eqnd)
+	logger.Debug(eqnd.Spec.Name, "      ", eqnd.Spec.Eqnd)
 }
 
 func (eqndctl *EqualNodeController) equalNodeDeleted(eqnd *crdv1.EqualNode) {

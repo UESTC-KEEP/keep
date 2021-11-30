@@ -5,7 +5,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/sirupsen/logrus"
-	"github.com/wonderivan/logger"
 	"io"
 	"io/ioutil"
 	apiv1 "k8s.io/api/core/v1"
@@ -18,6 +17,7 @@ import (
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/restmapper"
 	"keep/cloud/pkg/k8sclient/config"
+	"keep/pkg/util/loggerv1.0.0"
 	"os"
 )
 

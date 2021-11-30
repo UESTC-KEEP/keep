@@ -2,7 +2,6 @@ package k8sclient
 
 import (
 	"github.com/gomodule/redigo/redis"
-	"github.com/wonderivan/logger"
 	v1 "k8s.io/api/core/v1"
 	"keep/cloud/pkg/common/modules"
 	k8sclientconfig "keep/cloud/pkg/k8sclient/config"
@@ -10,6 +9,7 @@ import (
 	"keep/constants"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"keep/pkg/util/core"
+	"keep/pkg/util/loggerv1.0.0"
 	"os"
 	"strconv"
 	"sync"
@@ -77,7 +77,7 @@ func checkRedisAliveness() {
 	port := k8sclientconfig.Config.RedisPort
 	_, err := redis.Dial("tcp", k8sclientconfig.Config.RedisIp+":"+strconv.Itoa(port))
 	if err != nil {
-		logger.Error("redis初始化失败...,err:", err)
+		logger.Warn("redis初始化失败...,err:", err)
 		logger.Debug("准备拉起redis...")
 		// 创建redis的configMap
 		naive_engine.CreatResourcesByYAML(constants.DefaultRedisConfigMap, constants.DefaultNameSpace)

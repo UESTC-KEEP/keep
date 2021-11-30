@@ -17,9 +17,9 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"github.com/wonderivan/logger"
 	"keep/constants"
 	"keep/pkg/util"
+	"keep/pkg/util/loggerv1.0.0"
 	"os"
 	"strings"
 	"time"

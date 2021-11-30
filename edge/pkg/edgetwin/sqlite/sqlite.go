@@ -4,10 +4,10 @@ import (
 	"database/sql"
 	_ "github.com/mattn/go-sqlite3"
 	uuid "github.com/satori/go.uuid"
-	"github.com/wonderivan/logger"
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/edgetwin/config"
 	beehiveContext "keep/pkg/util/core/context"
+	"keep/pkg/util/loggerv1.0.0"
 	"time"
 )
 

@@ -1,12 +1,12 @@
 package edgetwin
 
 import (
-	"github.com/wonderivan/logger"
 	"keep/edge/pkg/common/modules"
 	edgetwinconfig "keep/edge/pkg/edgetwin/config"
 	"keep/edge/pkg/edgetwin/sqlite"
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 	"keep/pkg/util/core"
+	"keep/pkg/util/loggerv1.0.0"
 	"os"
 )
 

@@ -1,7 +1,7 @@
 package core
 
 import (
-	"github.com/wonderivan/logger"
+	"keep/pkg/util/loggerv1.0.0"
 )
 
 const (

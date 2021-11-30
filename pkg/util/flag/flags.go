@@ -19,7 +19,7 @@ package flag
 import (
 	"fmt"
 	"github.com/spf13/pflag"
-	"github.com/wonderivan/logger"
+	"keep/pkg/util/loggerv1.0.0"
 	"os"
 	"sigs.k8s.io/yaml"
 	"strconv"

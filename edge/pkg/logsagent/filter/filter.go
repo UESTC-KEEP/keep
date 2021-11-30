@@ -3,12 +3,12 @@ package filter
 import (
 	"fmt"
 	beehiveContext "keep/pkg/util/core/context"
+	"keep/pkg/util/loggerv1.0.0"
 	"time"
 
 	//beehiveContext "github.com/kubeedge/beehive/pkg/core/context"
 	"keep/pkg/util/core/model"
 
-	"github.com/wonderivan/logger"
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/edgepublisher/bufferpooler"
 	"keep/edge/pkg/logsagent/config"

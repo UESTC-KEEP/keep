@@ -2,8 +2,8 @@ package tailf
 
 import (
 	"github.com/hpcloud/tail"
-	"github.com/wonderivan/logger"
 	"keep/edge/pkg/logsagent/filter"
+	"keep/pkg/util/loggerv1.0.0"
 	"time"
 )
 

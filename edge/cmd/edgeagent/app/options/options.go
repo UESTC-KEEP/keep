@@ -17,9 +17,9 @@ limitations under the License.
 package options
 
 import (
-	"github.com/wonderivan/logger"
 	"keep/constants"
 	"keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
+	"keep/pkg/util/loggerv1.0.0"
 )
 
 type EdgeAgentOptions struct {

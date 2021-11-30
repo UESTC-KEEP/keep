@@ -3,8 +3,8 @@ package bufferpooler
 import (
 	"fmt"
 	beehiveContext "keep/pkg/util/core/context"
-	//beehiveContext "github.com/kubeedge/beehive/pkg/core/context"
-	"github.com/wonderivan/logger"
+	"keep/pkg/util/loggerv1.0.0"
+
 	"keep/constants"
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/edgepublisher/chanmsgqueen"

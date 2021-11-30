@@ -1,9 +1,8 @@
 package Router
 
 import (
-	"github.com/wonderivan/logger"
-	"keep/cloud/pkg/common/kafka"
 	"keep/pkg/util/core/model"
+	"keep/pkg/util/loggerv1.0.0"
 	"sync"
 )
 
@@ -13,7 +12,7 @@ var kafkaOnce sync.Once
 
 func MessageDispatcher(msg *model.Message) {
 	kafkaOnce.Do(func() {
-		kafka.AsyncPro(Address, "topic", msgChan)
+		//kafka.AsyncProducer(Address, "topic", msgChan)
 	})
 
 	kafkaMsg := msg.Content.(string)

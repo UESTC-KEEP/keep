@@ -2,10 +2,10 @@ package edgetunnel
 
 import (
 	"github.com/gorilla/websocket"
-	"github.com/wonderivan/logger"
 	"keep/constants"
 	"keep/pkg/stream"
 	beehiveContext "keep/pkg/util/core/context"
+	"keep/pkg/util/loggerv1.0.0"
 	"sync"
 	"time"
 )

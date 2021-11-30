@@ -3,10 +3,10 @@ package controller
 // $GOPATH/src/k8s.io/code-generator/generate-groups.sh all keep/cloud/pkg/client keep/cloud/pkg/k8sclient/crd_engin/keepedge/pkg/apis keepedge:v1
 import (
 	"fmt"
-	"github.com/wonderivan/logger"
 	keepcrdv1 "keep/cloud/pkg/apis/keepedge/v1"
 	"keep/cloud/pkg/equalnodecontroller/constants"
 	"keep/pkg/util/kplogger"
+	"keep/pkg/util/loggerv1.0.0"
 	"time"
 
 	"github.com/golang/glog"

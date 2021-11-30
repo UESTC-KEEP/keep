@@ -3,11 +3,11 @@ package publisher
 
 import (
 	"fmt"
-	"github.com/wonderivan/logger"
 	"keep/edge/pkg/edgepublisher/chanmsgqueen"
 	"keep/edge/pkg/edgepublisher/config"
 	edgetunnel "keep/edge/pkg/edgepublisher/tunnel"
 	"keep/pkg/util/core/model"
+	"keep/pkg/util/loggerv1.0.0"
 )
 
 //

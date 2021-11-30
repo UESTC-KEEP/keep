@@ -16,8 +16,8 @@ limitations under the License.
 package main
 
 import (
-	"github.com/wonderivan/logger"
 	"keep/kpadm/cmd/kpadm/app"
+	"keep/pkg/util/loggerv1.0.0"
 )
 
 func main() {

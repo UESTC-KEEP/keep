@@ -3,7 +3,6 @@ package app
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/wonderivan/logger"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"keep/constants"
@@ -16,6 +15,7 @@ import (
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 	commonutil "keep/pkg/util"
 	"keep/pkg/util/core"
+	"keep/pkg/util/loggerv1.0.0"
 	"net/http"
 	"os"
 )

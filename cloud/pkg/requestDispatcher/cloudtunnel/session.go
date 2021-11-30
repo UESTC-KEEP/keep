@@ -3,10 +3,10 @@ package cloudtunnel
 import (
 	"fmt"
 	"github.com/gorilla/websocket"
-	"github.com/wonderivan/logger"
 	"keep/cloud/pkg/requestDispatcher/Router"
 	"keep/pkg/stream"
 	"keep/pkg/util/core/model"
+	"keep/pkg/util/loggerv1.0.0"
 )
 
 type session struct {
