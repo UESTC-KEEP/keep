@@ -6,7 +6,7 @@ import (
 	logsagentconfig "keep/edge/pkg/logsagent/config"
 	"keep/edge/pkg/logsagent/tailf"
 	"keep/pkg/util/core"
-	"keep/pkg/util/loggerv1.0.0"
+	"keep/pkg/util/loggerv1.0.1"
 
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 

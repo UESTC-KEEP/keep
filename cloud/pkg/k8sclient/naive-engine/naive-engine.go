@@ -17,7 +17,7 @@ import (
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/restmapper"
 	"keep/cloud/pkg/k8sclient/config"
-	"keep/pkg/util/loggerv1.0.0"
+	"keep/pkg/util/loggerv1.0.1"
 	"os"
 )
 

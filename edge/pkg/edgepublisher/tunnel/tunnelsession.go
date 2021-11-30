@@ -5,7 +5,7 @@ import (
 	"keep/constants"
 	"keep/pkg/stream"
 	beehiveContext "keep/pkg/util/core/context"
-	"keep/pkg/util/loggerv1.0.0"
+	"keep/pkg/util/loggerv1.0.1"
 	"sync"
 	"time"
 )

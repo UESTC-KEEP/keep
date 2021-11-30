@@ -7,7 +7,7 @@ import (
 	prome "keep/edge/pkg/healthzagent/promethus"
 	"keep/edge/pkg/healthzagent/server"
 	"keep/pkg/util/core"
-	"keep/pkg/util/loggerv1.0.0"
+	"keep/pkg/util/loggerv1.0.1"
 
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"

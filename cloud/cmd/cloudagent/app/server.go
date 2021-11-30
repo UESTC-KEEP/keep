@@ -16,7 +16,7 @@ import (
 	commonutil "keep/pkg/util"
 	"keep/pkg/util/core"
 	beehiveContext "keep/pkg/util/core/context"
-	"keep/pkg/util/loggerv1.0.0"
+	"keep/pkg/util/loggerv1.0.1"
 	"net/http"
 	_ "net/http/pprof"
 

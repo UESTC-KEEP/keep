@@ -12,7 +12,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	"keep/cloud/pkg/common/client"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
-	"keep/pkg/util/loggerv1.0.0"
+	"keep/pkg/util/loggerv1.0.1"
 	"sync"
 )
 

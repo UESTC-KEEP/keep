@@ -22,7 +22,7 @@ import (
 	"io/ioutil"
 	utilnet "k8s.io/apimachinery/pkg/util/net"
 	"keep/constants"
-	"keep/pkg/util/loggerv1.0.0"
+	"keep/pkg/util/loggerv1.0.1"
 	"net"
 	"os"
 	"os/exec"

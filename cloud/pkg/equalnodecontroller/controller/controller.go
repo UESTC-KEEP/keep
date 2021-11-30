@@ -6,7 +6,7 @@ import (
 	keepcrdv1 "keep/cloud/pkg/apis/keepedge/v1"
 	"keep/cloud/pkg/equalnodecontroller/constants"
 	"keep/pkg/util/kplogger"
-	"keep/pkg/util/loggerv1.0.0"
+	"keep/pkg/util/loggerv1.0.1"
 	"time"
 
 	"github.com/golang/glog"

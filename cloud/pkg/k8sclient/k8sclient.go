@@ -9,7 +9,7 @@ import (
 	"keep/constants"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"keep/pkg/util/core"
-	"keep/pkg/util/loggerv1.0.0"
+	"keep/pkg/util/loggerv1.0.1"
 	"os"
 	"strconv"
 	"sync"

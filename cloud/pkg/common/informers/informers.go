@@ -8,7 +8,7 @@ import (
 	"k8s.io/client-go/tools/cache"
 	crdinformers "keep/cloud/pkg/client/informers/externalversions"
 	"keep/cloud/pkg/common/client"
-	"keep/pkg/util/loggerv1.0.0"
+	"keep/pkg/util/loggerv1.0.1"
 	"sync"
 	"time"
 )

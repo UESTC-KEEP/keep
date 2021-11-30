@@ -3,7 +3,7 @@ package chanmsgqueen
 import (
 	"keep/constants"
 	"keep/edge/pkg/edgepublisher/config"
-	"keep/pkg/util/loggerv1.0.0"
+	"keep/pkg/util/loggerv1.0.1"
 )
 
 var EdgePublishQueens = make(map[string]*Client)

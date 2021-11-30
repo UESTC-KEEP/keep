@@ -3,7 +3,7 @@ package filter
 import (
 	"fmt"
 	beehiveContext "keep/pkg/util/core/context"
-	"keep/pkg/util/loggerv1.0.0"
+	"keep/pkg/util/loggerv1.0.1"
 	"time"
 
 	//beehiveContext "github.com/kubeedge/beehive/pkg/core/context"

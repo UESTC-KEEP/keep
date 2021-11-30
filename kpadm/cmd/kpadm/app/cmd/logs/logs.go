@@ -20,7 +20,7 @@ import (
 	"github.com/hpcloud/tail"
 	"github.com/spf13/cobra"
 	"keep/constants"
-	"keep/pkg/util/loggerv1.0.0"
+	"keep/pkg/util/loggerv1.0.1"
 	"time"
 )
 

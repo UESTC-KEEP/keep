@@ -17,7 +17,7 @@ package main
 
 import (
 	"keep/kpadm/cmd/kpadm/app"
-	"keep/pkg/util/loggerv1.0.0"
+	"keep/pkg/util/loggerv1.0.1"
 )
 
 func main() {

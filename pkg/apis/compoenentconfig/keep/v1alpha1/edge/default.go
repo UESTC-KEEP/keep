@@ -19,7 +19,7 @@ package v1alpha1
 import (
 	"keep/constants"
 	"keep/pkg/util"
-	"keep/pkg/util/loggerv1.0.0"
+	"keep/pkg/util/loggerv1.0.1"
 	"os"
 	"strings"
 	"time"
