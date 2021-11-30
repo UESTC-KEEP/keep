@@ -35,7 +35,7 @@ func StartHTTPServer() {
 
 	addr := fmt.Sprintf("%s:%d", Address, Port)
 	// 509 公钥认证的标准格式  tls安全传输协议 pem数据格式
-	// pem 实现了 PEM 数据编码，起源于 Privacy Enhanced Mail。今天 PEM 编码最常见的用途是在 TLS 密钥和证书中
+	// pem 实现了 PEM 数据编码，起源 Privacy Enhanced Mail。今天 PEM 编码最常见的用途是在 TLS 密钥和证书中
 	cert, err := tls.X509KeyPair(pem.EncodeToMemory(&pem.Block{Type: certutil.CertificateBlockType, Bytes: hubconfig.Config.Cert}), pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: hubconfig.Config.Key}))
 
 	if err != nil {

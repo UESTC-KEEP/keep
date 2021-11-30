@@ -3,11 +3,11 @@ module keep
 go 1.17
 
 require (
-	github.com/Shopify/sarama v1.30.0
+	github.com/Shopify/sarama v1.24.1
 	github.com/bsm/sarama-cluster v2.1.15+incompatible
 	github.com/docker/docker v20.10.11+incompatible
-	github.com/emicklei/go-restful v2.9.5+incompatible
-	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
+	github.com/emicklei/go-restful v2.15.0+incompatible
+	github.com/golang/glog v1.0.0
 	github.com/gomodule/redigo v1.8.5
 	github.com/gorilla/mux v1.8.0
 	github.com/gorilla/websocket v1.4.2
@@ -59,11 +59,7 @@ require (
 	github.com/hashicorp/go-uuid v1.0.2 // indirect
 	github.com/imdario/mergo v0.3.12 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
-	github.com/jcmturner/aescts/v2 v2.0.0 // indirect
-	github.com/jcmturner/dnsutils/v2 v2.0.0 // indirect
 	github.com/jcmturner/gofork v1.0.0 // indirect
-	github.com/jcmturner/gokrb5/v8 v8.4.2 // indirect
-	github.com/jcmturner/rpc/v2 v2.0.3 // indirect
 	github.com/json-iterator/go v1.1.11 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.2-0.20181231171920-c182affec369 // indirect
@@ -94,6 +90,10 @@ require (
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/fsnotify.v1 v1.4.7 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
+	gopkg.in/jcmturner/aescts.v1 v1.0.1 // indirect
+	gopkg.in/jcmturner/dnsutils.v1 v1.0.1 // indirect
+	gopkg.in/jcmturner/gokrb5.v7 v7.2.3 // indirect
+	gopkg.in/jcmturner/rpc.v1 v1.1.0 // indirect
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 	k8s.io/kube-openapi v0.0.0-20211109043538-20434351676c // indirect

@@ -32,7 +32,6 @@ func InitManualRetryAsyncProducer(addr []string, conf *Config) (*AsyncProducer, 
 	}
 	return aSyncProducer, nil
 }
-
 //send message
 func (asp *AsyncProducer) Send() chan<- *ProducerMessage {
 	return asp.producer.Input()
@@ -51,7 +50,7 @@ func (asp *AsyncProducer) Close() (err error) {
 	return
 }
 
-func AsyncPro(address []string, topic string, msg <-chan string) {
+func AsyncPro(address []string, topic string, msg  chan string)  {
 	config := NewConfig()
 	//config.Producer.Return.Successes = true
 	//config.Producer.Return.Errors = true
