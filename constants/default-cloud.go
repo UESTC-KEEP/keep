@@ -48,3 +48,8 @@ const (
 //LogPublisher
 const Url = "192.168.1.140:4560"
 const ContentType = "apllication/json;charset=utf-8"
+const(
+	Address="192.168.1.103:9092"
+	OrginTopic="topic"
+	ParseTopic="topic1"
+)
