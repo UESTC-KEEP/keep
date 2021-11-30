@@ -3,7 +3,8 @@ package app
 import (
 	"io/ioutil"
 	"keep/cloud/cmd/cloudagent/app/options"
-	"keep/cloud/pkg/cloudimageManager"
+	"keep/cloud/pkg/cloudimagemanager"
+	"keep/cloud/pkg/equalnodecontroller"
 	"keep/cloud/pkg/k8sclient"
 	"keep/cloud/pkg/promserver"
 	"keep/cloud/pkg/requestDispatcher"
@@ -54,6 +55,7 @@ func NewCloudAgentCommand() *cobra.Command {
 
 // register all modules in system
 func registerModules(config *cloudagent.CloudAgentConfig) {
+	equalnodecontroller.Register(config.Modules.EqualNodeController)
 	k8sclient.Register(config.Modules.K8sClient)
 	promserver.Register(config.Modules.PromServer)
 	requestDispatcher.Register(config.Modules.RequestDispatcher)

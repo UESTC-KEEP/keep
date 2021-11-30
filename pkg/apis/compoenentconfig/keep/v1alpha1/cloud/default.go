@@ -47,6 +47,12 @@ func NewDefaultEdgeAgentConfig() *CloudAgentConfig {
 			CloudImageManager: &CloudImageManager{
 				Enable: true,
 			},
+			EqualNodeController: &EqualNodeController{
+				Enable:          true,
+				MasterURL:       constants.DefaultMasterURL,
+				KubeConfig:      *kubeconfig,
+				AlsoLogToStdErr: constants.DefaultAlsoLogToStdErr,
+			},
 		},
 	}
 }

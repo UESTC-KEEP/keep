@@ -6,10 +6,11 @@ import (
 )
 
 type Modules struct {
-	K8sClient         *K8sClient         `json:"k8s_client"`
-	PromServer        *PromServer        `json:"prom_server"`
-	RequestDispatcher *RequestDispatcher `json:"request_dispatcher"`
-	CloudImageManager *CloudImageManager `json:"cloud_image_manager"`
+	K8sClient           *K8sClient           `json:"k8s_client"`
+	PromServer          *PromServer          `json:"prom_server"`
+	RequestDispatcher   *RequestDispatcher   `json:"request_dispatcher"`
+	CloudImageManager   *CloudImageManager   `json:"cloud_image_manager"`
+	EqualNodeController *EqualNodeController `json:"equal_node_controller"`
 }
 
 type CloudAgentConfig struct {
@@ -44,4 +45,11 @@ type RequestDispatcher struct {
 
 type CloudImageManager struct {
 	Enable bool `json:"enable"`
+}
+
+type EqualNodeController struct {
+	Enable          bool   `json:"enable"`
+	MasterURL       string `json:"master_url"`
+	KubeConfig      string `json:"kube_config"`
+	AlsoLogToStdErr bool   `json:"also_log_to_std_err"`
 }

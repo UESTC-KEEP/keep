@@ -65,6 +65,8 @@ func NewDefaultEdgeAgentConfig() *EdgeAgentConfig {
 				TLSCertFile:       "",
 				TLSPrivateKeyFile: "",
 				BeehiveTimeout:    constants.DefaultBeehiveTimeout * time.Millisecond,
+				HostnameOverride:  hostnameOverride,
+				LocalIP:           localIP,
 			},
 			EdgeTwin: &EdgeTwin{
 				Enable:         true,

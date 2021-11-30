@@ -6,6 +6,8 @@ import (
 	"github.com/wonderivan/logger"
 	"keep/edge/pkg/edgepublisher/chanmsgqueen"
 	"keep/edge/pkg/edgepublisher/config"
+	edgetunnel "keep/edge/pkg/edgepublisher/tunnel"
+	"keep/pkg/util/core/model"
 )
 
 //
@@ -31,4 +33,10 @@ func ReadQueueAndPublish() {
 // Publish 将数据发送到云端
 func Publish(msg interface{}) {
 	fmt.Println("--------------------------  发送云端  msg:", msg)
+	message := model.Message{}
+	message.Content = msg
+	err := edgetunnel.WriteToCloud(&message)
+	if err != nil {
+		logger.Error("WriteToCloud error, ", err)
+	}
 }

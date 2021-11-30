@@ -56,10 +56,10 @@ func NewEdgeAgentCommand() *cobra.Command {
 			}
 			utils.PrintKEEPLogo()
 			err = utils.EnvironmentCheck()
-			if err != nil {
-				logger.Fatal(err)
-				os.Exit(1)
-			}
+			//if err != nil {
+			//	logger.Fatal(err)
+			//	os.Exit(1)
+			//}
 			registerModules(config)
 			core.Run()
 		},
@@ -72,6 +72,6 @@ func NewEdgeAgentCommand() *cobra.Command {
 func registerModules(config *edgeagent.EdgeAgentConfig) {
 	healthzagent.Register(config.Modules.HealthzAgent)
 	logsagent.Register(config.Modules.LogsAgent)
-	edgepublisher.Register(config.Modules.EdgePublisher)
+	edgepublisher.Register(config.Modules.EdgePublisher, config.Modules.EdgePublisher.HostnameOverride, config.Modules.EdgePublisher.LocalIP)
 	edgetwin.Register(config.Modules.EdgeTwin)
 }

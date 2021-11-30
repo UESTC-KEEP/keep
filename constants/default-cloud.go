@@ -1,7 +1,7 @@
 package constants
 
 const CloudAgentName = "CloudAgent"
-const CloudConfigeFilesSourceDir = "cloud/shells/confs/keepedge"
+const CloudConfigeFilesSourceDir = "../../../cloud/shells/confs/keepedge"
 
 // 全局配置
 const (
@@ -16,11 +16,11 @@ const (
 	// DefaultMasterLBIp master集群的负载均衡ip 若是单master集群就是用masterip即可
 	DefaultMasterLBIp = "192.168.1.140"
 	// DefaultMasterIpPort 默认需要进行监控的主机ip:port 多个master主机使用;间隔
-	DefaultMasterIpPort = "192.168.140:6443"
+	DefaultMasterIpPort = DefaultMasterLBIp + ":6443"
 	// DefaultMasterMetricTimeout 获取每台master  metrics信息的超时时间
 	DefaultMasterMetricTimeout = 5000
 	DefaultMasterLBPort        = 6443
-	DefaultRedisServerIp       = "192.168.1.140"
+	DefaultRedisServerIp       = DefaultMasterLBIp
 	DefaultRedisServerPort     = 32379
 	DefaultRedisConfigMap      = "/etc/keepedge/ymls/redis-standalone-conf.yaml"
 	DefaultRedisSVC            = "/etc/keepedge/ymls/redis-svc.yaml"
@@ -36,6 +36,7 @@ const (
 	DefaultCAURL         = "/ca.crt"
 	DefaultCertURL       = "/edge.crt"
 	DefaultWebSocketUrl  = "/v1/keepedge/connect"
+	DefaultKeepCloudIP   = "192.168.122.125"
 
 	SessionKeyHostNameOverride = "SessionHostNameOverride"
 	SessionKeyInternalIP       = "SessionInternalIP"
@@ -45,8 +46,15 @@ const (
 	DefaultPromServerMetricsPort = 20080
 )
 
+// equalnodeController配置
+const (
+	DefaultMasterURL       = DefaultMasterLBIp
+	DefaultKubeConfig      = DefaultKubeConfigPath
+	DefaultAlsoLogToStdErr = true
+)
+
 //LogPublisher
-const Url = "192.168.1.140:4560"
+const Url = DefaultMasterLBIp + ":4560"
 const ContentType = "apllication/json;charset=utf-8"
 const(
 	Address="192.168.1.103:9092"

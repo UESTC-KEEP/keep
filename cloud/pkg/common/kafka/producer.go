@@ -62,9 +62,9 @@ func AsyncPro(address []string, topic string, msg  chan string)  {
 			case suc := <-p.Successes():
 				//case  <-p.Successes():
 				//fmt.Println("发送成功")
-				bytes, _ := suc.Value.Encode()
-				value := string(bytes)
-				fmt.Println("offsetCfg:", suc.Offset, " partitions:", suc.Partition, " metadata:", suc.Metadata, " value:", value)
+				//bytes, _ := suc.Value.Encode()
+				//value := string(bytes)
+				//fmt.Println("offsetCfg:", suc.Offset, " partitions:", suc.Partition, " metadata:", suc.Metadata, " value:", value)
 			case fail := <-p.Errors():
 				fmt.Println("err: ", fail.Err)
 			}

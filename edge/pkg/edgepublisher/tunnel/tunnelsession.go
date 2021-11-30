@@ -3,26 +3,27 @@ package edgetunnel
 import (
 	"github.com/gorilla/websocket"
 	"github.com/wonderivan/logger"
+	"keep/constants"
 	"keep/pkg/stream"
 	beehiveContext "keep/pkg/util/core/context"
 	"sync"
 	"time"
 )
 
-type TunnelSession struct {
+type tunnelSession struct {
 	Tunnel    stream.SafeWriteTunneler
 	closeLock sync.Mutex
 	closed    bool
 }
 
-func NewTunnelSession(c *websocket.Conn) *TunnelSession {
-	return &TunnelSession{
+func NewTunnelSession(c *websocket.Conn) *tunnelSession {
+	return &tunnelSession{
 		closeLock: sync.Mutex{},
 		Tunnel:    stream.NewDefaultTunnel(c),
 	}
 }
 
-func (t *TunnelSession) Close() {
+func (t *tunnelSession) Close() {
 	t.closeLock.Lock()
 	defer t.closeLock.Unlock()
 	if !t.closed {
@@ -34,8 +35,8 @@ func (t *TunnelSession) Close() {
 	t.closed = true
 }
 
-func (t *TunnelSession) startPing(reconnectChan chan struct{}) {
-	ticker := time.NewTicker(time.Second * 5)
+func (t *tunnelSession) startPing(reconnectChan chan struct{}) {
+	ticker := time.NewTicker(constants.DefaultEdgeHeartBeat * time.Second)
 	defer ticker.Stop()
 
 	for {
@@ -54,7 +55,7 @@ func (t *TunnelSession) startPing(reconnectChan chan struct{}) {
 	}
 }
 
-func (t *TunnelSession) routeToEdge(reconnectChan chan struct{}) {
+func (t *tunnelSession) routeToEdge(reconnectChan chan struct{}) {
 	for {
 		select {
 		case <-beehiveContext.Done():

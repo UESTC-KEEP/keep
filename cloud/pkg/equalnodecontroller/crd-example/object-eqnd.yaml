@@ -1,0 +1,9 @@
+apiVersion: keepedge.io/v1
+kind: EqualNode
+metadata:
+  name: object-eqnd
+spec:
+  name: "edge-zlj-ubuntu-1"
+  nodes:
+    - edge-mini-1
+    - edge-zlj-1
