@@ -39,7 +39,7 @@ func InitConfigure(k *cloudagent.K8sClient) {
 func GetClient() {
 	var err error
 	// 在配置文件中有ip不再写ip否则出错
-	K8sConfig, err = clientcmd.BuildConfigFromFlags("", Config.KubeConfigFilePath)
+	K8sConfig, err = clientcmd.BuildConfigFromFlags("", Config.KubeAPIConfig.KubeConfig)
 	if err != nil {
 		logger.Error(err.Error())
 	}

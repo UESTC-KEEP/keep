@@ -2,6 +2,8 @@ package equalnodecontroller
 
 import (
 	flag "github.com/spf13/pflag"
+	"github.com/wonderivan/logger"
+	"keep/cloud/pkg/common/informers"
 	"keep/cloud/pkg/common/modules"
 	"keep/cloud/pkg/equalnodecontroller/config"
 	"keep/cloud/pkg/equalnodecontroller/controller"
@@ -10,15 +12,17 @@ import (
 )
 
 type EqualNodeController struct {
-	enable bool
+	equalnodecontroller *controller.EqualNodeController
+	enable              bool
 }
 
 func Register(eqndc *cloudagent.EqualNodeController) {
 	config.InitConfigure(eqndc)
-	core.Register(NewEqualNodeLister(eqndc.Enable))
+	core.Register(newEqualNodeLister(eqndc.Enable))
 }
 
 func (eqndc *EqualNodeController) Cleanup() {}
+
 func (eqndc *EqualNodeController) Name() string {
 	return modules.EqualNodeControllerModule
 }
@@ -33,16 +37,19 @@ func (eqndc *EqualNodeController) Enable() bool {
 
 func (eqndc *EqualNodeController) Start() {
 	flag.Parse()
-	go controller.StartEqualNodecontroller()
+	if err := eqndc.equalnodecontroller.Start(); err != nil {
+		logger.Fatal("启动了equalnodecontroller crd 失败...", err)
+	}
+	//go controller.StartEqualNodecontroller()
 }
 
-func NewEqualNodeLister(enable bool) *EqualNodeController {
+func newEqualNodeLister(enable bool) *EqualNodeController {
+	eqndctl, err := controller.NewEqualNodeController(informers.GetInformersManager().GetCRDInformerFactory())
+	if err != nil {
+		logger.Fatal("创建equalnodecontroller 失败：", err)
+	}
 	return &EqualNodeController{
-		enable: enable,
+		equalnodecontroller: eqndctl,
+		enable:              enable,
 	}
 }
-
-//func init() {
-//	flag.StringVar(&kubeconfig, "kubeconfig", "", "Path to a kubeconfig. Only required if out-of-cluster.")
-//	flag.StringVar(&masterURL, "master", "", "The address of the Kubernetes API server. Overrides any value in kubeconfig. Only required if out-of-cluster.")
-//}

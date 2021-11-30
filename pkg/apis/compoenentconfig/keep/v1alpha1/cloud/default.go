@@ -1,12 +1,12 @@
 package cloud
 
 import (
+	flag "github.com/spf13/pflag"
+	"k8s.io/client-go/util/homedir"
+	eqndconstants "keep/cloud/pkg/equalnodecontroller/constants"
 	"keep/constants"
 	"path/filepath"
 	"strings"
-
-	flag "github.com/spf13/pflag"
-	"k8s.io/client-go/util/homedir"
 )
 
 // NewDefaultEdgeAgentConfig returns a full EdgeCoreConfig object
@@ -32,8 +32,14 @@ func NewDefaultEdgeAgentConfig() *CloudAgentConfig {
 				RedisPort:           constants.DefaultRedisServerPort,
 				PodInfo:             nil,
 				DeploymentInfo:      nil,
-				KubeConfigFilePath:  *kubeconfig,
-				DecoderBufferSize:   constants.DefaultDecoderBufferSize,
+				KubeAPIConfig: &KubeAPIConfig{
+					//Master:      "",
+					//ContentType: "",
+					QPS:        100,
+					Burst:      200,
+					KubeConfig: *kubeconfig,
+				},
+				DecoderBufferSize: constants.DefaultDecoderBufferSize,
 			},
 			PromServer: &PromServer{
 				Enable:                   true,
@@ -52,6 +58,9 @@ func NewDefaultEdgeAgentConfig() *CloudAgentConfig {
 				MasterURL:       constants.DefaultMasterURL,
 				KubeConfig:      *kubeconfig,
 				AlsoLogToStdErr: constants.DefaultAlsoLogToStdErr,
+				Buffer: &EqualNodeControllerBuffer{
+					EqualNodeEvent: eqndconstants.DefaultEqualNodeEventBuffer,
+				},
 			},
 		},
 	}

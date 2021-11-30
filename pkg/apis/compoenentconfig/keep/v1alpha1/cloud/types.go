@@ -18,6 +18,28 @@ type CloudAgentConfig struct {
 	Modules *Modules `json:"modules,omitempty"`
 }
 
+// KubeAPIConfig 对看k8s apiserver进行配置
+type KubeAPIConfig struct {
+	// Master master的ip地址 (会把 KubeConfig 从kube文件读取的内容覆盖掉)
+	// such as https://127.0.0.1:8443
+	// default ""
+	// Note: Can not use "omitempty" option,  It will affect the output of the default configuration file
+	Master string `json:"master"`
+	// ContentType 定义与k8s交互时使用的数据格式
+	// default "application/vnd.kubernetes.protobuf"
+	ContentType string `json:"contentType,omitempty"`
+	// QPS 定义与 kubernetes apiserve 交互的并发度
+	// default 100
+	QPS int32 `json:"qps,omitempty"`
+	// Burst 定义kubernetes apiserver交互的爆发量
+	// default 200
+	Burst int32 `json:"burst,omitempty"`
+	// KubeConfig indicates the path to kubeConfig file with authorization and master location information.
+	// default "/root/.kube/config"
+	// +Required
+	KubeConfig string `json:"kubeConfig"`
+}
+
 type K8sClient struct {
 	Enable              bool               `json:"enable"`
 	Masters             []string           `json:"masters"`
@@ -28,7 +50,7 @@ type K8sClient struct {
 	RedisPort           int                `json:"redis_port"`
 	PodInfo             *v1.Pod            `json:"pod_info"`
 	DeploymentInfo      *appsv1.Deployment `json:"deployment_info"`
-	KubeConfigFilePath  string             `json:"kube_config_file_path"`
+	KubeAPIConfig       *KubeAPIConfig     `json:"kubeAPIConfig,omitempty"`
 	DecoderBufferSize   int                `json:"decoder_buffer_size"`
 }
 
@@ -48,8 +70,15 @@ type CloudImageManager struct {
 }
 
 type EqualNodeController struct {
-	Enable          bool   `json:"enable"`
-	MasterURL       string `json:"master_url"`
-	KubeConfig      string `json:"kube_config"`
-	AlsoLogToStdErr bool   `json:"also_log_to_std_err"`
+	Enable          bool                       `json:"enable"`
+	NodeName        string                     `json:"node_name"`
+	MasterURL       string                     `json:"master_url"`
+	KubeConfig      string                     `json:"kube_config"`
+	AlsoLogToStdErr bool                       `json:"also_log_to_std_err"`
+	Buffer          *EqualNodeControllerBuffer `json:"buffer"`
+}
+
+// EqualNodeControllerBuffer 定义EqualNodeController的各类通道、buffer的大小
+type EqualNodeControllerBuffer struct {
+	EqualNodeEvent int32 `json:"equal_node_event,omitempty"`
 }
