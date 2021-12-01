@@ -70,9 +70,9 @@ type EdgePublisher struct {
 }
 
 // Register 注册healthzagent模块
-func Register(ep *edgeagent.EdgePublisher, nodeName, nodeIP string) {
+func Register(ep *edgeagent.EdgePublisher) {
 	edgepublisherconfig.InitConfigure(ep)
-	edgepublisher, err := NewEdgePublisher(ep.Enable, nodeName, nodeIP)
+	edgepublisher, err := NewEdgePublisher(ep.Enable)
 	if err != nil {
 		logger.Error("初始化logsagent失败...:", err)
 		os.Exit(1)
@@ -139,10 +139,10 @@ func EdgeAgentHealthCheck(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func NewEdgePublisher(enable bool, hostnameOverride, nodeIP string) (*EdgePublisher, error) {
+func NewEdgePublisher(enable bool) (*EdgePublisher, error) {
 	return &EdgePublisher{
 		enable:           enable,
-		hostnameOverride: hostnameOverride,
-		nodeIP:           nodeIP,
+		hostnameOverride: edgepublisherconfig.Config.HostnameOverride,
+		nodeIP:           edgepublisherconfig.Config.LocalIP,
 	}, nil
 }
