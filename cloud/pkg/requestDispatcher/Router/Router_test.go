@@ -16,11 +16,12 @@ func TestRouter_MessageDispatcher(t *testing.T) {
 	msg1.Content = "hello kafka1"
 	msg1.Router.Group = "/add"
 
-	MessageDispatcher(msg)
+	go MessageRouter()
+
+	RevMsgChan <- msg
 
 	time.Sleep(3 * time.Second)
-
-	MessageDispatcher(msg1)
+	RevMsgChan <- msg1
 
 }
 
@@ -34,10 +35,11 @@ func TestRouter_MessageDispatcher1(t *testing.T) {
 	msg1.Content = "hello kafka1"
 	msg1.Router.Group = "/log"
 
-	MessageDispatcher(msg)
+	go MessageRouter()
+
+	RevMsgChan <- msg
 
 	time.Sleep(3 * time.Second)
-
-	MessageDispatcher(msg1)
+	RevMsgChan <- msg1
 
 }

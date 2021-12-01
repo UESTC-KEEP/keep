@@ -7,7 +7,7 @@ import (
 	"keep/edge/pkg/edgepublisher/config"
 	edgetunnel "keep/edge/pkg/edgepublisher/tunnel"
 	"keep/pkg/util/core/model"
-	"keep/pkg/util/loggerv1.0.1"
+	logger "keep/pkg/util/loggerv1.0.1"
 )
 
 //
@@ -35,6 +35,7 @@ func Publish(msg interface{}) {
 	fmt.Println("--------------------------  发送云端  msg:", msg)
 	message := model.Message{}
 	message.Content = msg
+	message.Router.Group = "/log"
 	err := edgetunnel.WriteToCloud(&message)
 	if err != nil {
 		logger.Error("WriteToCloud error, ", err)
