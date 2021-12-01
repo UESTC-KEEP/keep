@@ -1,4 +1,4 @@
-module keepedge
+module keep
 
 go 1.17
 

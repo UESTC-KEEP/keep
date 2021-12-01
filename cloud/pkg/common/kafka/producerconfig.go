@@ -2,16 +2,17 @@ package kafka
 
 import (
 	"fmt"
-	"github.com/Shopify/sarama"
-	"keep-edge/constants"
+	"keep/constants"
 	"log"
 	"time"
+
+	"github.com/Shopify/sarama"
 )
 
 type ProducerConfig struct {
 	Address []string
-	Topic string
-	Msg  chan string
+	Topic   string
+	Msg     chan string
 }
 
 func NewProducerConfig(topic string) *ProducerConfig {
@@ -20,7 +21,7 @@ func NewProducerConfig(topic string) *ProducerConfig {
 		Address: constants.Address,
 		// Address: []string{"192.168.1.103:9092", "192.168.1.103:9093"},
 		Topic: topic,
-		Msg: msg,
+		Msg:   msg,
 	}
 	return p
 }
@@ -39,7 +40,7 @@ func (k *ProducerConfig) Publish() {
 	go func(p *AsyncProducer) {
 		for {
 			select {
-			case  <-p.Successes():
+			case <-p.Successes():
 			//fmt.Println("发送成功")
 			//fmt.Println("offsetCfg:", suc.Offset, " partitions:", suc.Partition, " metadata:", suc.Metadata, " value:", value)
 			case fail := <-p.Errors():

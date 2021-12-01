@@ -1,15 +1,15 @@
 package kafka
 
 import (
-	"keep-edge/constants"
+	"keep/constants"
 	"log"
 )
 
 type ConsumerConfig struct {
 	Address []string
-	Topic string
+	Topic   string
 	GroupId string
-	Ans chan *ConsumerMessage
+	Ans     chan *ConsumerMessage
 }
 
 func NewConsumerConfig(topic string, groupid string) *ConsumerConfig {
@@ -17,20 +17,19 @@ func NewConsumerConfig(topic string, groupid string) *ConsumerConfig {
 	c := &ConsumerConfig{
 		Address: constants.Address,
 		//Address: []string{"192.168.1.103:9092", "192.168.1.103:9093"},
-		Topic: topic,
+		Topic:   topic,
 		GroupId: groupid,
-		Ans: msg,
+		Ans:     msg,
 	}
 	return c
 }
 
-
 // Subscribe 订阅/接收消息 consumer
 func (k *ConsumerConfig) Subscribe() error {
-	config :=NewConfig()
+	config := NewConfig()
 	// ans := make(chan *sarama.ConsumerMessage)
-	c , err := InitOneConsumerOfGroup(k.Address, k.Topic, k.GroupId, config)
-	if err!=nil{
+	c, err := InitOneConsumerOfGroup(k.Address, k.Topic, k.GroupId, config)
+	if err != nil {
 		log.Println(err)
 		return err
 	}

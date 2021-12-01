@@ -36,7 +36,7 @@ const (
 	DefaultCAURL         = "/ca.crt"
 	DefaultCertURL       = "/edge.crt"
 	DefaultWebSocketUrl  = "/v1/keepedge/connect"
-	DefaultKeepCloudIP   = "192.168.122.125"
+	DefaultKeepCloudIP   = "192.168.1.121"
 
 	SessionKeyHostNameOverride = "SessionHostNameOverride"
 	SessionKeyInternalIP       = "SessionInternalIP"
@@ -56,9 +56,10 @@ const (
 //LogPublisher
 const Url = DefaultMasterLBIp + ":4560"
 const ContentType = "apllication/json;charset=utf-8"
-var Address = []string{"192.168.1.103:9092", "192.168.1.103:9093"}
-const(
 
-	OrginTopic="topic"
-	ParseTopic="topic1"
+var Address = []string{"192.168.1.103:9092", "192.168.1.103:9093"}
+
+const (
+	OrginTopic = "topic"
+	ParseTopic = "topic1"
 )

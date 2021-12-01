@@ -1,22 +1,39 @@
 package Router
 
 import (
+	"keep/cloud/pkg/common/kafka"
 	"keep/pkg/util/core/model"
-	"keep/pkg/util/loggerv1.0.1"
-	"sync"
+	logger "keep/pkg/util/loggerv1.0.1"
 )
 
-var Address = []string{"192.168.1.103:9092", "192.168.1.103:9093"}
-var msgChan = make(chan string, 100)
-var kafkaOnce sync.Once
+var p = kafka.NewProducerConfig("log")
+var a = kafka.NewProducerConfig("add")
 
 func MessageDispatcher(msg *model.Message) {
-	kafkaOnce.Do(func() {
-		//kafka.AsyncProducer(Address, "topic", msgChan)
-	})
 
+	switch msg.Router.Group {
+	case "/log":
+		sendToKafkaLog(msg)
+	case "/add":
+		sendToKafkaAdd(msg)
+	}
+
+}
+func sendToKafkaLog(msg *model.Message) {
 	kafkaMsg := msg.Content.(string)
 	logger.Info("send to kafka", kafkaMsg)
-	msgChan <- kafkaMsg
+	go func() { p.Msg <- kafkaMsg }()
+}
 
+func sendToKafkaAdd(msg *model.Message) {
+	kafkaMsg := msg.Content.(string)
+	logger.Info("send to kafka", kafkaMsg)
+	go func() {
+		a.Msg <- kafkaMsg
+	}()
+}
+
+func ShutDownChan() {
+	close(p.Msg)
+	close(a.Msg)
 }
