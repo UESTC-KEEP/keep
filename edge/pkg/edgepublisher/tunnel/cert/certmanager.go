@@ -64,7 +64,7 @@ type CertManager struct {
 // )
 
 // NewCertManager creates a CertManager for edge certificate management according to EdgeHub config
-func NewCertManager(nodename string) CertManager {
+func NewCertManager(nodename string, token string) CertManager {
 	certReq := &x509.CertificateRequest{
 		Subject: pkix.Name{
 			Country:      []string{"CN"},
@@ -81,7 +81,7 @@ func NewCertManager(nodename string) CertManager {
 	return CertManager{
 		RotateCertificates: true,
 		NodeName:           nodename,
-		token:              "1.2.3.4",
+		token:              token, // 由于没有实现从命令行接收token赋值给 edgepublisher模块 暂时直接传过来
 		CR:                 certReq,
 		caFile:             constants.DefaultCAFile,
 		certFile:           constants.DefaultCertFile,
@@ -131,6 +131,7 @@ func (cm *CertManager) applyCerts() error {
 	tokenParts := strings.Split(cm.token, ".")
 	// fmt.Println("Cacert:", tokenParts[0])
 	if len(tokenParts) != 4 {
+		fmt.Println("token:", cm.token)
 		return fmt.Errorf("token credentials are in the wrong format")
 	}
 	ok, hash, newHash := ValidateCACerts(cacert, tokenParts[0])
@@ -322,8 +323,8 @@ func ValidateCACerts(cacerts []byte, hash string) (bool, string, string) {
 		return true, "", ""
 	}
 	newHash := hashCA(cacerts)
-	return true, hash, newHash
-	// return newHash == hash, hash, newHash
+	// return true, hash, newHash
+	return newHash == hash, hash, newHash
 }
 
 func hashCA(cacerts []byte) string {

@@ -18,8 +18,8 @@ package options
 
 import (
 	"keep/constants"
-	"keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
-	"keep/pkg/util/loggerv1.0.1"
+	v1alpha1 "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
+	logger "keep/pkg/util/loggerv1.0.1"
 )
 
 type EdgeAgentOptions struct {

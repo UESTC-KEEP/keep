@@ -1,7 +1,6 @@
 package Router
 
 import (
-	"fmt"
 	"keep/cloud/pkg/common/kafka"
 
 	"keep/pkg/util/core/model"
@@ -22,7 +21,6 @@ func MessageRouter() {
 
 		switch message.Router.Group {
 		case "/log":
-			fmt.Println("send to fafafaf --------------------------")
 			kafkaMsg := message.Content.(string)
 			p.Msg <- kafkaMsg
 		case "/add":

@@ -3,15 +3,15 @@ package edgetunnel
 import (
 	"crypto/tls"
 	"fmt"
-	"github.com/gorilla/websocket"
 	"keep/constants"
-	"keep/edge/pkg/edgepublisher/tunnel/cert"
 	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/core/model"
-	"keep/pkg/util/loggerv1.0.1"
+	logger "keep/pkg/util/loggerv1.0.1"
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/gorilla/websocket"
 )
 
 type edgeTunnel struct {
@@ -37,9 +37,6 @@ func (e *edgeTunnel) start() {
 		Host:   fmt.Sprintf("%s:%d", constants.DefaultKeepCloudIP, constants.DefaultWebSocketPort),
 		Path:   constants.DefaultWebSocketUrl,
 	}
-
-	certManager := cert.NewCertManager(e.hostnameOverride)
-	certManager.Start()
 
 	cert, err := tls.LoadX509KeyPair(constants.DefaultCertFile, constants.DefaultKeyFile)
 	if err != nil {

@@ -1,6 +1,8 @@
 package cloud
 
 import (
+	"time"
+
 	appsv1 "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
 )
@@ -60,9 +62,10 @@ type PromServer struct {
 }
 
 type RequestDispatcher struct {
-	Enable        bool `json:"enable"`
-	HTTPPort      int  `json:"http_port"`
-	WebSocketPort int  `json:"web_socket_port"`
+	Enable               bool          `json:"enable"`
+	HTTPPort             int           `json:"http_port"`
+	WebSocketPort        int           `json:"web_socket_port"`
+	TokenRefreshDuration time.Duration `json:"tokenRefreshDuration,omitempty"`
 }
 
 type CloudImageManager struct {
