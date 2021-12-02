@@ -15,7 +15,6 @@ import (
 	"keep/cloud/pkg/equalnodecontroller/pkg/signals"
 	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/loggerv1.0.1"
-	"reflect"
 	"time"
 )
 
@@ -31,6 +30,8 @@ func (eqndctl *EqualNodeController) Start() error {
 }
 
 func NewEqualNodeController(crdInformerFactory crdinformers.SharedInformerFactory) (*EqualNodeController, error) {
+	//var workqueue workqueue.RateLimitingInterface
+	//workqueue.Done()
 	equalnodeManager, err := manager.NewEqualNodeManager(crdInformerFactory.Keepedge().V1().EqualNodes().Informer())
 	if err != nil {
 		logger.Warn("创建equalnode manager警告：", err)
@@ -68,41 +69,6 @@ func (eqndctl *EqualNodeController) TestController() {
 			}
 		}
 	}
-}
-
-func (eqndctl *EqualNodeController) equalNodeAdded(eqnd *crdv1.EqualNode) {
-	eqndctl.equalnodeManager.EqualNode.Store(eqnd.Name, eqnd)
-	logger.Info("----------- crd增加:  ")
-	logger.Info("----------- crd增加:  ", eqnd)
-	logger.Debug(eqnd.Spec.Name, "      ", eqnd.Spec.Eqnd)
-}
-
-func (eqndctl *EqualNodeController) equalNodeDeleted(eqnd *crdv1.EqualNode) {
-	eqndctl.equalnodeManager.EqualNode.Delete(eqnd.Name)
-	logger.Info("----------- crd删除:  ")
-	logger.Info("----------- crd删除:  ", eqnd)
-}
-
-func (eqndctl *EqualNodeController) equalNodeUpated(eqnd *crdv1.EqualNode) {
-	value, ok := eqndctl.equalnodeManager.EqualNode.Load(eqnd.Name)
-	eqndctl.equalnodeManager.EqualNode.Store(eqnd.Name, eqnd)
-	if ok {
-		cacheEqualNode := value.(*crdv1.EqualNode)
-		if isEqualNodeUpdated(cacheEqualNode, eqnd) {
-			logger.Info("----------- crd更新:  ")
-			logger.Info("----------- crd更新:  ", eqnd)
-		}
-	}
-
-}
-
-// isDeviceUpdated 检查eqnd crd是否更新
-func isEqualNodeUpdated(oldeqnd *crdv1.EqualNode, neweqnd *crdv1.EqualNode) bool {
-	// does not care fields
-	oldeqnd.ObjectMeta.ResourceVersion = neweqnd.ObjectMeta.ResourceVersion
-	oldeqnd.ObjectMeta.Generation = neweqnd.ObjectMeta.Generation
-	// return true if ObjectMeta or Spec or Status changed, else false
-	return !reflect.DeepEqual(oldeqnd.ObjectMeta, neweqnd.ObjectMeta) || !reflect.DeepEqual(oldeqnd.Spec, neweqnd.Spec)
 }
 
 func StartEqualNodecontroller() {
