@@ -36,8 +36,5 @@ func Publish(msg interface{}) {
 	message := model.Message{}
 	message.Content = msg
 	message.Router.Group = "/log"
-	err := edgetunnel.WriteToCloud(&message)
-	if err != nil {
-		logger.Error("WriteToCloud error, ", err)
-	}
+	edgetunnel.WriteToCloud(&message)
 }
