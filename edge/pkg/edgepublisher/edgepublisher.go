@@ -10,7 +10,7 @@ import (
 	edgetunnel "keep/edge/pkg/edgepublisher/tunnel"
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 	"keep/pkg/util/core"
-	"keep/pkg/util/loggerv1.0.1"
+	logger "keep/pkg/util/loggerv1.0.1"
 	"net/http"
 	"strconv"
 
@@ -67,6 +67,7 @@ type EdgePublisher struct {
 	edgemsgqueens     []string
 	hostnameOverride  string
 	nodeIP            string
+	token             string
 }
 
 // Register 注册healthzagent模块
@@ -98,7 +99,7 @@ func (ep *EdgePublisher) Enable() bool {
 	return ep.enable
 }
 
-func (l *EdgePublisher) Start() {
+func (ep *EdgePublisher) Start() {
 	var wg sync.WaitGroup
 	logger.Debug("EdgePublisher 开始启动....")
 	// 启动边端服务20350
@@ -108,7 +109,7 @@ func (l *EdgePublisher) Start() {
 	go StartEdgePublisher()
 	bufferpooler.StartListenLogMsg()
 	publisher.ReadQueueAndPublish()
-	go edgetunnel.StartEdgeTunnel(l.hostnameOverride, l.nodeIP)
+	go edgetunnel.StartEdgeTunnel(ep.hostnameOverride, ep.nodeIP)
 }
 
 // StartEdgePublisher 边端健康检测 20350端口的/用于云端对边端进行健康性  存活性检测
@@ -144,5 +145,6 @@ func NewEdgePublisher(enable bool) (*EdgePublisher, error) {
 		enable:           enable,
 		hostnameOverride: edgepublisherconfig.Config.HostnameOverride,
 		nodeIP:           edgepublisherconfig.Config.LocalIP,
+		token:            "c8a5950dd40c8ba317dc28ad3e204d044ca5fc726af91fe70c11510d6eb269e8.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzg1MTk2ODN9.X6xJMdYNJ_M3imo7GwaF49NH-fkSJhefRzawtc0KaGA",
 	}, nil
 }

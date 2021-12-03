@@ -1,12 +1,13 @@
 package cloud
 
 import (
-	flag "github.com/spf13/pflag"
-	"k8s.io/client-go/util/homedir"
 	eqndconstants "keep/cloud/pkg/equalnodecontroller/constants"
 	"keep/constants"
 	"path/filepath"
 	"strings"
+
+	flag "github.com/spf13/pflag"
+	"k8s.io/client-go/util/homedir"
 )
 
 // NewDefaultEdgeAgentConfig returns a full EdgeCoreConfig object
@@ -46,9 +47,10 @@ func NewDefaultEdgeAgentConfig() *CloudAgentConfig {
 				PromServerPrometheusPort: constants.DefaultPromServerMetricsPort,
 			},
 			RequestDispatcher: &RequestDispatcher{
-				Enable:        true,
-				HTTPPort:      constants.DefaultHTTPPort,
-				WebSocketPort: constants.DefaultWebSocketPort,
+				Enable:               true,
+				HTTPPort:             constants.DefaultHTTPPort,
+				WebSocketPort:        constants.DefaultWebSocketPort,
+				TokenRefreshDuration: constants.DefaultTokenRefreshDuration,
 			},
 			CloudImageManager: &CloudImageManager{
 				Enable: true,

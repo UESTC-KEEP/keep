@@ -9,7 +9,7 @@ import (
 	"keep/edge/pkg/edgepublisher/tunnel/cert"
 	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/core/model"
-	"keep/pkg/util/loggerv1.0.1"
+	logger "keep/pkg/util/loggerv1.0.1"
 	"net/http"
 	"net/url"
 	"time"

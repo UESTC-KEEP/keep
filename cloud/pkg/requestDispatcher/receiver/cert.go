@@ -10,14 +10,12 @@ import (
 	"errors"
 	"fmt"
 	hubconfig "keep/cloud/pkg/requestDispatcher/config"
-	"keep/constants"
 
 	certutil "k8s.io/client-go/util/cert"
 
-	"keep/pkg/util/kplogger"
+	logger "keep/pkg/util/loggerv1.0.1"
 	"math"
 	"math/big"
-	"net"
 	"time"
 )
 
@@ -26,16 +24,17 @@ const validalityPeriod time.Duration = 365 * 100
 func PrepareAllCerts() error {
 	// Check whether the ca exists in the local directory
 	if hubconfig.Config.Ca == nil && hubconfig.Config.CaKey == nil {
-		kplogger.Info("Ca and CaKey creating...")
+		logger.Info("Ca and CaKey creating...")
+		// 包含公私钥的证书caDER 和  私钥caKey
 		caDER, caKey, err := NewCertificateAuthorityDer()
 		if err != nil {
-			kplogger.Errorf("failed to create Certificate Authority, error: %v", err)
+			logger.Error("failed to create Certificate Authority, error: %v", err)
 			return err
 		}
-
+		// 将私钥转换缓成der编码形式  方便在PEM块中使用
 		caKeyDER, err := x509.MarshalECPrivateKey(caKey.(*ecdsa.PrivateKey))
 		if err != nil {
-			kplogger.Errorf("failed to convert an EC private key to SEC 1, ASN.1 DER form, error: %v", err)
+			logger.Error("failed to convert an EC private key to SEC 1, ASN.1 DER form, error: %v", err)
 			return err
 		}
 
@@ -44,11 +43,11 @@ func PrepareAllCerts() error {
 	}
 
 	if hubconfig.Config.Key == nil && hubconfig.Config.Cert == nil {
-		kplogger.Infof("CloudCoreCert and key creating...")
+		logger.Info("CloudCoreCert and key creating...")
 
 		certDER, keyDER, err := SignCerts()
 		if err != nil {
-			kplogger.Errorf("failed to sign a certificate, error: %v", err)
+			logger.Error("failed to sign a certificate, error: %v", err)
 			return err
 		}
 		UpdateConfig(nil, nil, certDER, keyDER)
@@ -101,50 +100,31 @@ func NewSelfSignedCACertDERBytes(key crypto.Signer) ([]byte, error) {
 func UpdateConfig(ca, caKey, cert, key []byte) {
 	if ca != nil {
 		hubconfig.Config.Ca = ca
-		kplogger.Info("update ca...")
+		logger.Info("update ca...")
 	}
 	if caKey != nil {
 		hubconfig.Config.CaKey = caKey
-		kplogger.Info("update caKey...")
+		logger.Info("update caKey...")
 
 	}
 	if cert != nil {
 		hubconfig.Config.Cert = cert
-		kplogger.Info("update cert...")
+		logger.Info("update cert...")
 
 	}
 	if key != nil {
 		hubconfig.Config.Key = key
-		kplogger.Info("update key...")
+		logger.Info("update key...")
 
 	}
 }
 
-func getIps(advertiseAddress []string) (Ips []net.IP) {
-	for _, addr := range advertiseAddress {
-		Ips = append(Ips, net.ParseIP(addr))
+func UpdateToken(token string) {
+	if token != "" {
+		hubconfig.Config.Token = token
+		logger.Info("update Token...")
+		logger.Info("Token: ", token)
 	}
-	return
-}
-
-func SignCerts() ([]byte, []byte, error) {
-	cfg := &certutil.Config{
-		CommonName:   "KeepEdge",
-		Organization: []string{"KeepEdge"},
-		Usages:       []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
-		AltNames: certutil.AltNames{
-			DNSNames: []string{""},
-			// DNSNames: hubconfig.Config.DNSNames,
-			IPs: getIps([]string{constants.DefaultKeepCloudIP}),
-		},
-	}
-
-	certDER, keyDER, err := NewCloudCoreCertDERandKey(cfg)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	return certDER, keyDER, nil
 }
 
 func NewCloudCoreCertDERandKey(cfg *certutil.Config) ([]byte, []byte, error) {
@@ -171,6 +151,8 @@ func NewCloudCoreCertDERandKey(cfg *certutil.Config) ([]byte, []byte, error) {
 		return nil, nil, fmt.Errorf("failed to parse ECPrivateKey, err: %v", err)
 	}
 
+	// 通过CA证书 CA私钥 服务器公钥 生成 新的服务器证书
+	// 通过CA证书签订server证书 CA证书是通过自签得到的
 	certDER, err := NewCertFromCa(cfg, caCert, serverKey.Public(), caKey, validalityPeriod)
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to generate a certificate using the given CA certificate and key, err: %v", err)

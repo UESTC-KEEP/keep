@@ -19,7 +19,7 @@ package v1alpha1
 import (
 	"keep/constants"
 	"keep/pkg/util"
-	"keep/pkg/util/loggerv1.0.1"
+	logger "keep/pkg/util/loggerv1.0.1"
 	"os"
 	"strings"
 	"time"
@@ -67,6 +67,7 @@ func NewDefaultEdgeAgentConfig() *EdgeAgentConfig {
 				BeehiveTimeout:    constants.DefaultBeehiveTimeout * time.Millisecond,
 				HostnameOverride:  hostnameOverride,
 				LocalIP:           localIP,
+				Token:             "",
 			},
 			EdgeTwin: &EdgeTwin{
 				Enable:         true,
