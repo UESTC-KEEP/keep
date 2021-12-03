@@ -58,10 +58,10 @@ type CertManager struct {
 	Done    chan struct{}
 }
 
-const (
-	Address = "192.168.1.121"
-	Port    = "2021"
-)
+// const (
+// 	Address = "192.168.1.121"
+// 	Port    = "2021"
+// )
 
 // NewCertManager creates a CertManager for edge certificate management according to EdgeHub config
 func NewCertManager(nodename string) CertManager {

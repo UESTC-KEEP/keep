@@ -25,3 +25,4 @@ spec:
     # 简称，就像service的简称是svc
     shortNames:
     - eqnd
+

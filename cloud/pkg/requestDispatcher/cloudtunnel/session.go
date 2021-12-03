@@ -2,11 +2,12 @@ package cloudtunnel
 
 import (
 	"fmt"
-	"github.com/gorilla/websocket"
 	"keep/cloud/pkg/requestDispatcher/Router"
 	"keep/pkg/stream"
 	"keep/pkg/util/core/model"
-	"keep/pkg/util/loggerv1.0.1"
+	logger "keep/pkg/util/loggerv1.0.1"
+
+	"github.com/gorilla/websocket"
 )
 
 type session struct {
@@ -54,8 +55,10 @@ func (s *session) Serve() {
 		} else {
 			//group := message.Router.Group
 			//beehiveContext.SendToGroup(group, *message)
-			Router.MessageDispatcher(message)
+			// Router.MessageDispatcher(message)
+			Router.RevMsgChan <- message
 		}
 
 	}
+
 }

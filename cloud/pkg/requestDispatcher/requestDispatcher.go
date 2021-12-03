@@ -2,6 +2,7 @@ package requestDispatcher
 
 import (
 	"keep/cloud/pkg/common/modules"
+	"keep/cloud/pkg/requestDispatcher/Router"
 	"keep/cloud/pkg/requestDispatcher/cloudtunnel"
 	requestDispatcherconfig "keep/cloud/pkg/requestDispatcher/config"
 	"keep/cloud/pkg/requestDispatcher/receiver"
@@ -64,6 +65,8 @@ func (r *RequestDispatcher) Start() {
 	// receiver.StartReceiver()
 
 	go cloudtunnel.StartWebsocketServer()
+
+	go Router.MessageRouter()
 }
 func (r *RequestDispatcher) Enable() bool {
 	return r.enable

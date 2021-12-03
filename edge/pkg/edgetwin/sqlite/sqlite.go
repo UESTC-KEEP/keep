@@ -69,18 +69,19 @@ func ReceiveEdgeTwinMsg(cli *Sqlite) {
 	msg, err := beehiveContext.Receive(modules.EdgeTwinModule)
 	if err != nil {
 		logger.Error(err)
-		time.Sleep(5 * time.Second)
+		time.Sleep(1 * time.Second)
 	} else {
 		logger.Trace("接收消息 msg: ", msg)
-		if msg.Content == nil {
-			logger.Warn("消息为空....")
-		} else {
-			resp := msg.NewRespByMessage(&msg, " message received ")
-			beehiveContext.SendResp(*resp)
+
+		// 提高速度
+		go func() {
 			err := cli.InserBlobIntoMetricsSqlite(msg.Content.([]byte))
 			if err != nil {
 				logger.Error(err)
+				return
 			}
-		}
+			resp := msg.NewRespByMessage(&msg, " message received ")
+			beehiveContext.SendResp(*resp)
+		}()
 	}
 }
