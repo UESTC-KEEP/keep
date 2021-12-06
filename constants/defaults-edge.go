@@ -1,7 +1,7 @@
 package constants
 
 const EdgeAgentName = "EdgeAgent"
-const EdgeConfigeFilesSourceDir = "../../edge/shells/confs/keepedge"
+const EdgeConfigeFilesSourceDir = "../../../edge/shells/confs/keepedge"
 
 const (
 	KeepBasepath     = "/etc/keepedge/"

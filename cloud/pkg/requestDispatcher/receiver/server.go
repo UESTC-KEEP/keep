@@ -143,6 +143,7 @@ func verifyAuthorization(w http.ResponseWriter, r *http.Request) bool {
 		}
 		return false
 	}
+	// 验证token的合法性
 	token, err := jwt.Parse(bearerToken[1], func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("there was an error")

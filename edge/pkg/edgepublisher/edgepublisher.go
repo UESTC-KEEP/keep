@@ -8,6 +8,7 @@ import (
 	edgepublisherconfig "keep/edge/pkg/edgepublisher/config"
 	"keep/edge/pkg/edgepublisher/publisher"
 	edgetunnel "keep/edge/pkg/edgepublisher/tunnel"
+	"keep/edge/pkg/edgepublisher/tunnel/cert"
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 	"keep/pkg/util/core"
 	logger "keep/pkg/util/loggerv1.0.1"
@@ -102,6 +103,9 @@ func (ep *EdgePublisher) Enable() bool {
 func (ep *EdgePublisher) Start() {
 	var wg sync.WaitGroup
 	logger.Debug("EdgePublisher 开始启动....")
+	nm := cert.NewCertManager("NodeName", ep.token)
+	nm.Start()
+
 	// 启动边端服务20350
 	// 初始化队列 确保队列初始化完成再启动服务
 	chanmsgqueen.InitMsgQueens()
@@ -145,6 +149,6 @@ func NewEdgePublisher(enable bool) (*EdgePublisher, error) {
 		enable:           enable,
 		hostnameOverride: edgepublisherconfig.Config.HostnameOverride,
 		nodeIP:           edgepublisherconfig.Config.LocalIP,
-		token:            "c8a5950dd40c8ba317dc28ad3e204d044ca5fc726af91fe70c11510d6eb269e8.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzg1MTk2ODN9.X6xJMdYNJ_M3imo7GwaF49NH-fkSJhefRzawtc0KaGA",
+		token:            "a9f466aac98c388342cd05c6274b380f876fe9ed09b7e98806537df027451b5b.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzg4NTU1NTh9.r7AZQ92cvodgVXzI_oFWq3h46mqYiiGMKsiNN_3jduI",
 	}, nil
 }

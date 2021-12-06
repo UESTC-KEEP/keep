@@ -103,6 +103,7 @@ func (cm *CertManager) Start() {
 		}
 	}
 	if cm.RotateCertificates {
+		// 开始轮换证书  重复用ca去云端签订证书
 		cm.rotate()
 	}
 }
@@ -168,6 +169,8 @@ func (cm *CertManager) applyCerts() error {
 // rotate starts edge certificate rotation process
 func (cm *CertManager) rotate() {
 	klog.Infof("Certificate rotation is enabled.")
+	// 经过测试 该携程启动两个 并阻塞  大约一年过后再重新签证书
+	// forever 相当于定时任务  先执行一次 然后过了Duration再执行一次
 	go wait.Forever(func() {
 		deadline, err := cm.nextRotationDeadline()
 		if err != nil {
@@ -178,7 +181,6 @@ func (cm *CertManager) rotate() {
 
 			timer := time.NewTimer(sleepInterval)
 			defer timer.Stop()
-
 			<-timer.C // unblock when deadline expires
 		}
 
