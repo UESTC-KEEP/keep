@@ -2,6 +2,7 @@ package requestDispatcher
 
 import (
 	"keep/cloud/pkg/common/modules"
+	coupon "keep/cloud/pkg/requestDispatcher/RPC/myproto"
 	"keep/cloud/pkg/requestDispatcher/Router"
 	"keep/cloud/pkg/requestDispatcher/cloudtunnel"
 	requestDispatcherconfig "keep/cloud/pkg/requestDispatcher/config"
@@ -67,6 +68,10 @@ func (r *RequestDispatcher) Start() {
 	go cloudtunnel.StartWebsocketServer()
 
 	go Router.MessageRouter()
+	err := coupon.ServerInit()
+	if err != nil {
+		logger.Fatal("init gRPC server failed", err)
+	}
 }
 func (r *RequestDispatcher) Enable() bool {
 	return r.enable

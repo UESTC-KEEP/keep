@@ -2,7 +2,9 @@ package edgepublisher
 
 import (
 	"encoding/json"
+	"fmt"
 	"keep/edge/pkg/common/modules"
+	coupon "keep/edge/pkg/edgepublisher/RPC"
 	"keep/edge/pkg/edgepublisher/bufferpooler"
 	"keep/edge/pkg/edgepublisher/chanmsgqueen"
 	edgepublisherconfig "keep/edge/pkg/edgepublisher/config"
@@ -18,44 +20,6 @@ import (
 	"os"
 	"sync"
 )
-
-// func main() {
-// 	nm := publisher.NewCertManager("NodeName")
-// 	nm.Start()
-
-// 	pool := x509.NewCertPool()
-// 	caCertPath := "/etc/kubeedge/ca/rootCA.crt"
-
-// 	caCrt, err := ioutil.ReadFile(caCertPath)
-// 	if err != nil {
-// 		fmt.Println("ReadFile err:", err)
-// 		return
-// 	}
-// 	pool.AppendCertsFromPEM(caCrt)
-
-// 	cliCrt, err := tls.LoadX509KeyPair(constants.DefaultCertFile, constants.DefaultKeyFile)
-// 	if err != nil {
-// 		fmt.Println("Loadx509keypair err:", err)
-// 		return
-// 	}
-
-// 	tr := &http.Transport{
-// 		TLSClientConfig: &tls.Config{
-// 			RootCAs:      pool,
-// 			Certificates: []tls.Certificate{cliCrt},
-// 		},
-// 	}
-// 	client := &http.Client{Transport: tr}
-// 	//这里的ip地址需要在生成自签名证书的时候指定,否则ssl验证不通过。
-// 	res, err := client.Get("https://192.168.1.121:2022")
-// 	if err != nil {
-// 		fmt.Println("client get error:", err)
-// 	}
-// 	defer res.Body.Close()
-// 	body, _ := ioutil.ReadAll(res.Body)
-// 	fmt.Println(string(body))
-
-// }
 
 type EdgePublisher struct {
 	enable            bool
@@ -102,6 +66,8 @@ func (ep *EdgePublisher) Enable() bool {
 
 func (ep *EdgePublisher) Start() {
 	var wg sync.WaitGroup
+	name, _ := os.Hostname()
+	fmt.Println("name:", name)
 	logger.Debug("EdgePublisher 开始启动....")
 	nm := cert.NewCertManager("NodeName", ep.token)
 	nm.Start()
@@ -114,6 +80,10 @@ func (ep *EdgePublisher) Start() {
 	bufferpooler.StartListenLogMsg()
 	publisher.ReadQueueAndPublish()
 	go edgetunnel.StartEdgeTunnel(ep.hostnameOverride, ep.nodeIP)
+	err := coupon.CouponClientInit()
+	if err != nil {
+		logger.Fatal("init coupon gRPC client failed", err)
+	}
 }
 
 // StartEdgePublisher 边端健康检测 20350端口的/用于云端对边端进行健康性  存活性检测
@@ -149,6 +119,6 @@ func NewEdgePublisher(enable bool) (*EdgePublisher, error) {
 		enable:           enable,
 		hostnameOverride: edgepublisherconfig.Config.HostnameOverride,
 		nodeIP:           edgepublisherconfig.Config.LocalIP,
-		token:            "a9f466aac98c388342cd05c6274b380f876fe9ed09b7e98806537df027451b5b.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzg4NTU1NTh9.r7AZQ92cvodgVXzI_oFWq3h46mqYiiGMKsiNN_3jduI",
+		token:            "714e8964ea1d42a2414d4af1800dbe2f7a4560b3df23cd4795dc32ac83909f8a.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzg5NDk0NTV9.AG7PuJvpAqPHq__erFVhAYJI6zlJ1i43RWRQTEAMqr8",
 	}, nil
 }
