@@ -13,6 +13,7 @@ import (
 	logger "keep/pkg/util/loggerv1.0.1"
 	"net/http"
 	"net/url"
+	"sync"
 	"time"
 )
 
@@ -24,6 +25,8 @@ type edgeTunnel struct {
 
 var session *tunnelSession
 var sessionConnected bool
+var msgSendBuffer = make([]*model.Message, constants.DefaultMsgSendBufferSize)
+var msgSendBufferLock sync.Locker
 
 func newEdgeTunnel(hostnameOverride, nodeIP string) *edgeTunnel {
 	return &edgeTunnel{
@@ -131,8 +134,9 @@ func WriteToCloud(msg *model.Message) {
 		if err != nil {
 			logger.Error("send message to edge twin error: ", err)
 		}
+		return
 	}
-	err := session.Tunnel.WriteMessage(msg)
+	err := session.Tunnel.WriteMessage([]*model.Message{msg})
 	if err != nil {
 		msgToEdgeTwin := model.NewMessage("")
 		msgToEdgeTwin.SetResourceOperation(msg.GetResource(), "")
@@ -142,4 +146,29 @@ func WriteToCloud(msg *model.Message) {
 		}
 	}
 
+}
+
+func WriteToBufferToCloud(msg *model.Message) {
+	for i := 0; i < 5 && !sessionConnected; i++ {
+		logger.Info("session not connected, waiting")
+		time.Sleep(3 * time.Second)
+	}
+
+	msgSendBufferLock.Lock()
+	msgSendBuffer = append(msgSendBuffer, msg)
+	if len(msgSendBuffer) == constants.DefaultMsgSendBufferSize {
+		err := session.Tunnel.WriteMessage(msgSendBuffer)
+		if err != nil {
+			for _, contentMsg := range msgSendBuffer {
+				msgToEdgeTwin := model.NewMessage("")
+				msgToEdgeTwin.SetResourceOperation(contentMsg.GetResource(), "")
+				_, err := beehiveContext.SendSync(modules.EdgeTwinGroup, *msgToEdgeTwin, time.Second)
+				if err != nil {
+					logger.Error("send message to edge twin error: ", err)
+				}
+			}
+		}
+		msgSendBuffer = msgSendBuffer[0:0]
+	}
+	msgSendBufferLock.Unlock()
 }

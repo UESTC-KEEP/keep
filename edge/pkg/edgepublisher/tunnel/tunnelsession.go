@@ -71,7 +71,7 @@ func (t *tunnelSession) routeToEdge(reconnectChan chan struct{}) {
 			return
 		}
 
-		mess, err := stream.ReadMessageFromTunnel(r)
+		messList, err := stream.ReadMessageFromTunnel(r)
 		if err != nil {
 			logger.Error("Get tunnel message error: ", err)
 			reconnectChan <- struct{}{}
@@ -79,10 +79,13 @@ func (t *tunnelSession) routeToEdge(reconnectChan chan struct{}) {
 		}
 
 		//如果是对某条消息的响应消息
-		if mess.Header.ParentID != "" {
-			beehiveContext.SendResp(*mess)
-		} else {
-			beehiveContext.SendToGroup(mess.Router.Group, *mess)
+		for _, contentMsg := range messList {
+			if contentMsg.Header.ParentID != "" {
+				beehiveContext.SendResp(*contentMsg)
+			} else {
+				beehiveContext.SendToGroup(contentMsg.Router.Group, *contentMsg)
+			}
 		}
+
 	}
 }

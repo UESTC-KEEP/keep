@@ -1,7 +1,7 @@
 package constants
 
 const EdgeAgentName = "EdgeAgent"
-const EdgeConfigeFilesSourceDir = "../../edge/shells/confs/keepedge"
+const EdgeConfigeFilesSourceDir = "../../../edge/shells/confs/keepedge"
 
 const (
 	KeepBasepath     = "/etc/keepedge/"
@@ -48,7 +48,8 @@ const (
 	// DefaultDataQueenSize 数据缓冲队列默认大小
 	DefaultDataQueenSize = 100
 	// DefaultMetricsPort metrics暴露端口
-	DefaultMetricsPort = 8080
+	DefaultMetricsPort       = 8080
+	DefaultMsgSendBufferSize = 500
 )
 
 // mqtt配置
