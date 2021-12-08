@@ -1,7 +1,5 @@
 package sqlite
 
-import "time"
-
 type SqliteInterface interface {
 	// ConnectToSqlite 使用默认的数据库进行连接
 	ConnectToSqlite() error
@@ -9,7 +7,10 @@ type SqliteInterface interface {
 	/*
 		输入参数：blob接收二进制的数据
 	*/
-	InserBlobIntoMetricsSqlite(blob []byte) error
+	InserBlobIntoMetricsSqlite(content []byte , time string) error
 	// DeleteTimeOutFromSqlite 从数据库删除已过期的数据
-	DeleteTimeOutFromSqlite(ddl time.Time) error
+	DeleteTimeOutFromSqlite(ddl int64) error
+
+	// SelectTimeFromSqliteToCloud 检索断连后的数据并同步给云端
+	SelectTimeFromSqliteToCloud( begintime int64) error
 }

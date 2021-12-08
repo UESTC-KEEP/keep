@@ -2,40 +2,48 @@ package sqlite
 
 import (
 	"database/sql"
+	"encoding/json"
 	_ "github.com/mattn/go-sqlite3"
-	uuid "github.com/satori/go.uuid"
+	"github.com/robfig/cron"
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/edgetwin/config"
 	beehiveContext "keep/pkg/util/core/context"
+	"keep/pkg/util/core/model"
 	"keep/pkg/util/loggerv1.0.1"
+	"strconv"
 	"time"
 )
 
 type Sqlite struct {
+	conn *sql.DB
 }
 
-var conn *sql.DB
+//var conn *sql.DB
 
 func (sq *Sqlite) ConnectToSqlite() error {
-	db, err := sql.Open("sqlite3", config.Config.SqliteFilePath)
-	conn = db
+	var err error
+	sq.conn, err = sql.Open("sqlite3", config.Config.SqliteFilePath)
 	if err != nil {
 		logger.Error("Failed to open sqlite", err)
 	}
 	return err
 }
 
-func (sq *Sqlite) InserBlobIntoMetricsSqlite(blob []byte) error {
+func (sq *Sqlite) InserBlobIntoMetricsSqlite(content []byte , time string) error {
 	//插入数据
-	if conn == nil {
-		new(Sqlite).ConnectToSqlite()
+	if sq.conn == nil {
+		err := sq.ConnectToSqlite()
+		if err != nil {
+			return err
+		}
 	}
-	stmt, err := conn.Prepare("INSERT INTO metrics(uuid,data) values(?,?)")
+	stmt, err := sq.conn.Prepare("INSERT INTO logedgeagent(time , content) values(?,?)")
 	if err != nil {
 		logger.Error(err)
 	}
+	defer stmt.Close()
 
-	res, err := stmt.Exec((uuid.NewV4()).String(), blob)
+	res, err := stmt.Exec(time, string(content))
 	if err != nil {
 		logger.Error(err)
 	}
@@ -46,8 +54,67 @@ func (sq *Sqlite) InserBlobIntoMetricsSqlite(blob []byte) error {
 	return err
 }
 
+func (sq *Sqlite) DeleteTimeOutFromSqlite(ddl int64) error{
+	stmt,err := sq.conn.Prepare("DELETE FROM logedgeagent WHERE time <= ?")
+	if err!=nil {
+		logger.Error(err)
+		return err
+	}
+	res, err := stmt.Exec(ddl)
+	if err!=nil {
+		logger.Error(err)
+		return err
+	}
+	// affect, err = res.RowsAffected()
+	return err
+}
+
+func (sq *Sqlite) SelectTimeFromSqliteToCloud( begintime int64) error{
+
+	stmt ,err := sq.conn.Prepare("SELECT content FROM logedgeagent where time > ?")
+	if err!=nil{
+		logger.Error(err)
+		return err
+	}
+
+	rows ,err := stmt.Query(begintime)
+	if err!=nil{
+		logger.Error(err)
+		return err
+	}
+	for rows.Next() {
+		var content []byte
+		err := rows.Scan(&content)
+		if err!=nil{
+			logger.Error(err)
+			return err
+		}
+		var msg model.Message
+		err = json.Unmarshal(content , &msg)
+		if err!=nil{
+			logger.Error(err)
+			return err
+		}
+
+		beehiveContext.Send(modules.EdgePublisherModule , msg)
+
+	}
+
+	return err
+}
+
 func NewSqliteCli() *Sqlite {
-	return new(Sqlite)
+	conn, err := sql.Open("sqlite3", config.Config.SqliteFilePath)
+	if err != nil {
+		logger.Error("Failed to open sqlite", err)
+	}
+
+	sq := &Sqlite{
+		conn: conn,
+	}
+	//cron := DeletePeriod(sq)
+	//defer cron.Stop()
+	return sq
 }
 
 func ReceiveFromBeehiveAndInsert() {
@@ -62,7 +129,6 @@ func ReceiveFromBeehiveAndInsert() {
 			ReceiveEdgeTwinMsg(cli)
 		}
 	}(cli)
-
 }
 
 func ReceiveEdgeTwinMsg(cli *Sqlite) {
@@ -75,13 +141,35 @@ func ReceiveEdgeTwinMsg(cli *Sqlite) {
 
 		// 提高速度
 		go func() {
-			err := cli.InserBlobIntoMetricsSqlite(msg.Content.([]byte))
+			content , err := json.Marshal(msg)
 			if err != nil {
 				logger.Error(err)
+				return
+			}
+
+			err1 := cli.InserBlobIntoMetricsSqlite(content ,  strconv.FormatInt(msg.Header.Timestamp , 10))
+			if err1 != nil {
+				logger.Error(err1)
 				return
 			}
 			resp := msg.NewRespByMessage(&msg, " message received ")
 			beehiveContext.SendResp(*resp)
 		}()
 	}
+}
+
+func DeletePeriod(sq *Sqlite) *cron.Cron  {
+	c := cron.New()
+
+	c.AddFunc("@every 48h", func() {
+		err := sq.DeleteTimeOutFromSqlite(time.Now().UnixNano())
+		if err != nil {
+			logger.Error(err)
+			return
+		}
+		logger.Info("周期性删除日志记录完成")
+	})
+
+	c.Start()
+	return c
 }
