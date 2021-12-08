@@ -19,12 +19,13 @@ limitations under the License.
 package scheme
 
 import (
+	keepedgev1 "keep/cloud/pkg/apis/keepedge/v1"
+
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	serializer "k8s.io/apimachinery/pkg/runtime/serializer"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
-	keepedgev1 "keep/cloud/pkg/equalnodecontroller/pkg/apis/keepedge/v1"
 )
 
 var Scheme = runtime.NewScheme()

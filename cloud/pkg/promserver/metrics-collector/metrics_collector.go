@@ -1,8 +1,8 @@
 package metrics_collector
 
 import (
-	"github.com/wonderivan/logger"
 	"keep/cloud/pkg/promserver/config"
+	"keep/pkg/util/loggerv1.0.1"
 	"net/http"
 	"strconv"
 )

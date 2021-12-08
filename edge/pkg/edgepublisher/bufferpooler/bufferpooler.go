@@ -3,8 +3,8 @@ package bufferpooler
 import (
 	"fmt"
 	beehiveContext "keep/pkg/util/core/context"
-	//beehiveContext "github.com/kubeedge/beehive/pkg/core/context"
-	"github.com/wonderivan/logger"
+	"keep/pkg/util/loggerv1.0.1"
+
 	"keep/constants"
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/edgepublisher/chanmsgqueen"
@@ -46,7 +46,7 @@ func ReceiveFromBeehiveAndPublish() {
 	msg, err := beehiveContext.Receive(modules.EdgePublisherModule)
 	if err != nil {
 		logger.Error(err)
-		time.Sleep(5 * time.Second)
+		time.Sleep(1 * time.Second)
 	} else {
 		fmt.Printf("接收消息 msg: %v\n", msg)
 		resp := msg.NewRespByMessage(&msg, " message received ")

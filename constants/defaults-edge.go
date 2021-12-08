@@ -37,7 +37,7 @@ const (
 
 // EdgePublisher 全局配置
 const (
-	DefaultHttpServer    = "http://192.168.1.140"
+	DefaultHttpServer    = "http://192.168.1.121"
 	DefaultCloudHttpPort = 20000
 	DefaultEdgeHeartBeat = 15
 	DefaultEdgePort      = 20350
@@ -48,7 +48,8 @@ const (
 	// DefaultDataQueenSize 数据缓冲队列默认大小
 	DefaultDataQueenSize = 100
 	// DefaultMetricsPort metrics暴露端口
-	DefaultMetricsPort = 8080
+	DefaultMetricsPort       = 8080
+	DefaultMsgSendBufferSize = 500
 )
 
 // mqtt配置

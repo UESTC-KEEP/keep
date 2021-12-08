@@ -26,7 +26,7 @@ import (
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
-	keepcrdv1 "keep/cloud/pkg/equalnodecontroller/pkg/apis/keepedge/v1"
+	keepcrdv1 "keep/cloud/pkg/apis/keepedge/v1"
 )
 
 // FakeEqualNodes implements EqualNodeInterface

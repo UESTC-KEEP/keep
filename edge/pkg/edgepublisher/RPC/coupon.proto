@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+
+option go_package = "/;coupon";
+package coupon;
+
+service HelloServer {
+    rpc SayHello (HelloReq) returns (HelloRsp){}
+    rpc SayName (NameReq) returns (NameRsp){}
+}
+
+message HelloReq {
+    string name = 1;
+}
+
+message HelloRsp {
+    string msg = 1;
+}
+message NameReq {
+    string name = 1;
+}
+
+message NameRsp {
+    string msg = 1;
+}

@@ -2,13 +2,15 @@ package requestDispatcher
 
 import (
 	"keep/cloud/pkg/common/modules"
+	coupon "keep/cloud/pkg/requestDispatcher/RPC/myproto"
+	"keep/cloud/pkg/requestDispatcher/Router"
 	"keep/cloud/pkg/requestDispatcher/cloudtunnel"
 	requestDispatcherconfig "keep/cloud/pkg/requestDispatcher/config"
 	"keep/cloud/pkg/requestDispatcher/receiver"
 	"keep/constants"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"keep/pkg/util/core"
-	"keep/pkg/util/kplogger"
+	logger "keep/pkg/util/loggerv1.0.1"
 	"os"
 )
 
@@ -22,7 +24,7 @@ func Register(r *cloudagent.RequestDispatcher) {
 	requestDispatcherconfig.InitConfigure(r)
 	rd, err := NewRequestDispatcher(r.Enable)
 	if err != nil {
-		kplogger.Error("初始化RequestDispatcher失败...:", err)
+		logger.Error("初始化RequestDispatcher失败...:", err)
 		os.Exit(1)
 	}
 	core.Register(rd)
@@ -44,26 +46,32 @@ func (r *RequestDispatcher) Group() string {
 }
 func (r *RequestDispatcher) Start() {
 
-	kplogger.Info("RequestDispatcher begin..")
+	logger.Info("RequestDispatcher begin..")
 
 	// check whether the certificates exist in the local directory,
 	// and then check whether certificates exist in the secret, generate if they don't exist
 	if err := receiver.PrepareAllCerts(); err != nil {
-		kplogger.Error(err)
+		logger.Error(err)
 	}
 	//TODO: Will improve in the future
 	cloudtunnel.DoneTLSTunnelCerts <- true
 	close(cloudtunnel.DoneTLSTunnelCerts)
 
-	// if err := receiver.GenerateToken(); err != nil {
-	// 	klog.Exit(err)
-	// }
+	if err := receiver.GenerateToken(); err != nil {
+		logger.Fatal("fail to create Token, err:", err)
+	}
 
 	go receiver.StartHTTPServer()
 	// HttpServer mainly used to issue certificates for the edge
 	// receiver.StartReceiver()
 
 	go cloudtunnel.StartWebsocketServer()
+
+	go Router.MessageRouter()
+	err := coupon.ServerInit()
+	if err != nil {
+		logger.Fatal("init gRPC server failed", err)
+	}
 }
 func (r *RequestDispatcher) Enable() bool {
 	return r.enable

@@ -1,15 +1,11 @@
 package kafka
 
 import (
-	"fmt"
 	"github.com/Shopify/sarama"
 	"log"
-	"time"
 )
 
 //var Address = []string{"192.168.1.103:9092", "192.168.1.103:9093"}
-type ProducerMessage = sarama.ProducerMessage	// bie ming
-type ProducerError = sarama.ProducerError
 
 type AsyncProducer struct {
 	producer        sarama.AsyncProducer
@@ -48,6 +44,7 @@ func (asp *AsyncProducer) Errors() <-chan *ProducerError {
 func (asp *AsyncProducer) Close() (err error) {
 	err = asp.producer.Close()
 	return
+<<<<<<< HEAD
 }
 
 func AsyncPro(address []string, topic string, msg  chan string)  {
@@ -94,3 +91,6 @@ func AsyncPro(address []string, topic string, msg  chan string)  {
 		time.Sleep(500*time.Millisecond)
 	}
 }
+=======
+}
+>>>>>>> 72119525c6ba57a9ca8665383623b5b305c80114

@@ -3,7 +3,6 @@ package app
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/wonderivan/logger"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"keep/constants"
@@ -16,6 +15,7 @@ import (
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 	commonutil "keep/pkg/util"
 	"keep/pkg/util/core"
+	"keep/pkg/util/loggerv1.0.1"
 	"net/http"
 	"os"
 )
@@ -72,6 +72,6 @@ func NewEdgeAgentCommand() *cobra.Command {
 func registerModules(config *edgeagent.EdgeAgentConfig) {
 	healthzagent.Register(config.Modules.HealthzAgent)
 	logsagent.Register(config.Modules.LogsAgent)
-	edgepublisher.Register(config.Modules.EdgePublisher, config.Modules.EdgePublisher.HostnameOverride, config.Modules.EdgePublisher.LocalIP)
+	edgepublisher.Register(config.Modules.EdgePublisher)
 	edgetwin.Register(config.Modules.EdgeTwin)
 }

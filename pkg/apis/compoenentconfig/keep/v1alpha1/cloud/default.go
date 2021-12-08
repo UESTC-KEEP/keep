@@ -1,6 +1,7 @@
 package cloud
 
 import (
+	eqndconstants "keep/cloud/pkg/equalnodecontroller/constants"
 	"keep/constants"
 	"path/filepath"
 	"strings"
@@ -32,17 +33,24 @@ func NewDefaultEdgeAgentConfig() *CloudAgentConfig {
 				RedisPort:           constants.DefaultRedisServerPort,
 				PodInfo:             nil,
 				DeploymentInfo:      nil,
-				KubeConfigFilePath:  *kubeconfig,
-				DecoderBufferSize:   constants.DefaultDecoderBufferSize,
+				KubeAPIConfig: &KubeAPIConfig{
+					//Master:      "",
+					//ContentType: "",
+					QPS:        100,
+					Burst:      200,
+					KubeConfig: *kubeconfig,
+				},
+				DecoderBufferSize: constants.DefaultDecoderBufferSize,
 			},
 			PromServer: &PromServer{
 				Enable:                   true,
 				PromServerPrometheusPort: constants.DefaultPromServerMetricsPort,
 			},
 			RequestDispatcher: &RequestDispatcher{
-				Enable:        true,
-				HTTPPort:      constants.DefaultHTTPPort,
-				WebSocketPort: constants.DefaultWebSocketPort,
+				Enable:               true,
+				HTTPPort:             constants.DefaultHTTPPort,
+				WebSocketPort:        constants.DefaultWebSocketPort,
+				TokenRefreshDuration: constants.DefaultTokenRefreshDuration,
 			},
 			CloudImageManager: &CloudImageManager{
 				Enable: true,
@@ -52,6 +60,9 @@ func NewDefaultEdgeAgentConfig() *CloudAgentConfig {
 				MasterURL:       constants.DefaultMasterURL,
 				KubeConfig:      *kubeconfig,
 				AlsoLogToStdErr: constants.DefaultAlsoLogToStdErr,
+				Buffer: &EqualNodeControllerBuffer{
+					EqualNodeEvent: eqndconstants.DefaultEqualNodeEventBuffer,
+				},
 			},
 		},
 	}

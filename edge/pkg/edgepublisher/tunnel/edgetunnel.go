@@ -4,13 +4,16 @@ import (
 	"crypto/tls"
 	"fmt"
 	"github.com/gorilla/websocket"
-	"github.com/wonderivan/logger"
 	"keep/constants"
+	"keep/edge/pkg/common/modules"
+	"keep/edge/pkg/edgepublisher/config"
 	"keep/edge/pkg/edgepublisher/tunnel/cert"
 	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/core/model"
+	logger "keep/pkg/util/loggerv1.0.1"
 	"net/http"
 	"net/url"
+	"sync"
 	"time"
 )
 
@@ -22,6 +25,8 @@ type edgeTunnel struct {
 
 var session *tunnelSession
 var sessionConnected bool
+var msgSendBuffer = make([]*model.Message, constants.DefaultMsgSendBufferSize)
+var msgSendBufferLock sync.Locker
 
 func newEdgeTunnel(hostnameOverride, nodeIP string) *edgeTunnel {
 	return &edgeTunnel{
@@ -38,14 +43,14 @@ func (e *edgeTunnel) start() {
 		Path:   constants.DefaultWebSocketUrl,
 	}
 
-	certManager := cert.NewCertManager(e.hostnameOverride)
+	certManager := cert.NewCertManager(e.hostnameOverride, config.Config.Token)
 	certManager.Start()
 
-	cert, err := tls.LoadX509KeyPair(constants.DefaultCertFile, constants.DefaultKeyFile)
+	clientCert, err := tls.LoadX509KeyPair(constants.DefaultCertFile, constants.DefaultKeyFile)
 	if err != nil {
 		logger.Info("Failed to load x509 key pair: ", err, "try again")
 		time.Sleep(10 * time.Second)
-		cert, err = tls.LoadX509KeyPair(constants.DefaultCertFile, constants.DefaultKeyFile)
+		clientCert, err = tls.LoadX509KeyPair(constants.DefaultCertFile, constants.DefaultKeyFile)
 	}
 	if err != nil {
 		logger.Fatal("Failed to load x509 key pair: ", err, "Exiting...")
@@ -53,7 +58,7 @@ func (e *edgeTunnel) start() {
 
 	tlsConfig := &tls.Config{
 		InsecureSkipVerify: true,
-		Certificates:       []tls.Certificate{cert},
+		Certificates:       []tls.Certificate{clientCert},
 	}
 
 	for {
@@ -117,11 +122,53 @@ func StartEdgeTunnel(nodeName, nodeIP string) {
 	edget.start()
 }
 
-func WriteToCloud(msg *model.Message) error {
-	for !sessionConnected {
+func WriteToCloud(msg *model.Message) {
+	for i := 0; i < 5 && !sessionConnected; i++ {
 		logger.Info("session not connected, waiting")
 		time.Sleep(3 * time.Second)
 	}
-	return session.Tunnel.WriteMessage(msg)
+	if !sessionConnected {
+		msgToEdgeTwin := model.NewMessage("")
+		msgToEdgeTwin.SetResourceOperation(msg.GetResource(), "")
+		_, err := beehiveContext.SendSync(modules.EdgeTwinGroup, *msgToEdgeTwin, time.Second)
+		if err != nil {
+			logger.Error("send message to edge twin error: ", err)
+		}
+		return
+	}
+	err := session.Tunnel.WriteMessage([]*model.Message{msg})
+	if err != nil {
+		msgToEdgeTwin := model.NewMessage("")
+		msgToEdgeTwin.SetResourceOperation(msg.GetResource(), "")
+		_, err := beehiveContext.SendSync(modules.EdgeTwinGroup, *msgToEdgeTwin, time.Second)
+		if err != nil {
+			logger.Error("send message to edge twin error: ", err)
+		}
+	}
 
+}
+
+func WriteToBufferToCloud(msg *model.Message) {
+	for i := 0; i < 5 && !sessionConnected; i++ {
+		logger.Info("session not connected, waiting")
+		time.Sleep(3 * time.Second)
+	}
+
+	msgSendBufferLock.Lock()
+	msgSendBuffer = append(msgSendBuffer, msg)
+	if len(msgSendBuffer) == constants.DefaultMsgSendBufferSize {
+		err := session.Tunnel.WriteMessage(msgSendBuffer)
+		if err != nil {
+			for _, contentMsg := range msgSendBuffer {
+				msgToEdgeTwin := model.NewMessage("")
+				msgToEdgeTwin.SetResourceOperation(contentMsg.GetResource(), "")
+				_, err := beehiveContext.SendSync(modules.EdgeTwinGroup, *msgToEdgeTwin, time.Second)
+				if err != nil {
+					logger.Error("send message to edge twin error: ", err)
+				}
+			}
+		}
+		msgSendBuffer = msgSendBuffer[0:0]
+	}
+	msgSendBufferLock.Unlock()
 }

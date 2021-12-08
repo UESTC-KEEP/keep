@@ -31,15 +31,15 @@ const (
 
 // requestDispatcher配置
 const (
-	DefaultHTTPPort      = 20001
-	DefaultWebSocketPort = 20000
-	DefaultCAURL         = "/ca.crt"
-	DefaultCertURL       = "/edge.crt"
-	DefaultWebSocketUrl  = "/v1/keepedge/connect"
-	DefaultKeepCloudIP   = "192.168.122.125"
-
-	SessionKeyHostNameOverride = "SessionHostNameOverride"
-	SessionKeyInternalIP       = "SessionInternalIP"
+	DefaultHTTPPort             = 20001
+	DefaultWebSocketPort        = 20000
+	DefaultCAURL                = "/ca.crt"
+	DefaultCertURL              = "/edge.crt"
+	DefaultWebSocketUrl         = "/v1/keepedge/connect"
+	DefaultKeepCloudIP          = "192.168.1.121"
+	DefaultTokenRefreshDuration = 12
+	SessionKeyHostNameOverride  = "SessionHostNameOverride"
+	SessionKeyInternalIP        = "SessionInternalIP"
 )
 
 const (
@@ -56,8 +56,10 @@ const (
 //LogPublisher
 const Url = DefaultMasterLBIp + ":4560"
 const ContentType = "apllication/json;charset=utf-8"
-const(
-	Address="192.168.1.103:9092"
-	OrginTopic="topic"
-	ParseTopic="topic1"
+
+var Address = []string{"192.168.1.103:9092", "192.168.1.103:9093"}
+
+const (
+	OrginTopic = "topic"
+	ParseTopic = "topic1"
 )

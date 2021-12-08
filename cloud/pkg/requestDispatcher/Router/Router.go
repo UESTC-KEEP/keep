@@ -1,23 +1,40 @@
 package Router
 
 import (
-	"github.com/wonderivan/logger"
 	"keep/cloud/pkg/common/kafka"
+
 	"keep/pkg/util/core/model"
-	"sync"
 )
 
-var Address = []string{"192.168.1.103:9092", "192.168.1.103:9093"}
-var msgChan = make(chan string, 100)
-var kafkaOnce sync.Once
+var RevMsgChan = make(chan *model.Message)
 
-func MessageDispatcher(msg *model.Message) {
-	kafkaOnce.Do(func() {
-		kafka.AsyncPro(Address, "topic", msgChan)
-	})
+func MessageRouter() {
 
-	kafkaMsg := msg.Content.(string)
-	logger.Info("send to kafka", kafkaMsg)
-	msgChan <- kafkaMsg
+	p := kafka.NewProducerConfig("topic")
+	a := kafka.NewProducerConfig("add")
+
+	go func() { p.Publish() }()
+	go func() { a.Publish() }()
+
+	// 监听通道 路由转发
+	for message := range RevMsgChan {
+
+		switch message.Router.Group {
+		case "/log":
+			kafkaMsg := message.Content.(string)
+			p.Msg <- kafkaMsg
+		case "/add":
+			kafkaMsg := message.Content.(string)
+			a.Msg <- kafkaMsg
+		}
+
+	}
+
+	close(p.Msg)
+	close(a.Msg)
+	close(RevMsgChan)
+	//group := message.Router.Group
+	//beehiveContext.SendToGroup(group, *message)
+	// Router.MessageDispatcher(message)
 
 }

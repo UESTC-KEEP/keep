@@ -4,10 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"keep/constants"
+	"keep/pkg/util/loggerv1.0.1"
 	"os"
 	"path/filepath"
-
-	logger "github.com/wonderivan/logger"
 )
 
 const LOG_TAG = "<LOGGER>:"

@@ -58,13 +58,13 @@ type CertManager struct {
 	Done    chan struct{}
 }
 
-const (
-	Address = "192.168.1.121"
-	Port    = "2021"
-)
+// const (
+// 	Address = "192.168.1.121"
+// 	Port    = "2021"
+// )
 
 // NewCertManager creates a CertManager for edge certificate management according to EdgeHub config
-func NewCertManager(nodename string) CertManager {
+func NewCertManager(nodename string, token string) CertManager {
 	certReq := &x509.CertificateRequest{
 		Subject: pkix.Name{
 			Country:      []string{"CN"},
@@ -81,7 +81,7 @@ func NewCertManager(nodename string) CertManager {
 	return CertManager{
 		RotateCertificates: true,
 		NodeName:           nodename,
-		token:              "1.2.3.4",
+		token:              token, // 由于没有实现从命令行接收token赋值给 edgepublisher模块 暂时直接传过来
 		CR:                 certReq,
 		caFile:             constants.DefaultCAFile,
 		certFile:           constants.DefaultCertFile,
@@ -103,6 +103,7 @@ func (cm *CertManager) Start() {
 		}
 	}
 	if cm.RotateCertificates {
+		// 开始轮换证书  重复用ca去云端签订证书
 		cm.rotate()
 	}
 }
@@ -131,6 +132,7 @@ func (cm *CertManager) applyCerts() error {
 	tokenParts := strings.Split(cm.token, ".")
 	// fmt.Println("Cacert:", tokenParts[0])
 	if len(tokenParts) != 4 {
+		fmt.Println("token:", cm.token)
 		return fmt.Errorf("token credentials are in the wrong format")
 	}
 	ok, hash, newHash := ValidateCACerts(cacert, tokenParts[0])
@@ -167,6 +169,8 @@ func (cm *CertManager) applyCerts() error {
 // rotate starts edge certificate rotation process
 func (cm *CertManager) rotate() {
 	klog.Infof("Certificate rotation is enabled.")
+	// 经过测试 该携程启动两个 并阻塞  大约一年过后再重新签证书
+	// forever 相当于定时任务  先执行一次 然后过了Duration再执行一次
 	go wait.Forever(func() {
 		deadline, err := cm.nextRotationDeadline()
 		if err != nil {
@@ -177,7 +181,6 @@ func (cm *CertManager) rotate() {
 
 			timer := time.NewTimer(sleepInterval)
 			defer timer.Stop()
-
 			<-timer.C // unblock when deadline expires
 		}
 
@@ -322,8 +325,8 @@ func ValidateCACerts(cacerts []byte, hash string) (bool, string, string) {
 		return true, "", ""
 	}
 	newHash := hashCA(cacerts)
-	return true, hash, newHash
-	// return newHash == hash, hash, newHash
+	// return true, hash, newHash
+	return newHash == hash, hash, newHash
 }
 
 func hashCA(cacerts []byte) string {

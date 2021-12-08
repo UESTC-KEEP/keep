@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kms
+  namespace: default
+spec:
+  selector:
+    app: kms
+  ports:
+  - name: https
+    protocol: TCP
+    port: 443
+    targetPort: 443

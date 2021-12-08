@@ -5,10 +5,9 @@ import (
 	"context"
 	"fmt"
 	"github.com/sirupsen/logrus"
-	"github.com/wonderivan/logger"
 	"io"
 	"io/ioutil"
-	apiv1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -18,12 +17,16 @@ import (
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/restmapper"
 	"keep/cloud/pkg/k8sclient/config"
+	"keep/pkg/util/loggerv1.0.1"
 	"os"
 )
 
-func CreatePod() {
+type NaiveEngineImpl struct {
+}
+
+func (nei *NaiveEngineImpl) CreatePod() {
 	//将配置信息赋值给deloymentClient
-	deploymentClient := config.Clientset.AppsV1().Deployments(apiv1.NamespaceDefault)
+	deploymentClient := config.Clientset.AppsV1().Deployments(corev1.NamespaceDefault)
 	//构建deployment
 	result, err := deploymentClient.Create(context.TODO(), deployment, metav1.CreateOptions{})
 	if err != nil {
@@ -33,7 +36,7 @@ func CreatePod() {
 	fmt.Printf("Create Pod Name : %q \n", result.GetObjectMeta().GetName())
 }
 
-func CreateConfigMap(configmap *apiv1.ConfigMap) {
+func (nei *NaiveEngineImpl) CreateConfigMap(configmap *corev1.ConfigMap) {
 	createConfigmap, err := config.Clientset.CoreV1().ConfigMaps("default").Create(context.TODO(), configmap, metav1.CreateOptions{})
 	if err != nil {
 		logger.Error(err)
@@ -42,7 +45,7 @@ func CreateConfigMap(configmap *apiv1.ConfigMap) {
 }
 
 // CreatResourcesByYAML 使用yaml文件创建资源
-func CreatResourcesByYAML(yamlFileName, namespace string) error {
+func (nei *NaiveEngineImpl) CreatResourcesByYAML(yamlFileName, namespace string) error {
 	var err error
 	filebytes, err := ioutil.ReadFile(yamlFileName)
 	if err != nil {
@@ -87,7 +90,7 @@ func CreatResourcesByYAML(yamlFileName, namespace string) error {
 }
 
 // DeleteResourceByYAML 使用yaml文件删除资源
-func DeleteResourceByYAML(filename string, namespace string) error {
+func (nei *NaiveEngineImpl) DeleteResourceByYAML(filename string, namespace string) error {
 	f, err := os.Open(filename)
 
 	if err != nil {
@@ -162,4 +165,40 @@ func DeleteResourceByYAML(filename string, namespace string) error {
 	}
 
 	return nil
+}
+
+// GetSecret 按名字查询secret
+func (nei *NaiveEngineImpl) GetSecret(secretName, namespace string) (*corev1.Secret, error) {
+	secretlist, err := config.Clientset.CoreV1().Secrets(namespace).Get(context.Background(), secretName, metav1.GetOptions{})
+	if err != nil {
+		return nil, err
+	}
+	return secretlist, err
+}
+
+func (nei *NaiveEngineImpl) ListPods(namespace string) (*corev1.PodList, error) {
+	podlist, err := config.Clientset.CoreV1().Pods(namespace).List(context.Background(), metav1.ListOptions{})
+	if err != nil {
+		return nil, nil
+	}
+	return podlist, err
+}
+
+// function to get pod from k8s by name
+
+func (nei *NaiveEngineImpl) GetPodInfoByPodName(podName string) (*corev1.Pod, error) {
+	pod, err := config.Clientset.CoreV1().Pods("A").Get(context.Background(), podName, metav1.GetOptions{})
+	if err != nil {
+		logger.Error(err)
+		return nil, err
+	}
+	return pod, nil
+}
+
+func NewNaiveEngine() *NaiveEngineImpl {
+	return &NaiveEngineImpl{}
+}
+
+func TestFunctions() {
+	//fmt.Println(NewNaiveEngine().ListPods("default"))
 }

@@ -21,6 +21,7 @@ import (
 	"encoding/json"
 	"io"
 	"io/ioutil"
+	"keep/constants"
 	"sync"
 	"time"
 
@@ -29,7 +30,7 @@ import (
 )
 
 type SafeWriteTunneler interface {
-	WriteMessage(message *model.Message) error
+	WriteMessage(message []*model.Message) error
 	WriteControl(messageType int, data []byte, deadline time.Time) error
 	NextReader() (messageType int, r io.Reader, err error)
 	io.Closer
@@ -55,7 +56,7 @@ func (t *DefaultTunnel) NextReader() (messageType int, r io.Reader, err error) {
 	return t.con.NextReader()
 }
 
-func (t *DefaultTunnel) WriteMessage(m *model.Message) (e error) {
+func (t *DefaultTunnel) WriteMessage(m []*model.Message) (e error) {
 	t.lock.Lock()
 	bytes, e := json.Marshal(m)
 	e = t.con.WriteMessage(websocket.TextMessage, bytes)
@@ -72,13 +73,13 @@ func NewDefaultTunnel(con *websocket.Conn) *DefaultTunnel {
 
 var _ SafeWriteTunneler = &DefaultTunnel{}
 
-func ReadMessageFromTunnel(r io.Reader) (msg *model.Message, err error) {
+func ReadMessageFromTunnel(r io.Reader) (msgList []*model.Message, err error) {
 	buf := bufio.NewReader(r)
 	data, err := ioutil.ReadAll(buf)
 	if err != nil {
 		return nil, err
 	}
-	msg = &model.Message{}
-	err = json.Unmarshal(data, msg)
+	msgList = make([]*model.Message, constants.DefaultMsgSendBufferSize)
+	err = json.Unmarshal(data, &msgList)
 	return
 }

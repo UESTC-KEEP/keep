@@ -1,9 +1,9 @@
 package chanmsgqueen
 
 import (
-	"github.com/wonderivan/logger"
 	"keep/constants"
 	"keep/edge/pkg/edgepublisher/config"
+	"keep/pkg/util/loggerv1.0.1"
 )
 
 var EdgePublishQueens = make(map[string]*Client)

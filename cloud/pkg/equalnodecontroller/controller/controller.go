@@ -1,11 +1,12 @@
-package equalnodecontroller
+package controller
 
 // $GOPATH/src/k8s.io/code-generator/generate-groups.sh all keep/cloud/pkg/client keep/cloud/pkg/k8sclient/crd_engin/keepedge/pkg/apis keepedge:v1
 import (
 	"fmt"
-	"github.com/wonderivan/logger"
-	keepcrdv1 "keep/cloud/pkg/equalnodecontroller/pkg/apis/keepedge/v1"
+	keepcrdv1 "keep/cloud/pkg/apis/keepedge/v1"
+	"keep/cloud/pkg/equalnodecontroller/constants"
 	"keep/pkg/util/kplogger"
+	"keep/pkg/util/loggerv1.0.1"
 	"time"
 
 	"github.com/golang/glog"
@@ -27,26 +28,16 @@ import (
 	listers "keep/cloud/pkg/client/listers/keepedge/v1"
 )
 
-const controllerAgentName = "student-controller"
-
-const (
-	SuccessSynced         = "Synced"
-	MessageResourceSynced = "Student synced successfully"
-)
-
 // Controller is the controller implementation for Student resources
 type Controller struct {
 	// kubeclientset is a standard kubernetes clientset
 	kubeclientset kubernetes.Interface
 	// equalnodeclientset is a clientset for our own API group
 	equalnodeclientset clientset.Interface
-
-	equalnodesLister listers.EqualNodeLister
-	equalnodesSynced cache.InformerSynced
-
-	workqueue workqueue.RateLimitingInterface
-
-	recorder record.EventRecorder
+	equalnodesLister   listers.EqualNodeLister
+	equalnodesSynced   cache.InformerSynced
+	workqueue          workqueue.RateLimitingInterface
+	recorder           record.EventRecorder
 }
 
 // NewController returns a new student controller
@@ -60,7 +51,7 @@ func NewController(
 	eventBroadcaster := record.NewBroadcaster()
 	eventBroadcaster.StartLogging(kplogger.Infof)
 	eventBroadcaster.StartRecordingToSink(&typedcorev1.EventSinkImpl{Interface: kubeclientset.CoreV1().Events("")})
-	recorder := eventBroadcaster.NewRecorder(scheme.Scheme, corev1.EventSource{Component: controllerAgentName})
+	recorder := eventBroadcaster.NewRecorder(scheme.Scheme, corev1.EventSource{Component: constants.ControllerAgentName})
 
 	controller := &Controller{
 		kubeclientset:      kubeclientset,
@@ -90,7 +81,7 @@ func NewController(
 	return controller
 }
 
-//在此处开始controller的业务
+// Run 在此处开始controller的业务
 func (c *Controller) Run(threadiness int, stopCh <-chan struct{}) error {
 	defer runtime.HandleCrash()
 	defer c.workqueue.ShutDown()
@@ -182,7 +173,7 @@ func (c *Controller) syncHandler(key string) error {
 	logger.Info("这里是equalnode对象的期望状态:  ", equalnode, "  ...")
 	logger.Info("实际状态是从业务层面得到的，此处应该去的实际状态，与期望状态做对比，并根据差异做出响应(新增或者删除)")
 
-	c.recorder.Event(equalnode, corev1.EventTypeNormal, SuccessSynced, MessageResourceSynced)
+	c.recorder.Event(equalnode, corev1.EventTypeNormal, constants.SuccessSynced, constants.MessageResourceSynced)
 	return nil
 }
 

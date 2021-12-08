@@ -7,3 +7,10 @@ spec:
   nodes:
     - edge-mini-1
     - edge-zlj-1
+
+  kubebuilder init --domain io.keepedge
+
+  kubebuilder create api \
+  --group keepedge.io \
+  --version v1 \
+  --kind EqualNode

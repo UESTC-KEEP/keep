@@ -2,11 +2,12 @@ package cloudtunnel
 
 import (
 	"fmt"
-	"github.com/gorilla/websocket"
-	"github.com/wonderivan/logger"
 	"keep/cloud/pkg/requestDispatcher/Router"
 	"keep/pkg/stream"
 	"keep/pkg/util/core/model"
+	logger "keep/pkg/util/loggerv1.0.1"
+
+	"github.com/gorilla/websocket"
 )
 
 type session struct {
@@ -19,7 +20,7 @@ type session struct {
 }
 
 func (s *session) writeMessageToTunnel(m *model.Message) error {
-	return s.tunnel.WriteMessage(m)
+	return s.tunnel.WriteMessage([]*model.Message{m})
 }
 
 func (s *session) Close() {
@@ -47,15 +48,19 @@ func (s *session) Serve() {
 			logger.Error(err)
 			return
 		}
-		message, err := stream.ReadMessageFromTunnel(r)
+		messageList, err := stream.ReadMessageFromTunnel(r)
 		if err != nil {
 			logger.Error("read message from tunnel error: ", s.String(), err)
 			return
 		} else {
 			//group := message.Router.Group
 			//beehiveContext.SendToGroup(group, *message)
-			Router.MessageDispatcher(message)
+			// Router.MessageDispatcher(message)
+			for _, message := range messageList {
+				Router.RevMsgChan <- message
+			}
 		}
 
 	}
+
 }

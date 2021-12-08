@@ -1,7 +1,6 @@
 package config
 
 import (
-	"github.com/wonderivan/logger"
 	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/discovery"
@@ -11,7 +10,9 @@ import (
 	restclient "k8s.io/client-go/rest"
 	"k8s.io/client-go/restmapper"
 	"k8s.io/client-go/tools/clientcmd"
+	"keep/cloud/pkg/common/client"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
+	"keep/pkg/util/loggerv1.0.1"
 	"sync"
 )
 
@@ -39,11 +40,12 @@ func InitConfigure(k *cloudagent.K8sClient) {
 func GetClient() {
 	var err error
 	// 在配置文件中有ip不再写ip否则出错
-	K8sConfig, err = clientcmd.BuildConfigFromFlags("", Config.KubeConfigFilePath)
+	K8sConfig, err = clientcmd.BuildConfigFromFlags("", Config.KubeAPIConfig.KubeConfig)
 	if err != nil {
 		logger.Error(err.Error())
 	}
-	Clientset, err = kubernetes.NewForConfig(K8sConfig)
+	//Clientset, err = kubernetes.NewForConfig(K8sConfig)
+	Clientset = client.GetKubeClient().(*kubernetes.Clientset)
 	if err != nil {
 		logger.Error(err.Error())
 		err = nil

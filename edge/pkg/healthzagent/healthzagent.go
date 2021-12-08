@@ -7,14 +7,13 @@ import (
 	prome "keep/edge/pkg/healthzagent/promethus"
 	"keep/edge/pkg/healthzagent/server"
 	"keep/pkg/util/core"
+	"keep/pkg/util/loggerv1.0.1"
 
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/mem"
 	"github.com/shirou/gopsutil/net"
-	"github.com/wonderivan/logger"
-
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 
 	"os"

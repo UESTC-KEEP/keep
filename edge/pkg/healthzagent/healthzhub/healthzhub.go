@@ -1,9 +1,9 @@
 package healthzhub
 
 import (
-	"github.com/wonderivan/logger"
 	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/core/model"
+	"keep/pkg/util/loggerv1.0.1"
 	"time"
 )
 

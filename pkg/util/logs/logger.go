@@ -1,7 +1,7 @@
 package logs
 
 import (
-	"github.com/wonderivan/logger"
+	"keep/pkg/util/loggerv1.0.1"
 )
 
 func InitKeepLogger() {

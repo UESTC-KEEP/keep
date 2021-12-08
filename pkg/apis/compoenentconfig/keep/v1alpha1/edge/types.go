@@ -17,12 +17,13 @@ limitations under the License.
 package v1alpha1
 
 import (
+	"time"
+
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/mem"
 	"github.com/shirou/gopsutil/net"
-	"time"
 )
 
 const (
@@ -103,6 +104,7 @@ type EdgePublisher struct {
 	BeehiveTimeout    time.Duration `json:"beehive_timeout"`
 	HostnameOverride  string        `json:"hostnameOverride"`
 	LocalIP           string        `json:"localIP"`
+	Token             string        `json:"token"`
 }
 
 //EdgeTwin 模块定义

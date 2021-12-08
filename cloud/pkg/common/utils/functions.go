@@ -4,13 +4,12 @@ import (
 	"errors"
 	"fmt"
 	"github.com/mitchellh/go-ps"
-	"github.com/wonderivan/logger"
-	"os"
+	"keep/pkg/util/loggerv1.0.1"
 )
 
 func GracefulExit() {
 	logger.Warn("准备退出...")
-	os.Exit(1)
+	//os.Exit(1)
 }
 
 // FindProcess 根据进程名找当前是不是有进程在执行

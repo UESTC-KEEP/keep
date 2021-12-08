@@ -5,19 +5,20 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
-	"github.com/emicklei/go-restful"
-	"github.com/gorilla/websocket"
-	"github.com/wonderivan/logger"
 	"keep/cloud/pkg/common/modules"
 	"keep/cloud/pkg/requestDispatcher/config"
 	"keep/constants"
 	"keep/pkg/stream"
 	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/core/model"
+	logger "keep/pkg/util/loggerv1.0.1"
 	"net/http"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/emicklei/go-restful"
+	"github.com/gorilla/websocket"
 )
 
 type tunnelServer struct {
@@ -52,7 +53,7 @@ func (s *tunnelServer) installDefaultHandler() {
 	s.container.Add(ws)
 }
 
-func (s *tunnelServer) addSession(key string, session *session) {
+func (s *tunnelServer) addsession(key string, session *session) {
 	s.Lock()
 	s.sessions[key] = session
 	s.Unlock()
@@ -93,8 +94,8 @@ func (s *tunnelServer) connect(r *restful.Request, w *restful.Response) {
 		sessionID: hostnameOverride,
 	}
 
-	s.addSession(hostnameOverride, session)
-	s.addSession(internalIP, session)
+	s.addsession(hostnameOverride, session)
+	s.addsession(internalIP, session)
 	s.addNodeIP(hostnameOverride, internalIP)
 	session.Serve()
 }

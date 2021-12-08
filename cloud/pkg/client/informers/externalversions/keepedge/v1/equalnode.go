@@ -20,10 +20,10 @@ package v1
 
 import (
 	"context"
+	keepedgev1 "keep/cloud/pkg/apis/keepedge/v1"
 	versioned "keep/cloud/pkg/client/clientset/versioned"
 	internalinterfaces "keep/cloud/pkg/client/informers/externalversions/internalinterfaces"
 	v1 "keep/cloud/pkg/client/listers/keepedge/v1"
-	keepedgev1 "keep/cloud/pkg/equalnodecontroller/pkg/apis/keepedge/v1"
 	time "time"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
