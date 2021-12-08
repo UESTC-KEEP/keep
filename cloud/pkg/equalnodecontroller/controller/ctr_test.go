@@ -68,6 +68,13 @@ func TestInformer(t *testing.T) {
 	}
 }
 
+/*
+kubebuilder create api \
+--group keepcrd \
+--version v1 \
+--kind EqualNode
+*/
+
 func AddDeployment(newObj interface{}) {
 	fmt.Println("=======================================================================================")
 	fmt.Println(newObj)

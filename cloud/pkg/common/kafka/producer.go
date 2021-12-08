@@ -44,4 +44,53 @@ func (asp *AsyncProducer) Errors() <-chan *ProducerError {
 func (asp *AsyncProducer) Close() (err error) {
 	err = asp.producer.Close()
 	return
+<<<<<<< HEAD
 }
+
+func AsyncPro(address []string, topic string, msg  chan string)  {
+	details := sarama.CreateTopicsRequest{
+		Version:      0,
+		TopicDetails: nil,
+		Timeout:      0,
+		ValidateOnly: false,
+	}.TopicDetails
+
+	config := NewConfig()
+	//config.Producer.Return.Successes = true
+	//config.Producer.Return.Errors = true
+	produ,_ := InitManualRetryAsyncProducer(address, config)
+	defer produ.Close()
+	go func (p *AsyncProducer){
+		for{
+			select {
+			case suc := <-p.Successes():
+				//case  <-p.Successes():
+				//fmt.Println("发送成功")
+				//bytes, _ := suc.Value.Encode()
+				//value := string(bytes)
+				//fmt.Println("offsetCfg:", suc.Offset, " partitions:", suc.Partition, " metadata:", suc.Metadata, " value:", value)
+			case fail := <-p.Errors():
+				fmt.Println("err: ", fail.Err)
+			}
+		}
+	}(produ)
+
+	for msgvalue := range msg{
+
+		//发送的消息,主题,key
+		msg := &ProducerMessage{
+			Topic: topic,
+		}
+
+		//将字符串转化为字节数组
+		msg.Value = sarama.ByteEncoder(msgvalue)
+
+		//使用通道发送
+		produ.Send() <- msg
+
+		time.Sleep(500*time.Millisecond)
+	}
+}
+=======
+}
+>>>>>>> 72119525c6ba57a9ca8665383623b5b305c80114

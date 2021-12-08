@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#: ${DOCKER_USER:? required}
+
+export GO111MODULE=on 
+export GOPROXY=https://goproxy.cn
+# build webhook
+CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o admission-webhook-example
+# build docker image
+#docker build --no-cache -t ${DOCKER_USER}/admission-webhook-example:v1 .
+docker build --no-cache -t admission-webhook-example:v1 .
+rm -rf admission-webhook-example
+docker tag admission-webhook-example:v1 registry.cn-hangzhou.aliyuncs.com/uestc-keep/keep-webhook:latest
+docker push registry.cn-hangzhou.aliyuncs.com/uestc-keep/keep-webhook:latest
+# docker push ${DOCKER_USER}/admission-webhook-example:v1
+
