@@ -65,6 +65,7 @@ func (k *K8sClient) Start() {
 	//	fmt.Println(count)
 	//	time.Sleep(time.Second)
 	//}
+	naive_engine.TestFunctions()
 }
 
 func NewK8sClient(enable bool) (*K8sClient, error) {
@@ -80,11 +81,12 @@ func checkRedisAliveness() {
 		logger.Warn("redis初始化失败...,err:", err)
 		logger.Debug("准备拉起redis...")
 		// 创建redis的configMap
-		naive_engine.CreatResourcesByYAML(constants.DefaultRedisConfigMap, constants.DefaultNameSpace)
+		naive_engine_impl := naive_engine.NewNaiveEngine()
+		naive_engine_impl.CreatResourcesByYAML(constants.DefaultRedisConfigMap, constants.DefaultNameSpace)
 		// 创建redis服务
-		naive_engine.CreatResourcesByYAML(constants.DefaultRedisSVC, constants.DefaultNameSpace)
+		naive_engine_impl.CreatResourcesByYAML(constants.DefaultRedisSVC, constants.DefaultNameSpace)
 		// 创建redis statfulset
-		naive_engine.CreatResourcesByYAML(constants.DefaultRedisStatefulSet, constants.DefaultNameSpace)
+		naive_engine_impl.CreatResourcesByYAML(constants.DefaultRedisStatefulSet, constants.DefaultNameSpace)
 	} else {
 		logger.Debug("redis 在线运行中.....")
 	}
@@ -100,7 +102,7 @@ func deleteRedis() {
 		wg.Add(1)
 		go func(i int) {
 			logger.Debug("开始删除redis组件 " + compoenents[i] + " ...")
-			err := naive_engine.DeleteResourceByYAML(compoenents[i], ns)
+			err := naive_engine.NewNaiveEngine().DeleteResourceByYAML(compoenents[i], ns)
 			if err != nil {
 				wg.Done()
 				logger.Error(err)
