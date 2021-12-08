@@ -51,6 +51,13 @@ func (asp *AsyncProducer) Close() (err error) {
 }
 
 func AsyncPro(address []string, topic string, msg  chan string)  {
+	details := sarama.CreateTopicsRequest{
+		Version:      0,
+		TopicDetails: nil,
+		Timeout:      0,
+		ValidateOnly: false,
+	}.TopicDetails
+
 	config := NewConfig()
 	//config.Producer.Return.Successes = true
 	//config.Producer.Return.Errors = true
