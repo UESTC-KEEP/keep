@@ -6,9 +6,8 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 	crdv1 "keep/cloud/pkg/apis/keepedge/v1"
-	"keep/cloud/pkg/client/clientset/versioned"
-	"keep/cloud/pkg/client/informers/externalversions"
-	crdinformers "keep/cloud/pkg/client/informers/externalversions"
+	"keep/cloud/pkg/client/keepcrdClient/clientset/versioned"
+	crdinformers "keep/cloud/pkg/client/keepcrdClient/informers/externalversions"
 	"keep/cloud/pkg/common/client"
 	"keep/cloud/pkg/equalnodecontroller/config"
 	"keep/cloud/pkg/equalnodecontroller/manager"
@@ -91,7 +90,7 @@ func StartEqualNodecontroller() {
 		logger.Fatal("Error building  clientset:", err.Error())
 	}
 
-	equalnodeInformerFactory := externalversions.NewSharedInformerFactory(equalnodeClient, time.Second*30)
+	equalnodeInformerFactory := crdinformers.NewSharedInformerFactory(equalnodeClient, time.Second*30)
 
 	//得到controller
 	controller := NewController(kubeClient, equalnodeClient,

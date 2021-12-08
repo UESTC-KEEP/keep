@@ -195,6 +195,29 @@ func (nei *NaiveEngineImpl) GetPodInfoByPodName(podName string) (*corev1.Pod, er
 	return pod, nil
 }
 
+func (nei *NaiveEngineImpl) GetNamespaceByName(nsName string) (*corev1.Namespace, error) {
+	ns, err := config.Clientset.CoreV1().Namespaces().Get(context.Background(), nsName, metav1.GetOptions{})
+	if err != nil {
+		logger.Error(err)
+		return nil, err
+	}
+	return ns, err
+}
+
+func (nei *NaiveEngineImpl) CreateNamespaceByName(nsName string) (*corev1.Namespace, error) {
+	ns := corev1.Namespace{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: nsName,
+		},
+	}
+	namespace, err := config.Clientset.CoreV1().Namespaces().Create(context.Background(), &ns, metav1.CreateOptions{})
+	if err != nil {
+		logger.Error(err)
+		return nil, err
+	}
+	return namespace, err
+}
+
 func NewNaiveEngine() *NaiveEngineImpl {
 	return &NaiveEngineImpl{}
 }

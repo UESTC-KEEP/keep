@@ -5,7 +5,9 @@ import (
 	v1 "k8s.io/api/core/v1"
 	"keep/cloud/pkg/common/modules"
 	k8sclientconfig "keep/cloud/pkg/k8sclient/config"
+	kubeedge_engine "keep/cloud/pkg/k8sclient/kubeedge-engine"
 	naive_engine "keep/cloud/pkg/k8sclient/naive-engine"
+	"keep/cloud/pkg/k8sclient/watchengine"
 	"keep/constants"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"keep/pkg/util/core"
@@ -55,9 +57,8 @@ func (k *K8sClient) Enable() bool {
 
 func (k *K8sClient) Start() {
 	logger.Debug("k8sclient开始启动....")
-	// 检查k8s集群apiserver状态
-	// 检查redis在线状态 如果不在线就由naive_engine 在master集群中创建statefulset
-	checkRedisAliveness()
+	// 初始化keepedge cloud环境
+	initKeepEdgeEnv()
 	//metrics_server.NewMetricServerImpl().CheckCadvisorStatus([]string{"192.168.1.140:6443", "192.168.1.141:6443"})
 	//var count int
 	//for {
@@ -66,12 +67,41 @@ func (k *K8sClient) Start() {
 	//	time.Sleep(time.Second)
 	//}
 	naive_engine.TestFunctions()
+	// 查询所有的device
+	kubeedge_engine.NewKubeEdgeEngine().GetDevicesByNodeName("")
+	// 启动系统需要的所有informers们
+	watchengine.StartAllInformers()
 }
 
 func NewK8sClient(enable bool) (*K8sClient, error) {
 	return &K8sClient{
 		enable: enable,
 	}, nil
+}
+
+func initKeepEdgeEnv() {
+	// 检查有没有keepedge的namesopace
+	// 没有就创建
+	checkNamespaceAliveness()
+	// 检查k8s集群apiserver状态
+	// 检查redis在线状态 如果不在线就由naive_engine 在master集群中创建statefulset
+	checkRedisAliveness()
+
+}
+
+// 检查constants.DefaultKeepEdgeNameSpace是否存在不存在就创建之
+func checkNamespaceAliveness() {
+	ns, _ := naive_engine.NewNaiveEngine().GetNamespaceByName(constants.DefaultKeepEdgeNameSpace)
+	if ns == nil {
+		// 不存在需要的ns就创建之
+		ns_, err := naive_engine.NewNaiveEngine().CreateNamespaceByName(constants.DefaultKeepEdgeNameSpace)
+		if err != nil {
+			logger.Fatal("创建ns失败：", err)
+		}
+		logger.Debug("创建的ns：", ns_)
+		return
+	}
+	logger.Debug("查询到ns: ", ns)
 }
 
 func checkRedisAliveness() {

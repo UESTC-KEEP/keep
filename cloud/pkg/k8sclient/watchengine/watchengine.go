@@ -6,6 +6,7 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"keep/cloud/pkg/k8sclient/kubeedge-engine/devices/informer"
 )
 
 type WatcherEngine struct {
@@ -16,6 +17,10 @@ type WatcherEngine struct {
 	RedisPort      int
 	PodInfo        *v1.Pod
 	DeploymentInfo *appsv1.Deployment
+}
+
+func StartAllInformers() {
+	device_informer.StartDeviceInformer()
 }
 
 func InitK8sClientWatchEngine(engin WatcherEngineInterface) {

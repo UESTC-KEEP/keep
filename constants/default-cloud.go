@@ -5,6 +5,7 @@ const CloudConfigeFilesSourceDir = "../../../cloud/shells/confs/keepedge"
 
 // 全局配置
 const (
+	DefaultKeepEdgeNameSpace = "keepedge"
 	DefaultKubeConfigPath    = "/home/et/.kube/config"
 	DefaultCloudConfigFile   = "/etc/keepedge/config/cloudagent.yml"
 	DefaultDecoderBufferSize = 100

@@ -4,6 +4,10 @@ package controller
 import (
 	"fmt"
 	keepcrdv1 "keep/cloud/pkg/apis/keepedge/v1"
+	clientset "keep/cloud/pkg/client/keepcrdClient/clientset/versioned"
+	equalnodescheme "keep/cloud/pkg/client/keepcrdClient/clientset/versioned/scheme"
+	informers "keep/cloud/pkg/client/keepcrdClient/informers/externalversions/keepedge/v1"
+	listers "keep/cloud/pkg/client/keepcrdClient/listers/keepedge/v1"
 	"keep/cloud/pkg/equalnodecontroller/constants"
 	"keep/pkg/util/kplogger"
 	"keep/pkg/util/loggerv1.0.1"
@@ -21,11 +25,6 @@ import (
 	"k8s.io/client-go/tools/cache"
 	"k8s.io/client-go/tools/record"
 	"k8s.io/client-go/util/workqueue"
-
-	clientset "keep/cloud/pkg/client/clientset/versioned"
-	equalnodescheme "keep/cloud/pkg/client/clientset/versioned/scheme"
-	informers "keep/cloud/pkg/client/informers/externalversions/keepedge/v1"
-	listers "keep/cloud/pkg/client/listers/keepedge/v1"
 )
 
 // Controller is the controller implementation for Student resources

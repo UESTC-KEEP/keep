@@ -17,6 +17,7 @@ limitations under the License.
 package client
 
 import (
+	crdClientset "keep/cloud/pkg/client/keepcrdClient/clientset/versioned"
 	"os"
 	"sync"
 
@@ -27,7 +28,6 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/klog/v2"
 
-	crdClientset "keep/cloud/pkg/client/clientset/versioned"
 	cloudagentConfig "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 )
 

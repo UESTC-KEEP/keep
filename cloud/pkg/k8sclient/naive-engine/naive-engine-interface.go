@@ -22,4 +22,15 @@ type Node interface {
 		传入参数：podName:查询的pod的名字 考虑到一个pod可能多副本返回list
 	*/
 	GetPodInfoByPodName(podName string) (*corev1.Pod, error)
+
+	// GetNamespaceByName 根据ns名字获取ns具体参数
+	/*
+		传入参数：nsName: 需要查询的ns名字
+	*/
+	GetNamespaceByName(nsName string) (*corev1.Namespace, error)
+	// CreateNamespaceByName 根据ns名字创建
+	/*
+		传入参数：nsName: 需要查询的ns名字
+	*/
+	CreateNamespaceByName(nsName string) (*corev1.Namespace, error)
 }

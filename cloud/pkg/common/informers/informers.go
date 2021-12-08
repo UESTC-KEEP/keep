@@ -6,7 +6,7 @@ import (
 	k8sinformer "k8s.io/client-go/informers"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/cache"
-	crdinformers "keep/cloud/pkg/client/informers/externalversions"
+	crdinformers "keep/cloud/pkg/client/keepcrdClient/informers/externalversions"
 	"keep/cloud/pkg/common/client"
 	"keep/pkg/util/loggerv1.0.1"
 	"sync"
