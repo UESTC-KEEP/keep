@@ -1,6 +1,7 @@
 package requestDispatcher
 
 import (
+	"fmt"
 	"keep/cloud/pkg/common/modules"
 	coupon "keep/cloud/pkg/requestDispatcher/RPC/myproto"
 	"keep/cloud/pkg/requestDispatcher/Router"
@@ -12,6 +13,7 @@ import (
 	"keep/pkg/util/core"
 	logger "keep/pkg/util/loggerv1.0.1"
 	"os"
+	"time"
 )
 
 type RequestDispatcher struct {
@@ -72,6 +74,12 @@ func (r *RequestDispatcher) Start() {
 	if err != nil {
 		logger.Fatal("init gRPC server failed", err)
 	}
+	// 张连军测试
+	go func() {
+		time.Sleep(2 * time.Second)
+		fmt.Println("============")
+		Router.TestSendtoK8sClint()
+	}()
 }
 func (r *RequestDispatcher) Enable() bool {
 	return r.enable

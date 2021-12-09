@@ -2,14 +2,14 @@ package Router
 
 import (
 	"keep/cloud/pkg/common/kafka"
-
+	"keep/cloud/pkg/common/modules"
+	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/core/model"
 )
 
 var RevMsgChan = make(chan *model.Message)
 
 func MessageRouter() {
-
 	p := kafka.NewProducerConfig("topic")
 	a := kafka.NewProducerConfig("add")
 
@@ -37,4 +37,18 @@ func MessageRouter() {
 	//beehiveContext.SendToGroup(group, *message)
 	// Router.MessageDispatcher(message)
 
+}
+
+func TestSendtoK8sClint() {
+	// 张连军：测试抄送一份到k8sclient 可注释之
+	msg_zlj := model.Message{
+		Header: model.MessageHeader{},
+		Router: model.MessageRoute{
+			Operation: "list",
+			Resource:  "$uestc/keep/k8sclient/naiveengine/pods/",
+		},
+		Content: map[string]string{"namespace": "default"},
+	}
+	beehiveContext.Send(modules.K8sClientModule, msg_zlj)
+	// ==================================================
 }

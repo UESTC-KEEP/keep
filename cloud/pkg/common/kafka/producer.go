@@ -1,8 +1,10 @@
 package kafka
 
 import (
+	"fmt"
 	"github.com/Shopify/sarama"
 	"log"
+	"time"
 )
 
 //var Address = []string{"192.168.1.103:9092", "192.168.1.103:9093"}
@@ -28,6 +30,7 @@ func InitManualRetryAsyncProducer(addr []string, conf *Config) (*AsyncProducer, 
 	}
 	return aSyncProducer, nil
 }
+
 //send message
 func (asp *AsyncProducer) Send() chan<- *ProducerMessage {
 	return asp.producer.Input()
@@ -44,38 +47,37 @@ func (asp *AsyncProducer) Errors() <-chan *ProducerError {
 func (asp *AsyncProducer) Close() (err error) {
 	err = asp.producer.Close()
 	return
-<<<<<<< HEAD
 }
 
-func AsyncPro(address []string, topic string, msg  chan string)  {
+func AsyncPro(address []string, topic string, msg chan string) {
 	details := sarama.CreateTopicsRequest{
 		Version:      0,
 		TopicDetails: nil,
 		Timeout:      0,
 		ValidateOnly: false,
 	}.TopicDetails
-
+	fmt.Println(details)
 	config := NewConfig()
 	//config.Producer.Return.Successes = true
 	//config.Producer.Return.Errors = true
-	produ,_ := InitManualRetryAsyncProducer(address, config)
+	produ, _ := InitManualRetryAsyncProducer(address, config)
 	defer produ.Close()
-	go func (p *AsyncProducer){
-		for{
+	go func(p *AsyncProducer) {
+		for {
 			select {
-			case suc := <-p.Successes():
-				//case  <-p.Successes():
-				//fmt.Println("发送成功")
-				//bytes, _ := suc.Value.Encode()
-				//value := string(bytes)
-				//fmt.Println("offsetCfg:", suc.Offset, " partitions:", suc.Partition, " metadata:", suc.Metadata, " value:", value)
+			//case suc := <-p.Successes():
+			//case  <-p.Successes():
+			//fmt.Println("发送成功")
+			//bytes, _ := suc.Value.Encode()
+			//value := string(bytes)
+			//fmt.Println("offsetCfg:", suc.Offset, " partitions:", suc.Partition, " metadata:", suc.Metadata, " value:", value)
 			case fail := <-p.Errors():
 				fmt.Println("err: ", fail.Err)
 			}
 		}
 	}(produ)
 
-	for msgvalue := range msg{
+	for msgvalue := range msg {
 
 		//发送的消息,主题,key
 		msg := &ProducerMessage{
@@ -88,9 +90,6 @@ func AsyncPro(address []string, topic string, msg  chan string)  {
 		//使用通道发送
 		produ.Send() <- msg
 
-		time.Sleep(500*time.Millisecond)
+		time.Sleep(500 * time.Millisecond)
 	}
 }
-=======
-}
->>>>>>> 72119525c6ba57a9ca8665383623b5b305c80114

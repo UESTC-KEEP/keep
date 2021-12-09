@@ -176,25 +176,6 @@ func (nei *NaiveEngineImpl) GetSecret(secretName, namespace string) (*corev1.Sec
 	return secretlist, err
 }
 
-func (nei *NaiveEngineImpl) ListPods(namespace string) (*corev1.PodList, error) {
-	podlist, err := config.Clientset.CoreV1().Pods(namespace).List(context.Background(), metav1.ListOptions{})
-	if err != nil {
-		return nil, nil
-	}
-	return podlist, err
-}
-
-// function to get pod from k8s by name
-
-func (nei *NaiveEngineImpl) GetPodInfoByPodName(podName string) (*corev1.Pod, error) {
-	pod, err := config.Clientset.CoreV1().Pods("A").Get(context.Background(), podName, metav1.GetOptions{})
-	if err != nil {
-		logger.Error(err)
-		return nil, err
-	}
-	return pod, nil
-}
-
 func (nei *NaiveEngineImpl) GetNamespaceByName(nsName string) (*corev1.Namespace, error) {
 	ns, err := config.Clientset.CoreV1().Namespaces().Get(context.Background(), nsName, metav1.GetOptions{})
 	if err != nil {

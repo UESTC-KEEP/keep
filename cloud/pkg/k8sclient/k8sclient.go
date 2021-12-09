@@ -68,9 +68,11 @@ func (k *K8sClient) Start() {
 	//}
 	naive_engine.TestFunctions()
 	// 查询所有的device
-	kubeedge_engine.NewKubeEdgeEngine().GetDevicesByNodeName("")
+	go kubeedge_engine.NewKubeEdgeEngine().GetDevicesByNodeName("")
 	// 启动系统需要的所有informers们
-	watchengine.StartAllInformers()
+	go watchengine.StartAllInformers()
+	//	所有项目准备完成启动路由
+	go StartK8sClientRouter()
 }
 
 func NewK8sClient(enable bool) (*K8sClient, error) {

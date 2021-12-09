@@ -11,6 +11,7 @@ import (
 func TestSendSync(t *testing.T) {
 	InitContext(MsgCtxTypeChannel)
 	AddModule("test_src")
+	AddModule("test_dest")
 	messsage := model.NewMessage("")
 	messsage.Content = "hello"
 
@@ -20,7 +21,7 @@ func TestSendSync(t *testing.T) {
 	}()
 
 	msg, err := Receive("test_dest")
-	fmt.Printf("receive msg: %v, error: %v\n", msg, err)
+	fmt.Printf("receive msg: %#v, error: %v\n", msg, err)
 	resp := msg.NewRespByMessage(&msg, "how are you")
 	SendResp(*resp)
 

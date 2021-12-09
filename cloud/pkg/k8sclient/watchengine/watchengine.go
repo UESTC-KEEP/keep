@@ -2,10 +2,8 @@
 package watchengine
 
 import (
-	"fmt"
 	appsv1 "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"keep/cloud/pkg/k8sclient/kubeedge-engine/devices/informer"
 )
 
@@ -26,15 +24,9 @@ func StartAllInformers() {
 func InitK8sClientWatchEngine(engin WatcherEngineInterface) {
 
 }
+
 func init() {
 	var watchEngin WatcherEngineInterface
 	InitK8sClientWatchEngine(watchEngin)
-
 	//initK8sClientWatchEngine(watchEngin)
-
-}
-
-func (we WatcherEngine) ListPods(namespace string) (unstructured.UnstructuredList, error) {
-	fmt.Println(namespace)
-	return unstructured.UnstructuredList{}, nil
 }
