@@ -1,10 +1,10 @@
 package requestDispatcher
 
 import (
-	"fmt"
 	"keep/cloud/pkg/common/modules"
 	coupon "keep/cloud/pkg/requestDispatcher/RPC/myproto"
 	"keep/cloud/pkg/requestDispatcher/Router"
+	"keep/cloud/pkg/requestDispatcher/Router/routers"
 	"keep/cloud/pkg/requestDispatcher/cloudtunnel"
 	requestDispatcherconfig "keep/cloud/pkg/requestDispatcher/config"
 	"keep/cloud/pkg/requestDispatcher/receiver"
@@ -74,10 +74,11 @@ func (r *RequestDispatcher) Start() {
 	if err != nil {
 		logger.Fatal("init gRPC server failed", err)
 	}
+	// 初始化路由
+	routers.InitRouters()
 	// 张连军测试
 	go func() {
 		time.Sleep(2 * time.Second)
-		fmt.Println("============")
 		Router.TestSendtoK8sClint()
 	}()
 }

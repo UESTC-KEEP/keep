@@ -10,7 +10,7 @@ import (
 )
 
 func StartK8sClientRouter() {
-	fmt.Println("启动路由...")
+	//fmt.Println("启动路由...")
 	go func() {
 		for {
 			select {
@@ -19,7 +19,7 @@ func StartK8sClientRouter() {
 			default:
 			}
 			msg := ReceiveMsg()
-			fmt.Printf("content:%v     header:%v      router:%v\n", msg.GetContent(), msg.Header, msg.Router)
+			fmt.Printf("%#v\n", msg)
 			if msg != nil {
 				// 来自其他模块的普通消息
 				if msg.Router.Resource == "" {
@@ -52,7 +52,11 @@ func ResolveRouter(msg *model.Message) {
 				logger.Error(err)
 				return
 			}
-			fmt.Println(listPods)
+			fmt.Print("pod 列表：")
+			for _, pod := range listPods.Items {
+				fmt.Print(pod.Name + "   ")
+			}
+			//fmt.Println(listPods)
 		}
 	}
 }
