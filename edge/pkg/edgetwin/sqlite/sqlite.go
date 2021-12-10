@@ -3,15 +3,16 @@ package sqlite
 import (
 	"database/sql"
 	"encoding/json"
-	_ "github.com/mattn/go-sqlite3"
-	"github.com/robfig/cron"
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/edgetwin/config"
 	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/core/model"
-	"keep/pkg/util/loggerv1.0.1"
+	logger "keep/pkg/util/loggerv1.0.1"
 	"strconv"
 	"time"
+
+	_ "github.com/mattn/go-sqlite3"
+	"github.com/robfig/cron/v3"
 )
 
 type Sqlite struct {
@@ -120,6 +121,8 @@ func NewSqliteCli() *Sqlite {
 func ReceiveFromBeehiveAndInsert() {
 	cli := NewSqliteCli()
 	go func(*Sqlite) {
+		c := DeletePeriod(cli)
+		defer c.Stop()
 		for {
 			select {
 			case <-beehiveContext.Done():

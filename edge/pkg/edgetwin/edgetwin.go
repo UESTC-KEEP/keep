@@ -47,7 +47,6 @@ func (et *EdgeTwin) Enable() bool {
 func (et *EdgeTwin) Start() {
 	logger.Debug("EdgeTwin开始启动....")
 	sqlite.ReceiveFromBeehiveAndInsert()
-	sqlite.DeletePeriod()
 }
 
 func NewEdgeTwin(enable bool) (*EdgeTwin, error) {
