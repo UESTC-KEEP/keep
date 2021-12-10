@@ -2,7 +2,7 @@ package cloud
 
 import (
 	eqndconstants "keep/cloud/pkg/equalnodecontroller/constants"
-	"keep/constants"
+	"keep/constants/cloud"
 	"path/filepath"
 	"strings"
 
@@ -25,12 +25,12 @@ func NewDefaultEdgeAgentConfig() *CloudAgentConfig {
 		Modules: &Modules{
 			K8sClient: &K8sClient{
 				Enable:              true,
-				Masters:             strings.Split(constants.DefaultMasterIpPort, ";"),
-				MasterMetricTimeout: constants.DefaultMasterMetricTimeout,
-				MasterLBIp:          constants.DefaultMasterLBIp,
-				MasterLBPort:        constants.DefaultMasterLBPort,
-				RedisIp:             constants.DefaultRedisServerIp,
-				RedisPort:           constants.DefaultRedisServerPort,
+				Masters:             strings.Split(cloud.DefaultMasterIpPort, ";"),
+				MasterMetricTimeout: cloud.DefaultMasterMetricTimeout,
+				MasterLBIp:          cloud.DefaultMasterLBIp,
+				MasterLBPort:        cloud.DefaultMasterLBPort,
+				RedisIp:             cloud.DefaultRedisServerIp,
+				RedisPort:           cloud.DefaultRedisServerPort,
 				PodInfo:             nil,
 				DeploymentInfo:      nil,
 				KubeAPIConfig: &KubeAPIConfig{
@@ -40,26 +40,26 @@ func NewDefaultEdgeAgentConfig() *CloudAgentConfig {
 					Burst:      200,
 					KubeConfig: *kubeconfig,
 				},
-				DecoderBufferSize: constants.DefaultDecoderBufferSize,
+				DecoderBufferSize: cloud.DefaultDecoderBufferSize,
 			},
 			PromServer: &PromServer{
 				Enable:                   true,
-				PromServerPrometheusPort: constants.DefaultPromServerMetricsPort,
+				PromServerPrometheusPort: cloud.DefaultPromServerMetricsPort,
 			},
 			RequestDispatcher: &RequestDispatcher{
 				Enable:               true,
-				HTTPPort:             constants.DefaultHTTPPort,
-				WebSocketPort:        constants.DefaultWebSocketPort,
-				TokenRefreshDuration: constants.DefaultTokenRefreshDuration,
+				HTTPPort:             cloud.DefaultHTTPPort,
+				WebSocketPort:        cloud.DefaultWebSocketPort,
+				TokenRefreshDuration: cloud.DefaultTokenRefreshDuration,
 			},
 			CloudImageManager: &CloudImageManager{
 				Enable: true,
 			},
 			EqualNodeController: &EqualNodeController{
 				Enable:          true,
-				MasterURL:       constants.DefaultMasterURL,
+				MasterURL:       cloud.DefaultMasterURL,
 				KubeConfig:      *kubeconfig,
-				AlsoLogToStdErr: constants.DefaultAlsoLogToStdErr,
+				AlsoLogToStdErr: cloud.DefaultAlsoLogToStdErr,
 				Buffer: &EqualNodeControllerBuffer{
 					EqualNodeEvent: eqndconstants.DefaultEqualNodeEventBuffer,
 				},

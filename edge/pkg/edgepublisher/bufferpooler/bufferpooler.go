@@ -2,10 +2,10 @@ package bufferpooler
 
 import (
 	"fmt"
+	"keep/constants/edge"
 	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/loggerv1.0.1"
 
-	"keep/constants"
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/edgepublisher/chanmsgqueen"
 	//"keep/edge/pkg/edgepublisher/config"
@@ -51,7 +51,7 @@ func ReceiveFromBeehiveAndPublish() {
 		fmt.Printf("接收消息 msg: %v\n", msg)
 		resp := msg.NewRespByMessage(&msg, " message received ")
 		beehiveContext.SendResp(*resp)
-		topic := constants.DefaultLogsTopic
+		topic := edge.DefaultLogsTopic
 		//fmt.Println(chanmsgqueen.EdgePublishQueens)
 		cli := chanmsgqueen.EdgePublishQueens[topic]
 		err = cli.Publish(topic, msg.Content)

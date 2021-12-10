@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"github.com/hpcloud/tail"
 	"github.com/spf13/cobra"
-	"keep/constants"
+	"keep/constants/edge"
 	"keep/pkg/util/loggerv1.0.1"
 	"time"
 )
@@ -40,9 +40,9 @@ to quickly create a Cobra application.`,
 		fmt.Println("logs called")
 		switch logtopic {
 		case "keep":
-			printLogs(constants.DefaultEdgeLogFiles)
+			printLogs(edge.DefaultEdgeLogFiles)
 		case "cloudagent":
-			printLogs(constants.DefaultCloudLogFiles)
+			printLogs(edge.DefaultCloudLogFiles)
 		}
 	},
 }

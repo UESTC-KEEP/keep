@@ -4,7 +4,8 @@ import (
 	"crypto/tls"
 	"fmt"
 	"github.com/gorilla/websocket"
-	"keep/constants"
+	"keep/constants/cloud"
+	"keep/constants/edge"
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/edgepublisher/config"
 	"keep/edge/pkg/edgepublisher/tunnel/cert"
@@ -25,7 +26,7 @@ type edgeTunnel struct {
 
 var session *tunnelSession
 var sessionConnected bool
-var msgSendBuffer = make([]*model.Message, constants.DefaultMsgSendBufferSize)
+var msgSendBuffer = make([]*model.Message, edge.DefaultMsgSendBufferSize)
 var msgSendBufferLock sync.Locker
 
 func newEdgeTunnel(hostnameOverride, nodeIP string) *edgeTunnel {
@@ -39,18 +40,18 @@ func newEdgeTunnel(hostnameOverride, nodeIP string) *edgeTunnel {
 func (e *edgeTunnel) start() {
 	serverURL := url.URL{
 		Scheme: "wss",
-		Host:   fmt.Sprintf("%s:%d", constants.DefaultKeepCloudIP, constants.DefaultWebSocketPort),
-		Path:   constants.DefaultWebSocketUrl,
+		Host:   fmt.Sprintf("%s:%d", cloud.DefaultKeepCloudIP, cloud.DefaultWebSocketPort),
+		Path:   cloud.DefaultWebSocketUrl,
 	}
 
 	certManager := cert.NewCertManager(e.hostnameOverride, config.Config.Token)
 	certManager.Start()
 
-	clientCert, err := tls.LoadX509KeyPair(constants.DefaultCertFile, constants.DefaultKeyFile)
+	clientCert, err := tls.LoadX509KeyPair(edge.DefaultCertFile, edge.DefaultKeyFile)
 	if err != nil {
 		logger.Info("Failed to load x509 key pair: ", err, "try again")
 		time.Sleep(10 * time.Second)
-		clientCert, err = tls.LoadX509KeyPair(constants.DefaultCertFile, constants.DefaultKeyFile)
+		clientCert, err = tls.LoadX509KeyPair(edge.DefaultCertFile, edge.DefaultKeyFile)
 	}
 	if err != nil {
 		logger.Fatal("Failed to load x509 key pair: ", err, "Exiting...")
@@ -105,8 +106,8 @@ func (e *edgeTunnel) tlsClientConnect(url url.URL, tlsConfig *tls.Config) (*tunn
 		HandshakeTimeout: time.Duration(30) * time.Second,
 	}
 	header := http.Header{}
-	header.Add(constants.SessionKeyHostNameOverride, e.hostnameOverride)
-	header.Add(constants.SessionKeyInternalIP, e.nodeIP)
+	header.Add(cloud.SessionKeyHostNameOverride, e.hostnameOverride)
+	header.Add(cloud.SessionKeyInternalIP, e.nodeIP)
 
 	con, _, err := dial.Dial(url.String(), header)
 	if err != nil {
@@ -156,7 +157,7 @@ func WriteToBufferToCloud(msg *model.Message) {
 
 	msgSendBufferLock.Lock()
 	msgSendBuffer = append(msgSendBuffer, msg)
-	if len(msgSendBuffer) == constants.DefaultMsgSendBufferSize {
+	if len(msgSendBuffer) == edge.DefaultMsgSendBufferSize {
 		err := session.Tunnel.WriteMessage(msgSendBuffer)
 		if err != nil {
 			for _, contentMsg := range msgSendBuffer {

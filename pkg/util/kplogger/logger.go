@@ -3,7 +3,7 @@ package kplogger
 import (
 	"encoding/json"
 	"fmt"
-	"keep/constants"
+	"keep/constants/edge"
 	"keep/pkg/util/loggerv1.0.1"
 	"os"
 	"path/filepath"
@@ -18,7 +18,7 @@ func loadDefaultLoggerConf() *logConfig { //读default
 			Colorful: true,
 		},
 		File: &fileLogger{
-			Filename:   constants.DefaultEdgeLogFiles,
+			Filename:   edge.DefaultEdgeLogFiles,
 			Level:      "TRAC",
 			Daily:      true,
 			MaxLines:   1000000,
@@ -40,7 +40,7 @@ func WirteLoggerConfigToFile(file_path string, p_cfg *logConfig) { //覆盖
 		Error(LOG_TAG + "cannont   Marshal config :" + err.Error())
 	} else {
 		Infof("%s, data=%s", LOG_TAG, string(data))
-		err := os.WriteFile(file_path, data, constants.DefaultUnixFilePermit)
+		err := os.WriteFile(file_path, data, edge.DefaultUnixFilePermit)
 		if nil != err {
 			Error(LOG_TAG + "cannont  write logger config file:" + err.Error())
 		}
@@ -74,7 +74,7 @@ func CheckAndCreateFile(file_path string, createor_handle func(string)) { //TODO
 	Warnf("%s:cannont find %s,creating a new one now", LOG_TAG, file_path)
 
 	paths, _ := filepath.Split(file_path)
-	err = os.MkdirAll(paths, constants.DefaultUnixDirectoryPermit)
+	err = os.MkdirAll(paths, edge.DefaultUnixDirectoryPermit)
 	if nil == err {
 		createor_handle(file_path)
 	} else {
@@ -84,9 +84,9 @@ func CheckAndCreateFile(file_path string, createor_handle func(string)) { //TODO
 
 func InitKeepLogger() {
 
-	CheckAndCreateFile(constants.DefaultEdgeLogFiles, CreateLogFile)
+	CheckAndCreateFile(edge.DefaultEdgeLogFiles, CreateLogFile)
 
-	logger_cfg_path := constants.DefaultEdgeLoggerConfFile
+	logger_cfg_path := edge.DefaultEdgeLoggerConfFile
 	CheckAndCreateFile(logger_cfg_path, CreateDefaultLoggerConfigFile)
 	err := logger.SetLogger(logger_cfg_path)
 	logger.GetlocalLogger().SetCallDepth(4) //TODO 临时补一下，以后迟早要自己全部重写

@@ -8,7 +8,7 @@ import (
 	"keep/cloud/pkg/requestDispatcher/cloudtunnel"
 	requestDispatcherconfig "keep/cloud/pkg/requestDispatcher/config"
 	"keep/cloud/pkg/requestDispatcher/receiver"
-	"keep/constants"
+	"keep/constants/cloud"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"keep/pkg/util/core"
 	logger "keep/pkg/util/loggerv1.0.1"
@@ -35,8 +35,8 @@ func Register(r *cloudagent.RequestDispatcher) {
 func NewRequestDispatcher(enable bool) (*RequestDispatcher, error) {
 	return &RequestDispatcher{
 		enable:        enable,
-		HTTPPort:      constants.DefaultHTTPPort,
-		WebSocketPort: constants.DefaultWebSocketPort,
+		HTTPPort:      cloud.DefaultHTTPPort,
+		WebSocketPort: cloud.DefaultWebSocketPort,
 	}, nil
 }
 

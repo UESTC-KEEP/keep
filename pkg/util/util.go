@@ -22,6 +22,8 @@ import (
 	"io/ioutil"
 	utilnet "k8s.io/apimachinery/pkg/util/net"
 	"keep/constants"
+	"keep/constants/cloud"
+	"keep/constants/edge"
 	"keep/pkg/util/loggerv1.0.1"
 	"net"
 	"os"
@@ -130,10 +132,10 @@ func SpliceErrors(errors []error) string {
 //OrganizeConfigurationFile 组织自动下发配置文件 日志文件
 func OrganizeConfigurationFile(agentName string) {
 	var sourceConfDir, destinationConfDir string
-	if agentName == constants.EdgeAgentName {
-		sourceConfDir = constants.EdgeConfigeFilesSourceDir
-	} else if agentName == constants.CloudAgentName {
-		sourceConfDir = constants.CloudConfigeFilesSourceDir
+	if agentName == edge.EdgeAgentName {
+		sourceConfDir = edge.EdgeConfigeFilesSourceDir
+	} else if agentName == cloud.CloudAgentName {
+		sourceConfDir = cloud.CloudConfigeFilesSourceDir
 	} else {
 		logger.Error("系统中不存在模块：", agentName)
 	}
@@ -216,6 +218,17 @@ func AllFilesOfDir(Dir string, files *[]string) error {
 	}
 	logger.Trace(*files)
 	return nil
+}
+
+func PrintKEEPLogo() {
+	fmt.Printf("%c[1;5;34m%s%c[0m", 0x1B, "  __       ___    __________     ___________   ____________                                  __     __      \n", 0x1B)
+	fmt.Printf("%c[1;5;34m%s%c[0m", 0x1B, " |  |     |  |   |  ________|   |  ________|  |   ______   |                                |  |   |  |   \n", 0x1B)
+	fmt.Printf("%c[1;5;34m%s%c[0m", 0x1B, " |  |   |  |     |  |           |  |          |  |      |  | 	 _      _    _______       |  |   |  |     \n", 0x1B)
+	fmt.Printf("%c[1;5;34m%s%c[0m", 0x1B, " |   | |  |      |  |_______    |  |_______   |  |______|  |    | |    | |  |  ___  |     |  |   |  |   \n", 0x1B)
+	fmt.Printf("%c[1;5;34m%s%c[0m", 0x1B, " |   ||  |       |   _______|   |  _______|   |   _________|    | |    | |  | |___| |    |  |   |  |       \n", 0x1B)
+	fmt.Printf("%c[1;5;34m%s%c[0m", 0x1B, " |  |   |  |     |  |           |  |          |  |              | |    | |  | ______|   |__|   |__|         \n", 0x1B)
+	fmt.Printf("%c[1;5;34m%s%c[0m", 0x1B, " |  |    |  |    |  |_______    |  |_______   |  |              | |____| |  | |         __     __     \n", 0x1B)
+	fmt.Printf("%c[1;5;34m%s%c[0m", 0x1B, " |__|     |__|   |__________|   |__________|  |__|    V 1.0.0   |________|  |_|        |__|   |__|          \n", 0x1B)
 }
 
 //// GetPodSandboxImage return snadbox image name based on arch, default image is for amd64.

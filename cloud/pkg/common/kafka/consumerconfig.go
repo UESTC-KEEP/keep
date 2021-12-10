@@ -1,7 +1,7 @@
 package kafka
 
 import (
-	"keep/constants"
+	"keep/constants/cloud"
 	"log"
 )
 
@@ -15,7 +15,7 @@ type ConsumerConfig struct {
 func NewConsumerConfig(topic string, groupid string) *ConsumerConfig {
 	msg := make(chan *ConsumerMessage, 100)
 	c := &ConsumerConfig{
-		Address: constants.Address,
+		Address: cloud.Address,
 		//Address: []string{"192.168.1.103:9092", "192.168.1.103:9093"},
 		Topic:   topic,
 		GroupId: groupid,

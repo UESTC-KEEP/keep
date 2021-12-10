@@ -8,7 +8,7 @@ import (
 	kubeedge_engine "keep/cloud/pkg/k8sclient/kubeedge-engine"
 	naive_engine "keep/cloud/pkg/k8sclient/naive-engine"
 	"keep/cloud/pkg/k8sclient/watchengine"
-	"keep/constants"
+	"keep/constants/cloud"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"keep/pkg/util/core"
 	"keep/pkg/util/loggerv1.0.1"
@@ -93,10 +93,10 @@ func initKeepEdgeEnv() {
 
 // 检查constants.DefaultKeepEdgeNameSpace是否存在不存在就创建之
 func checkNamespaceAliveness() {
-	ns, _ := naive_engine.NewNaiveEngine().GetNamespaceByName(constants.DefaultKeepEdgeNameSpace)
+	ns, _ := naive_engine.NewNaiveEngine().GetNamespaceByName(cloud.DefaultKeepEdgeNameSpace)
 	if ns == nil {
 		// 不存在需要的ns就创建之
-		ns_, err := naive_engine.NewNaiveEngine().CreateNamespaceByName(constants.DefaultKeepEdgeNameSpace)
+		ns_, err := naive_engine.NewNaiveEngine().CreateNamespaceByName(cloud.DefaultKeepEdgeNameSpace)
 		if err != nil {
 			logger.Fatal("创建ns失败：", err)
 		}
@@ -114,11 +114,11 @@ func checkRedisAliveness() {
 		logger.Debug("准备拉起redis...")
 		// 创建redis的configMap
 		naive_engine_impl := naive_engine.NewNaiveEngine()
-		naive_engine_impl.CreatResourcesByYAML(constants.DefaultRedisConfigMap, constants.DefaultNameSpace)
+		naive_engine_impl.CreatResourcesByYAML(cloud.DefaultRedisConfigMap, cloud.DefaultNameSpace)
 		// 创建redis服务
-		naive_engine_impl.CreatResourcesByYAML(constants.DefaultRedisSVC, constants.DefaultNameSpace)
+		naive_engine_impl.CreatResourcesByYAML(cloud.DefaultRedisSVC, cloud.DefaultNameSpace)
 		// 创建redis statfulset
-		naive_engine_impl.CreatResourcesByYAML(constants.DefaultRedisStatefulSet, constants.DefaultNameSpace)
+		naive_engine_impl.CreatResourcesByYAML(cloud.DefaultRedisStatefulSet, cloud.DefaultNameSpace)
 	} else {
 		logger.Debug("redis 在线运行中.....")
 	}
@@ -127,8 +127,8 @@ func checkRedisAliveness() {
 
 // deleteRedis 删除redis各组件
 func deleteRedis() {
-	ns := constants.DefaultNameSpace
-	var compoenents = []string{constants.DefaultRedisConfigMap, constants.DefaultRedisSVC, constants.DefaultRedisStatefulSet}
+	ns := cloud.DefaultNameSpace
+	var compoenents = []string{cloud.DefaultRedisConfigMap, cloud.DefaultRedisSVC, cloud.DefaultRedisStatefulSet}
 	var wg sync.WaitGroup
 	for i := 0; i < len(compoenents); i++ {
 		wg.Add(1)

@@ -1,4 +1,4 @@
-package constants
+package cloud
 
 const CloudAgentName = "CloudAgent"
 const CloudConfigeFilesSourceDir = "../../../cloud/shells/confs/keepedge"

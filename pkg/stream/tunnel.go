@@ -21,7 +21,7 @@ import (
 	"encoding/json"
 	"io"
 	"io/ioutil"
-	"keep/constants"
+	"keep/constants/edge"
 	"sync"
 	"time"
 
@@ -79,7 +79,7 @@ func ReadMessageFromTunnel(r io.Reader) (msgList []*model.Message, err error) {
 	if err != nil {
 		return nil, err
 	}
-	msgList = make([]*model.Message, constants.DefaultMsgSendBufferSize)
+	msgList = make([]*model.Message, edge.DefaultMsgSendBufferSize)
 	err = json.Unmarshal(data, &msgList)
 	return
 }

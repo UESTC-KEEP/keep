@@ -1,7 +1,7 @@
 package healthzagent
 
 import (
-	"keep/constants"
+	"keep/constants/edge"
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/healthzagent/config"
 	prome "keep/edge/pkg/healthzagent/promethus"
@@ -69,7 +69,7 @@ func (h *HealthzAgent) Start() {
 	// 启动周期性任务轮询本机用量
 	//cron := server.StartMetricEdgeInterval(config.Config.DefaultEdgeHealthInterval)
 	// 启动本机StartMertricsServer
-	go prome.StartMertricsServer(constants.DefaultMetricsPort)
+	go prome.StartMertricsServer(edge.DefaultMetricsPort)
 	//os.Exit(1)
 	//defer cron.Stop()
 }

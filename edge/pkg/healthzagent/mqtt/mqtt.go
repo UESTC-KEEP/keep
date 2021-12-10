@@ -1,6 +1,7 @@
 package mqtt
 
 import (
+	"keep/constants/edge"
 	"keep/pkg/util/kplogger"
 	"sync"
 	"time"
@@ -9,7 +10,6 @@ import (
 
 	uuid "github.com/satori/go.uuid"
 
-	"keep/constants"
 	_ "net/http/pprof"
 
 	"github.com/yosssi/gmq/mqtt"
@@ -124,9 +124,9 @@ func CreateMqttClientNoName(broker_ip string, brokerPort string) *MqttClient { /
 func (mqttCli *MqttClient) DestroyMqttClient() {
 	err := mqttCli.pMqttClient.Disconnect()
 	if nil == err {
-		kplogger.Infof("%s: mqtt client disconnected", constants.DefaultMqttLogTag)
+		kplogger.Infof("%s: mqtt client disconnected", edge.DefaultMqttLogTag)
 	} else {
-		kplogger.Errorf("%s: Error occured while disconnecting mqtt client", constants.DefaultMqttLogTag)
+		kplogger.Errorf("%s: Error occured while disconnecting mqtt client", edge.DefaultMqttLogTag)
 	}
 
 	mqttCli.pMqttClient.Terminate()
@@ -144,7 +144,7 @@ func (mqttCli *MqttClient) DestroyMqttClient() {
 }
 
 func (mqttCli *MqttClient) clientReceivehandle(topicName, message []byte) {
-	kplogger.Trace(constants.DefaultMqttLogTag+": Topic= "+string(topicName)+"\tData=", message)
+	kplogger.Trace(edge.DefaultMqttLogTag+": Topic= "+string(topicName)+"\tData=", message)
 
 	p_data_tmp := &(mqttCli.topicMap[string(topicName)].data)
 	switch (*p_data_tmp).(type) { //类型断言
@@ -170,7 +170,7 @@ func (mqttCli *MqttClient) RegistSubscribeTopic(pConf *TopicConf) {
 	pCli := mqttCli.pMqttClient
 	_, exist := mqttCli.topicMap[topic_name]
 	if exist { //不能重复订阅同一主题
-		kplogger.Warn(constants.DefaultMqttLogTag + ": Skip subscribeing duplicated topic " + topic_name)
+		kplogger.Warn(edge.DefaultMqttLogTag + ": Skip subscribeing duplicated topic " + topic_name)
 		return
 	}
 
@@ -192,7 +192,7 @@ func (mqttCli *MqttClient) RegistSubscribeTopic(pConf *TopicConf) {
 	case MQTT_BLOCK_MODE:
 		mqttCli.topicMap[topic_name].data = &mqttBlockedData_t{ //以后通过类型断言做判断
 			stop_chan: make(chan struct{}),
-			data_chan: make(chan []byte, constants.DefaultMqttChanSize),
+			data_chan: make(chan []byte, edge.DefaultMqttChanSize),
 		}
 	case MQTT_CACHE_MODE:
 		mqttCli.topicMap[topic_name].data = &mqttCachedData_t{
@@ -205,7 +205,7 @@ func (mqttCli *MqttClient) RegistSubscribeTopic(pConf *TopicConf) {
 	err := pCli.Subscribe(&sub_opt)
 	if nil != err {
 		delete(mqttCli.topicMap, topic_name)
-		kplogger.Error(constants.DefaultMqttLogTag, ":Failed to subscribe topic: ", topic_name, " error=", err)
+		kplogger.Error(edge.DefaultMqttLogTag, ":Failed to subscribe topic: ", topic_name, " error=", err)
 		return
 	}
 }
@@ -220,13 +220,13 @@ func (mqttCli *MqttClient) getDataBlockMode(topic string, topicInfo *mqttTopicIn
 		select {
 		case data := <-data_b.data_chan:
 			if data == nil {
-				kplogger.Warn(constants.DefaultMqttLogTag + ":The data channel of topic \"" + topic + "\" was closed")
+				kplogger.Warn(edge.DefaultMqttLogTag + ":The data channel of topic \"" + topic + "\" was closed")
 				return nil, &MqttErrRet{MQTT_CHAN_CLOSED}
 			} else {
 				return data, nil
 			}
 		case <-data_b.stop_chan:
-			kplogger.Warn(constants.DefaultMqttLogTag + ":The data channel of topic \"" + topic + "\" was closed")
+			kplogger.Warn(edge.DefaultMqttLogTag + ":The data channel of topic \"" + topic + "\" was closed")
 			return nil, &MqttErrRet{MQTT_CHAN_CLOSED}
 		}
 
@@ -234,16 +234,16 @@ func (mqttCli *MqttClient) getDataBlockMode(topic string, topicInfo *mqttTopicIn
 		select {
 		case data := <-data_b.data_chan:
 			if data == nil {
-				kplogger.Warn(constants.DefaultMqttLogTag + ":The data channel of topic \"" + topic + "\" was closed")
+				kplogger.Warn(edge.DefaultMqttLogTag + ":The data channel of topic \"" + topic + "\" was closed")
 				return nil, &MqttErrRet{MQTT_CHAN_CLOSED}
 			} else {
 				return data, nil
 			}
 		case <-time.After(time.Duration(topicInfo.timeLimitMs) * time.Millisecond):
-			kplogger.Error(constants.DefaultMqttLogTag, ": TIMEOUT while reading topic: ", topic)
+			kplogger.Error(edge.DefaultMqttLogTag, ": TIMEOUT while reading topic: ", topic)
 			return nil, &MqttErrRet{MQTT_TIME_OUT}
 		case <-data_b.stop_chan:
-			kplogger.Warn(constants.DefaultMqttLogTag + ":The data channel of topic \"" + topic + "\" was closed")
+			kplogger.Warn(edge.DefaultMqttLogTag + ":The data channel of topic \"" + topic + "\" was closed")
 			return nil, &MqttErrRet{MQTT_CHAN_CLOSED}
 		}
 	}
@@ -260,12 +260,12 @@ func (mqttCli *MqttClient) getDataCacheMode(topic string, topicInfo *mqttTopicIn
 	defer data_c.cache_lock.RUnlock()
 
 	if !(data_c.is_visited) { //也许以后用nil就行，让外面读数据的去判断数据是否有效？TODO
-		kplogger.Error(constants.DefaultMqttLogTag, ":  topic: ", topic, "  no data")
+		kplogger.Error(edge.DefaultMqttLogTag, ":  topic: ", topic, "  no data")
 		return nil, &MqttErrRet{MQTT_NO_DATA} //这个地方就只有开始那一瞬间用用处了
 	}
 
 	if topicInfo.timeLimitMs < time.Now().UnixMilli()-data_c.time_stamp {
-		kplogger.Error(constants.DefaultMqttLogTag, ": TIMEOUT while reading topic: ", topic)
+		kplogger.Error(edge.DefaultMqttLogTag, ": TIMEOUT while reading topic: ", topic)
 		return nil, &MqttErrRet{MQTT_TIME_OUT}
 	}
 	data_ret := data_c.data_cache
@@ -285,7 +285,7 @@ func (mqttCli *MqttClient) GetTopicData(topic string) ([]byte, error) {
 			return nil, &MqttErrRet{MQTT_SYS_ERROR}
 		}
 	} else {
-		kplogger.Error(constants.DefaultMqttLogTag + "try to read unregisted topic " + topic)
+		kplogger.Error(edge.DefaultMqttLogTag + "try to read unregisted topic " + topic)
 		return nil, &MqttErrRet{MQTT_TOPIC_UNEXIST}
 	}
 }
@@ -304,7 +304,7 @@ func (mqttCli *MqttClient) UnSubscribeTopic(topic string) {
 			if is_block_mode {
 				close(data_b.data_chan)
 			} else {
-				kplogger.Errorf("%s,data mode error", constants.DefaultMqttLogTag)
+				kplogger.Errorf("%s,data mode error", edge.DefaultMqttLogTag)
 			}
 
 		case mqttCachedData_t: //FIXME 可以直接什么都不做？golang没free？
@@ -314,7 +314,7 @@ func (mqttCli *MqttClient) UnSubscribeTopic(topic string) {
 		//https://studygolang.com/articles/9478
 		delete(mqttCli.topicMap, topic)
 	} else {
-		kplogger.Warn(constants.DefaultMqttLogTag + "try to UnSubscribe unexist topic: " + topic)
+		kplogger.Warn(edge.DefaultMqttLogTag + "try to UnSubscribe unexist topic: " + topic)
 	}
 }
 

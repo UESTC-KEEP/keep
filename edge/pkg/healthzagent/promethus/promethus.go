@@ -3,7 +3,7 @@ package prome
 import (
 	"encoding/json"
 	"fmt"
-	"keep/constants"
+	"keep/constants/edge"
 	"keep/edge/pkg/healthzagent/config"
 	"keep/edge/pkg/healthzagent/mqtt"
 	"keep/edge/pkg/healthzagent/server"
@@ -35,7 +35,7 @@ func UnmarshalMqttData(data []byte) string {
 var mqttCli *mqtt.MqttClient = nil
 
 func InitMqttClient() {
-	mqttCli = mqtt.CreateMqttClientNoName(constants.DefaultTestingMQTTServer, strconv.Itoa(constants.DefaultTestingMQTTPort))
+	mqttCli = mqtt.CreateMqttClientNoName(edge.DefaultTestingMQTTServer, strconv.Itoa(edge.DefaultTestingMQTTPort))
 	DeviceMqttTopic := config.Config.DeviceMqttTopics
 	for i := 0; i < len(DeviceMqttTopic); i++ {
 		//MQTT_CACHE_MODE不会阻塞当前协程，而是返回最新缓存的数据，不一定是当前时刻的

@@ -5,7 +5,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"keep/constants"
+	"keep/constants/edge"
 
 	"io/ioutil"
 
@@ -20,13 +20,13 @@ func CouponClientInit() error {
 	var err error
 
 	// 读取并解析公钥私钥对
-	cert, err := tls.LoadX509KeyPair(constants.DefaultCertFile, constants.DefaultKeyFile)
+	cert, err := tls.LoadX509KeyPair(edge.DefaultCertFile, edge.DefaultKeyFile)
 	if err != nil {
 		logger.Fatal("Load tls.LoadX509KeyPair error: %v", err)
 	}
 
 	certPool := x509.NewCertPool()
-	ca, err := ioutil.ReadFile(constants.DefaultCAFile)
+	ca, err := ioutil.ReadFile(edge.DefaultCAFile)
 	if err != nil {
 		logger.Fatal("ioutil.ReadFile error: %v", err)
 	}

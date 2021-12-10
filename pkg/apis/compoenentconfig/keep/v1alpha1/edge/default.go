@@ -17,7 +17,7 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"keep/constants"
+	"keep/constants/edge"
 	"keep/pkg/util"
 	logger "keep/pkg/util/loggerv1.0.1"
 	"os"
@@ -38,13 +38,13 @@ func NewDefaultEdgeAgentConfig() *EdgeAgentConfig {
 			HealthzAgent: &HealthzAgent{
 				Enable:                    false,
 				CpuUsage:                  0.0,
-				DefaultEdgeHealthInterval: constants.DefaultEdgeHealthInterval,
+				DefaultEdgeHealthInterval: edge.DefaultEdgeHealthInterval,
 				Cpu:                       nil,
 				Mem:                       nil,
 				DiskPartitionStat:         nil,
 				DiskIOCountersStat:        nil,
 				NetIOCountersStat:         nil,
-				DeviceMqttTopics:          strings.Split(constants.DefaultDeviceMqttTopics, ";"),
+				DeviceMqttTopics:          strings.Split(edge.DefaultDeviceMqttTopics, ";"),
 			},
 			LogsAgent: &LogsAgent{
 				Enable:      true,
@@ -52,27 +52,27 @@ func NewDefaultEdgeAgentConfig() *EdgeAgentConfig {
 				LogTime:     time.Now(),
 				LogFileName: "",
 				LogInfo:     "",
-				LogFiles:    []string{constants.DefaultEdgeLogFiles},
+				LogFiles:    []string{edge.DefaultEdgeLogFiles},
 			},
 			EdgePublisher: &EdgePublisher{
 				Enable:            true,
-				HTTPServer:        constants.DefaultHttpServer,
-				Port:              constants.DefaultCloudHttpPort,
-				ServePort:         constants.DefaultEdgePort,
-				Heartbeat:         constants.DefaultEdgeHeartBeat,
-				EdgeMsgQueens:     []string{constants.DefaultLogsTopic, constants.DefaultDataTopic},
+				HTTPServer:        edge.DefaultHttpServer,
+				Port:              edge.DefaultCloudHttpPort,
+				ServePort:         edge.DefaultEdgePort,
+				Heartbeat:         edge.DefaultEdgeHeartBeat,
+				EdgeMsgQueens:     []string{edge.DefaultLogsTopic, edge.DefaultDataTopic},
 				TLSCAFile:         "",
 				TLSCertFile:       "",
 				TLSPrivateKeyFile: "",
-				BeehiveTimeout:    constants.DefaultBeehiveTimeout * time.Millisecond,
+				BeehiveTimeout:    edge.DefaultBeehiveTimeout * time.Millisecond,
 				HostnameOverride:  hostnameOverride,
 				LocalIP:           localIP,
 				Token:             "",
 			},
 			EdgeTwin: &EdgeTwin{
 				Enable:         true,
-				SqliteFilePath: constants.DefaultEdgeTwinSqliteFilePath,
-				BeehiveTimeout: constants.DefaultBeehiveTimeout * time.Millisecond,
+				SqliteFilePath: edge.DefaultEdgeTwinSqliteFilePath,
+				BeehiveTimeout: edge.DefaultBeehiveTimeout * time.Millisecond,
 			},
 		},
 	}

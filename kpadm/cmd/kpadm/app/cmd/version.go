@@ -18,7 +18,7 @@ package cmd
 import (
 	"fmt"
 	"io"
-	"keep/constants"
+	"keep/constants/edge"
 
 	"github.com/spf13/cobra"
 )
@@ -29,7 +29,7 @@ func NewCmdVersion(out io.Writer) *cobra.Command {
 		Use:   "version",
 		Short: "Print the version of kpadm",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println(constants.KeepEdgeVersion)
+			fmt.Println(edge.KeepEdgeVersion)
 		},
 	}
 	cmd.Flags().StringP("output", "o", "", "Output format; available options are 'yaml', 'json' and 'short'")

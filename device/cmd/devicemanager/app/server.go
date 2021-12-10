@@ -6,17 +6,11 @@ import (
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"keep/constants/edge"
-	"keep/edge/cmd/edgeagent/app/options"
-	"keep/edge/pkg/common/utils"
-	"keep/edge/pkg/edgepublisher"
-	"keep/edge/pkg/edgetwin"
-	"keep/edge/pkg/healthzagent"
-	"keep/edge/pkg/logsagent"
-	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
+	"keep/device/cmd/devicemanager/app/options"
+	devicemanager "keep/pkg/apis/compoenentconfig/keep/v1alpha1/devicemanager"
 	commonutil "keep/pkg/util"
 	"keep/pkg/util/core"
-	"keep/pkg/util/loggerv1.0.1"
-	"net/http"
+	logger "keep/pkg/util/loggerv1.0.1"
 	"os"
 )
 
@@ -33,17 +27,13 @@ to quickly create a Cobra application.`,
 	},
 }
 
-// NewEdgeAgentCommand  create keep cmd
+// NewDeviceCommand  create keep cmd
 func NewDeviceCommand() *cobra.Command {
-	opts := options.NewDefaultEdgeAgentOptions()
+	opts := options.NewDefaultDeviceManagerConfig()
 	cmd := &cobra.Command{
 		Use:  "keep",
 		Long: `keep description,however there is nothing in our code for now,so there is nothing in description`,
 		Run: func(cmd *cobra.Command, args []string) {
-			// 性能监控
-			go func() {
-				logger.Debug(http.ListenAndServe(":6060", nil))
-			}()
 			config, err := opts.Config()
 			text, err := yaml.Marshal(&config)
 			// 写入配置文件
@@ -54,8 +44,7 @@ func NewDeviceCommand() *cobra.Command {
 				logger.Error(err)
 				os.Exit(1)
 			}
-			utils.PrintKEEPLogo()
-			err = utils.EnvironmentCheck()
+			commonutil.PrintKEEPLogo()
 			//if err != nil {
 			//	logger.Fatal(err)
 			//	os.Exit(1)
@@ -69,9 +58,6 @@ func NewDeviceCommand() *cobra.Command {
 }
 
 // register all modules in system
-func registerModules(config *edgeagent.EdgeAgentConfig) {
-	healthzagent.Register(config.Modules.HealthzAgent)
-	logsagent.Register(config.Modules.LogsAgent)
-	edgepublisher.Register(config.Modules.EdgePublisher)
-	edgetwin.Register(config.Modules.EdgeTwin)
+func registerModules(config *devicemanager.DeviceManagerConfig) {
+
 }

@@ -2,7 +2,7 @@ package kafka
 
 import (
 	"fmt"
-	"keep/constants"
+	"keep/constants/cloud"
 	"log"
 	"time"
 
@@ -18,7 +18,7 @@ type ProducerConfig struct {
 func NewProducerConfig(topic string) *ProducerConfig {
 	msg := make(chan string)
 	p := &ProducerConfig{
-		Address: constants.Address,
+		Address: cloud.Address,
 		// Address: []string{"192.168.1.103:9092", "192.168.1.103:9093"},
 		Topic: topic,
 		Msg:   msg,

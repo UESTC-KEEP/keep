@@ -1,7 +1,7 @@
 package chanmsgqueen
 
 import (
-	"keep/constants"
+	"keep/constants/edge"
 	"keep/edge/pkg/edgepublisher/config"
 	"keep/pkg/util/loggerv1.0.1"
 )
@@ -11,14 +11,14 @@ var EdgePublishQueens = make(map[string]*Client)
 // InitMsgQueens 初始化系统中需要的消息队列
 func InitMsgQueens() {
 	for i := 0; i < len(config.Config.EdgeMsgQueens); i++ {
-		if config.Config.EdgeMsgQueens[i] == constants.DefaultLogsTopic {
+		if config.Config.EdgeMsgQueens[i] == edge.DefaultLogsTopic {
 			b := NewClient()
-			b.SetConditions(constants.DefaultLogsQueenSize)
-			EdgePublishQueens[constants.DefaultLogsTopic] = b
-		} else if config.Config.EdgeMsgQueens[i] == constants.DefaultDataTopic {
+			b.SetConditions(edge.DefaultLogsQueenSize)
+			EdgePublishQueens[edge.DefaultLogsTopic] = b
+		} else if config.Config.EdgeMsgQueens[i] == edge.DefaultDataTopic {
 			b := NewClient()
-			b.SetConditions(constants.DefaultDataQueenSize)
-			EdgePublishQueens[constants.DefaultDataTopic] = b
+			b.SetConditions(edge.DefaultDataQueenSize)
+			EdgePublishQueens[edge.DefaultDataTopic] = b
 		}
 	}
 	//logger.Error(EdgePublishQueens)

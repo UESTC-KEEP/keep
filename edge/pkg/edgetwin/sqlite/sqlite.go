@@ -29,7 +29,7 @@ func (sq *Sqlite) ConnectToSqlite() error {
 	return err
 }
 
-func (sq *Sqlite) InserBlobIntoMetricsSqlite(content []byte , time string) error {
+func (sq *Sqlite) InserBlobIntoMetricsSqlite(content []byte, time string) error {
 	//插入数据
 	if sq.conn == nil {
 		err := sq.ConnectToSqlite()
@@ -54,14 +54,14 @@ func (sq *Sqlite) InserBlobIntoMetricsSqlite(content []byte , time string) error
 	return err
 }
 
-func (sq *Sqlite) DeleteTimeOutFromSqlite(ddl int64) error{
-	stmt,err := sq.conn.Prepare("DELETE FROM logedgeagent WHERE time <= ?")
-	if err!=nil {
+func (sq *Sqlite) DeleteTimeOutFromSqlite(ddl int64) error {
+	stmt, err := sq.conn.Prepare("DELETE FROM logedgeagent WHERE time <= ?")
+	if err != nil {
 		logger.Error(err)
 		return err
 	}
-	res, err := stmt.Exec(ddl)
-	if err!=nil {
+	_, err = stmt.Exec(ddl)
+	if err != nil {
 		logger.Error(err)
 		return err
 	}
@@ -69,34 +69,34 @@ func (sq *Sqlite) DeleteTimeOutFromSqlite(ddl int64) error{
 	return err
 }
 
-func (sq *Sqlite) SelectTimeFromSqliteToCloud( begintime int64) error{
+func (sq *Sqlite) SelectTimeFromSqliteToCloud(begintime int64) error {
 
-	stmt ,err := sq.conn.Prepare("SELECT content FROM logedgeagent where time > ?")
-	if err!=nil{
+	stmt, err := sq.conn.Prepare("SELECT content FROM logedgeagent where time > ?")
+	if err != nil {
 		logger.Error(err)
 		return err
 	}
 
-	rows ,err := stmt.Query(begintime)
-	if err!=nil{
+	rows, err := stmt.Query(begintime)
+	if err != nil {
 		logger.Error(err)
 		return err
 	}
 	for rows.Next() {
 		var content []byte
 		err := rows.Scan(&content)
-		if err!=nil{
+		if err != nil {
 			logger.Error(err)
 			return err
 		}
 		var msg model.Message
-		err = json.Unmarshal(content , &msg)
-		if err!=nil{
+		err = json.Unmarshal(content, &msg)
+		if err != nil {
 			logger.Error(err)
 			return err
 		}
 
-		beehiveContext.Send(modules.EdgePublisherModule , msg)
+		beehiveContext.Send(modules.EdgePublisherModule, msg)
 
 	}
 
@@ -141,13 +141,13 @@ func ReceiveEdgeTwinMsg(cli *Sqlite) {
 
 		// 提高速度
 		go func() {
-			content , err := json.Marshal(msg)
+			content, err := json.Marshal(msg)
 			if err != nil {
 				logger.Error(err)
 				return
 			}
 
-			err1 := cli.InserBlobIntoMetricsSqlite(content ,  strconv.FormatInt(msg.Header.Timestamp , 10))
+			err1 := cli.InserBlobIntoMetricsSqlite(content, strconv.FormatInt(msg.Header.Timestamp, 10))
 			if err1 != nil {
 				logger.Error(err1)
 				return
@@ -158,7 +158,7 @@ func ReceiveEdgeTwinMsg(cli *Sqlite) {
 	}
 }
 
-func DeletePeriod(sq *Sqlite) *cron.Cron  {
+func DeletePeriod(sq *Sqlite) *cron.Cron {
 	c := cron.New()
 
 	c.AddFunc("@every 48h", func() {

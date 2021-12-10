@@ -13,6 +13,8 @@ import (
 	"encoding/pem"
 	"fmt"
 	"io/ioutil"
+	"keep/constants/cloud"
+	"keep/constants/edge"
 	"net"
 	nethttp "net/http"
 	"net/url"
@@ -24,8 +26,6 @@ import (
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/util/cert"
 	"k8s.io/klog/v2"
-
-	"keep/constants"
 )
 
 // jitteryDuration uses some jitter to set the rotation threshold so each node
@@ -76,19 +76,19 @@ func NewCertManager(nodename string, token string) CertManager {
 	}
 	HTTPServer := (&url.URL{
 		Scheme: "https",
-		Host:   net.JoinHostPort(constants.DefaultKeepCloudIP, strconv.Itoa(constants.DefaultHTTPPort)),
+		Host:   net.JoinHostPort(cloud.DefaultKeepCloudIP, strconv.Itoa(cloud.DefaultHTTPPort)),
 	}).String()
 	return CertManager{
 		RotateCertificates: true,
 		NodeName:           nodename,
 		token:              token, // 由于没有实现从命令行接收token赋值给 edgepublisher模块 暂时直接传过来
 		CR:                 certReq,
-		caFile:             constants.DefaultCAFile,
-		certFile:           constants.DefaultCertFile,
-		keyFile:            constants.DefaultKeyFile,
+		caFile:             edge.DefaultCAFile,
+		certFile:           edge.DefaultCertFile,
+		keyFile:            edge.DefaultKeyFile,
 		now:                time.Now,
-		caURL:              HTTPServer + constants.DefaultCAURL,
-		certURL:            HTTPServer + constants.DefaultCertURL,
+		caURL:              HTTPServer + cloud.DefaultCAURL,
+		certURL:            HTTPServer + cloud.DefaultCertURL,
 		Done:               make(chan struct{}),
 	}
 }

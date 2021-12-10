@@ -9,10 +9,10 @@ import (
 	"encoding/pem"
 	"fmt"
 	"io/ioutil"
+	"keep/constants/cloud"
 	"net/http"
 	"strings"
 
-	"keep/constants"
 	logger "keep/pkg/util/loggerv1.0.1"
 
 	"github.com/golang-jwt/jwt"
@@ -25,7 +25,7 @@ import (
 
 const (
 	Address = "0.0.0.0"
-	Port    = constants.DefaultHTTPPort
+	Port    = cloud.DefaultHTTPPort
 )
 
 // StartHTTPServer starts the http service
@@ -33,8 +33,8 @@ func StartHTTPServer() {
 	// gorilla/mux是 gorilla Web 开发工具包中的路由管理库
 	router := mux.NewRouter()
 	//  HandleFunc 返回一个路由  Methods为路由添加接受的请求类型：GET, POST
-	router.HandleFunc(constants.DefaultCertURL, edgeCoreClientCert).Methods(http.MethodGet)
-	router.HandleFunc(constants.DefaultCAURL, getCA).Methods(http.MethodGet)
+	router.HandleFunc(cloud.DefaultCertURL, edgeCoreClientCert).Methods(http.MethodGet)
+	router.HandleFunc(cloud.DefaultCAURL, getCA).Methods(http.MethodGet)
 
 	addr := fmt.Sprintf("%s:%d", Address, Port)
 	// 509 公钥认证的标准格式  tls安全传输协议 pem数据格式
@@ -90,7 +90,7 @@ func edgeCoreClientCert(w http.ResponseWriter, r *http.Request) {
 	// 用于tls验证  http用户忽略
 	if cert := r.TLS.PeerCertificates; len(cert) > 0 {
 		if err := verifyCert(cert[0]); err != nil {
-			logger.Error("failed to sign the certificate for edgenode: %s, failed to verify the certificate", r.Header.Get(constants.NodeName))
+			logger.Error("failed to sign the certificate for edgenode: %s, failed to verify the certificate", r.Header.Get(cloud.NodeName))
 			w.WriteHeader(http.StatusUnauthorized)
 			if _, err := w.Write([]byte(err.Error())); err != nil {
 				logger.Error("failed to write response, err: %v", err)
@@ -104,7 +104,7 @@ func edgeCoreClientCert(w http.ResponseWriter, r *http.Request) {
 	if verifyAuthorization(w, r) {
 		signEdgeCert(w, r)
 	} else {
-		logger.Error("failed to sign the certificate for edgenode: %s, invalid token", r.Header.Get(constants.NodeName))
+		logger.Error("failed to sign the certificate for edgenode: %s, invalid token", r.Header.Get(cloud.NodeName))
 	}
 }
 
@@ -180,12 +180,12 @@ func verifyAuthorization(w http.ResponseWriter, r *http.Request) bool {
 func signEdgeCert(w http.ResponseWriter, r *http.Request) {
 	csrContent, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		logger.Error("fail to read file when signing the cert for edgenode:%s! error:%v", r.Header.Get(constants.NodeName), err)
+		logger.Error("fail to read file when signing the cert for edgenode:%s! error:%v", r.Header.Get(cloud.NodeName), err)
 		return
 	}
 	csr, err := x509.ParseCertificateRequest(csrContent)
 	if err != nil {
-		logger.Error("fail to ParseCertificateRequest of edgenode: %s! error:%v", r.Header.Get(constants.NodeName), err)
+		logger.Error("fail to ParseCertificateRequest of edgenode: %s! error:%v", r.Header.Get(cloud.NodeName), err)
 		return
 	}
 	usagesStr := r.Header.Get("ExtKeyUsages")
@@ -202,7 +202,7 @@ func signEdgeCert(w http.ResponseWriter, r *http.Request) {
 	logger.Info("receive sign crt request, ExtKeyUsages: %v", usages)
 	clientCertDER, err := signCerts(csr.Subject, csr.PublicKey, usages)
 	if err != nil {
-		logger.Error("fail to signCerts for edgenode:%s! error:%v", r.Header.Get(constants.NodeName), err)
+		logger.Error("fail to signCerts for edgenode:%s! error:%v", r.Header.Get(cloud.NodeName), err)
 		return
 	}
 

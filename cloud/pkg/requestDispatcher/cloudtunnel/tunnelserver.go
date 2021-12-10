@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"keep/cloud/pkg/common/modules"
 	"keep/cloud/pkg/requestDispatcher/config"
-	"keep/constants"
+	"keep/constants/cloud"
 	"keep/pkg/stream"
 	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/core/model"
@@ -47,7 +47,7 @@ func newTunnelServer() *tunnelServer {
 
 func (s *tunnelServer) installDefaultHandler() {
 	ws := new(restful.WebService)
-	ws.Path(constants.DefaultWebSocketUrl)
+	ws.Path(cloud.DefaultWebSocketUrl)
 	ws.Route(ws.GET("/").
 		To(s.connect))
 	s.container.Add(ws)
@@ -79,8 +79,8 @@ func (s *tunnelServer) getNodeIP(node string) (string, bool) {
 }
 
 func (s *tunnelServer) connect(r *restful.Request, w *restful.Response) {
-	hostnameOverride := r.HeaderParameter(constants.SessionKeyHostNameOverride)
-	internalIP := r.HeaderParameter(constants.SessionKeyInternalIP)
+	hostnameOverride := r.HeaderParameter(cloud.SessionKeyHostNameOverride)
+	internalIP := r.HeaderParameter(cloud.SessionKeyInternalIP)
 	if internalIP == "" {
 		internalIP = strings.Split(r.Request.RemoteAddr, ":")[0]
 	}
@@ -113,7 +113,7 @@ func (s *tunnelServer) Start() {
 	}
 
 	tunnelServer := &http.Server{
-		Addr:    fmt.Sprintf(":%d", constants.DefaultWebSocketPort),
+		Addr:    fmt.Sprintf(":%d", cloud.DefaultWebSocketPort),
 		Handler: s.container,
 		TLSConfig: &tls.Config{
 			ClientCAs:    pool,

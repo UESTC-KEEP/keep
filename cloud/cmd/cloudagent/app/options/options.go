@@ -17,7 +17,7 @@ limitations under the License.
 package options
 
 import (
-	"keep/constants"
+	cloud2 "keep/constants/cloud"
 	"keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 )
 
@@ -27,7 +27,7 @@ type CloudAgentOptions struct {
 
 func NewDefaultEdgeAgentOptions() *CloudAgentOptions {
 	return &CloudAgentOptions{
-		ConfigFile: constants.DefaultCloudConfigFile,
+		ConfigFile: cloud2.DefaultCloudConfigFile,
 	}
 }
 

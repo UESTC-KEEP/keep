@@ -1,3 +1,11 @@
+package options
+
+import (
+	"keep/constants/device"
+	v1alpha1 "keep/pkg/apis/compoenentconfig/keep/v1alpha1/devicemanager"
+	logger "keep/pkg/util/loggerv1.0.1"
+)
+
 /*
 Copyright 2021 The KEEP Authors.
 
@@ -14,32 +22,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package options
-
-import (
-	"keep/constants/edge"
-	v1alpha1 "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
-	logger "keep/pkg/util/loggerv1.0.1"
-)
-
-type EdgeAgentOptions struct {
+type DeviceManagerOptions struct {
 	ConfigFile string
 }
 
-func NewDefaultEdgeAgentOptions() *EdgeAgentOptions {
-	return &EdgeAgentOptions{
-		ConfigFile: edge.DefaultEdgeagentConfigFile,
+func NewDefaultDeviceManagerConfig() *DeviceManagerOptions {
+	return &DeviceManagerOptions{
+		ConfigFile: device.DefaultDeviceConfigFile,
 	}
 }
 
-func (o *EdgeAgentOptions) Config() (*v1alpha1.EdgeAgentConfig, error) {
-	cfg := v1alpha1.NewDefaultEdgeAgentConfig()
-	logger.Error(cfg.Modules.HealthzAgent.Enable)
+func (o *DeviceManagerOptions) Config() (*v1alpha1.DeviceManagerConfig, error) {
+	cfg := v1alpha1.NewDefaultDeviceManagerConfig()
 	// 先读默认配置  然后在从配置文件读取用户配置   以用户配置的配置文件为主
 	if err := cfg.Parse(o.ConfigFile); err != nil {
 		logger.Error(err)
 		return nil, err
 	}
-	logger.Error(cfg.Modules.HealthzAgent.Enable)
 	return cfg, nil
 }

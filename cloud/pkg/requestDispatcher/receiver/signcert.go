@@ -6,7 +6,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	hubconfig "keep/cloud/pkg/requestDispatcher/config"
-	"keep/constants"
+	"keep/constants/cloud"
 
 	certutil "k8s.io/client-go/util/cert"
 
@@ -26,7 +26,7 @@ func SignCerts() ([]byte, []byte, error) {
 		AltNames: certutil.AltNames{
 			DNSNames: []string{""},
 			// DNSNames: hubconfig.Config.DNSNames,
-			IPs: getIps([]string{constants.DefaultKeepCloudIP}),
+			IPs: getIps([]string{cloud.DefaultKeepCloudIP}),
 		},
 	}
 

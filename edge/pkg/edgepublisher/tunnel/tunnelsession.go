@@ -2,7 +2,7 @@ package edgetunnel
 
 import (
 	"github.com/gorilla/websocket"
-	"keep/constants"
+	"keep/constants/edge"
 	"keep/pkg/stream"
 	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/loggerv1.0.1"
@@ -36,7 +36,7 @@ func (t *tunnelSession) Close() {
 }
 
 func (t *tunnelSession) startPing(reconnectChan chan struct{}) {
-	ticker := time.NewTicker(constants.DefaultEdgeHeartBeat * time.Second)
+	ticker := time.NewTicker(edge.DefaultEdgeHeartBeat * time.Second)
 	defer ticker.Stop()
 
 	for {
