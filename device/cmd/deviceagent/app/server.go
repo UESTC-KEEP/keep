@@ -5,8 +5,9 @@ import (
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"keep/constants/device"
 	"keep/constants/edge"
-	"keep/device/cmd/devicemanager/app/options"
+	"keep/device/cmd/deviceagent/app/options"
 	devicemanager "keep/pkg/apis/compoenentconfig/keep/v1alpha1/devicemanager"
 	commonutil "keep/pkg/util"
 	"keep/pkg/util/core"
@@ -34,6 +35,7 @@ func NewDeviceCommand() *cobra.Command {
 		Use:  "keep",
 		Long: `keep description,however there is nothing in our code for now,so there is nothing in description`,
 		Run: func(cmd *cobra.Command, args []string) {
+			commonutil.OrganizeConfigurationFile(device.DeviceAgentName)
 			config, err := opts.Config()
 			text, err := yaml.Marshal(&config)
 			// 写入配置文件

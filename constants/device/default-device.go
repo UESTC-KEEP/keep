@@ -1,5 +1,5 @@
 package device
 
-const (
-	DefaultDeviceConfigFile = "/etc/keep/config/device.yaml"
-)
+const DeviceAgentName = "DeviceAgent"
+const DeviceConfigeFilesSourceDir = "../../../device/shells/confs/keepedge"
+const DefaultDeviceConfigFile = "/etc/keepedge/config/deviceagent.yaml"

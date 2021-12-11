@@ -1,7 +1,7 @@
 package main
 
 import (
-	"keep/device/cmd/devicemanager/app"
+	"keep/device/cmd/deviceagent/app"
 	"keep/pkg/util/kplogger"
 	"os"
 )

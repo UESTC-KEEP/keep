@@ -23,6 +23,7 @@ import (
 	utilnet "k8s.io/apimachinery/pkg/util/net"
 	"keep/constants"
 	"keep/constants/cloud"
+	"keep/constants/device"
 	"keep/constants/edge"
 	"keep/pkg/util/loggerv1.0.1"
 	"net"
@@ -136,6 +137,8 @@ func OrganizeConfigurationFile(agentName string) {
 		sourceConfDir = edge.EdgeConfigeFilesSourceDir
 	} else if agentName == cloud.CloudAgentName {
 		sourceConfDir = cloud.CloudConfigeFilesSourceDir
+	} else if agentName == device.DeviceAgentName {
+		sourceConfDir = device.DeviceConfigeFilesSourceDir
 	} else {
 		logger.Error("系统中不存在模块：", agentName)
 	}
