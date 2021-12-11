@@ -36,7 +36,7 @@ func NewDefaultEdgeAgentConfig() *EdgeAgentConfig {
 		},
 		Modules: &Modules{
 			HealthzAgent: &HealthzAgent{
-				Enable:                    false,
+				Enable:                    true,
 				CpuUsage:                  0.0,
 				DefaultEdgeHealthInterval: edge.DefaultEdgeHealthInterval,
 				Cpu:                       nil,
@@ -73,6 +73,9 @@ func NewDefaultEdgeAgentConfig() *EdgeAgentConfig {
 				Enable:         true,
 				SqliteFilePath: edge.DefaultEdgeTwinSqliteFilePath,
 				BeehiveTimeout: edge.DefaultBeehiveTimeout * time.Millisecond,
+			},
+			DeviceMapperInterface: &DeviceMapperInterface{
+				Enable: true,
 			},
 		},
 	}

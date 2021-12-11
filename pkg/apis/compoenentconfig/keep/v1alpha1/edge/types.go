@@ -57,10 +57,11 @@ type DataBase struct {
 }
 
 type Modules struct {
-	HealthzAgent  *HealthzAgent  `json:"healthzAgent,omitempty"`
-	LogsAgent     *LogsAgent     `json:"logsagent,omitempty"`
-	EdgePublisher *EdgePublisher `json:"edgepublisher,omitempty"`
-	EdgeTwin      *EdgeTwin      `json:"edgetwin,omitempty"`
+	HealthzAgent          *HealthzAgent          `json:"healthzAgent,omitempty"`
+	LogsAgent             *LogsAgent             `json:"logsagent,omitempty"`
+	EdgePublisher         *EdgePublisher         `json:"edgepublisher,omitempty"`
+	EdgeTwin              *EdgeTwin              `json:"edgetwin,omitempty"`
+	DeviceMapperInterface *DeviceMapperInterface `json:"devicemapperinterface,omitempty"`
 }
 
 // HealthzAgent 是该模块的说明
@@ -112,4 +113,9 @@ type EdgeTwin struct {
 	Enable         bool          `json:"enable"`
 	SqliteFilePath string        `json:"sqlite_file_path"`
 	BeehiveTimeout time.Duration `json:"beehive_timeout"`
+}
+
+// DeviceMapperInterface 模块定义
+type DeviceMapperInterface struct {
+	Enable bool `json:"enable"`
 }

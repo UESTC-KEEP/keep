@@ -3,6 +3,7 @@ package sqlite
 import (
 	"database/sql"
 	"encoding/json"
+	"github.com/robfig/cron"
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/edgetwin/config"
 	beehiveContext "keep/pkg/util/core/context"
@@ -12,7 +13,7 @@ import (
 	"time"
 
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/robfig/cron/v3"
+	//"github.com/robfig/cron/v3"
 )
 
 type Sqlite struct {

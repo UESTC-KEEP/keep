@@ -8,6 +8,7 @@ import (
 	"keep/constants/edge"
 	"keep/edge/cmd/edgeagent/app/options"
 	"keep/edge/pkg/common/utils"
+	device_mapper_interface "keep/edge/pkg/device-mapper-interface"
 	"keep/edge/pkg/edgepublisher"
 	"keep/edge/pkg/edgetwin"
 	"keep/edge/pkg/healthzagent"
@@ -16,7 +17,6 @@ import (
 	commonutil "keep/pkg/util"
 	"keep/pkg/util/core"
 	"keep/pkg/util/loggerv1.0.1"
-	"net/http"
 	"os"
 )
 
@@ -34,16 +34,16 @@ to quickly create a Cobra application.`,
 }
 
 // NewEdgeAgentCommand  create keep cmd
-func NewDeviceCommand() *cobra.Command {
+func NewEdgeAgentCommand() *cobra.Command {
 	opts := options.NewDefaultEdgeAgentOptions()
 	cmd := &cobra.Command{
 		Use:  "keep",
 		Long: `keep description,however there is nothing in our code for now,so there is nothing in description`,
 		Run: func(cmd *cobra.Command, args []string) {
 			// 性能监控
-			go func() {
-				logger.Debug(http.ListenAndServe(":6060", nil))
-			}()
+			//go func() {
+			//	logger.Debug(http.ListenAndServe(":6060", nil))
+			//}()
 			config, err := opts.Config()
 			text, err := yaml.Marshal(&config)
 			// 写入配置文件
@@ -74,4 +74,5 @@ func registerModules(config *edgeagent.EdgeAgentConfig) {
 	logsagent.Register(config.Modules.LogsAgent)
 	edgepublisher.Register(config.Modules.EdgePublisher)
 	edgetwin.Register(config.Modules.EdgeTwin)
+	device_mapper_interface.Register(config.Modules.DeviceMapperInterface)
 }

@@ -20,8 +20,7 @@ func (pi *PodsImpl) ListPods(namespace string) (*corev1.PodList, error) {
 	return podlist, err
 }
 
-// function to get pod from k8s by name
-
+// GetPodInfoByPodName function to get pod from k8s by name
 func (pi *PodsImpl) GetPodInfoByPodName(podName string) (*corev1.Pod, error) {
 	pod, err := config.Clientset.CoreV1().Pods("A").Get(context.Background(), podName, metav1.GetOptions{})
 	if err != nil {
@@ -30,7 +29,6 @@ func (pi *PodsImpl) GetPodInfoByPodName(podName string) (*corev1.Pod, error) {
 	}
 	return pod, nil
 }
-
 func NewPods() *PodsImpl {
 	return &PodsImpl{}
 }

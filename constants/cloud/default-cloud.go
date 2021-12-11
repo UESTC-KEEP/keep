@@ -37,7 +37,7 @@ const (
 	DefaultCAURL                = "/ca.crt"
 	DefaultCertURL              = "/edge.crt"
 	DefaultWebSocketUrl         = "/v1/keepedge/connect"
-	DefaultKeepCloudIP          = "192.168.1.121"
+	DefaultKeepCloudIP          = "192.168.1.128"
 	DefaultTokenRefreshDuration = 12
 	SessionKeyHostNameOverride  = "SessionHostNameOverride"
 	SessionKeyInternalIP        = "SessionInternalIP"

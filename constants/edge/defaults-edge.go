@@ -18,7 +18,7 @@ const (
 
 const (
 	// DefaultEdgeagentConfigFile  默认的存储文件位置
-	DefaultEdgeagentConfigFile = EdgeConfigeFilesSourceDir + "/config/deviceagent.yaml"
+	DefaultEdgeagentConfigFile = EdgeConfigeFilesSourceDir + "/config/edgeagent.yaml"
 	//KeepEdgeVersion	keepedge 版本信息
 	KeepEdgeVersion = "0.0.1"
 )
@@ -37,7 +37,7 @@ const (
 
 // EdgePublisher 全局配置
 const (
-	DefaultHttpServer    = "http://192.168.1.121"
+	DefaultHttpServer    = "http://192.168.1.128"
 	DefaultCloudHttpPort = 20000
 	DefaultEdgeHeartBeat = 15
 	DefaultEdgePort      = 20350

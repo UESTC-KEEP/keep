@@ -18,7 +18,6 @@ import (
 	"strconv"
 
 	"os"
-	"sync"
 )
 
 type EdgePublisher struct {
@@ -65,20 +64,19 @@ func (ep *EdgePublisher) Enable() bool {
 }
 
 func (ep *EdgePublisher) Start() {
-	var wg sync.WaitGroup
+	//var wg sync.WaitGroup
 	name, _ := os.Hostname()
 	fmt.Println("name:", name)
 	logger.Debug("EdgePublisher 开始启动....")
 	nm := cert.NewCertManager("NodeName", ep.token)
-	nm.Start()
-
+	go nm.Start()
 	// 启动边端服务20350
 	// 初始化队列 确保队列初始化完成再启动服务
 	chanmsgqueen.InitMsgQueens()
-	wg.Wait()
+	//wg.Wait()
 	go StartEdgePublisher()
-	bufferpooler.StartListenLogMsg()
-	publisher.ReadQueueAndPublish()
+	go bufferpooler.StartListenLogMsg()
+	go publisher.ReadQueueAndPublish()
 	go edgetunnel.StartEdgeTunnel(ep.hostnameOverride, ep.nodeIP)
 	err := coupon.CouponClientInit()
 	if err != nil {
@@ -119,6 +117,6 @@ func NewEdgePublisher(enable bool) (*EdgePublisher, error) {
 		enable:           enable,
 		hostnameOverride: edgepublisherconfig.Config.HostnameOverride,
 		nodeIP:           edgepublisherconfig.Config.LocalIP,
-		token:            "714e8964ea1d42a2414d4af1800dbe2f7a4560b3df23cd4795dc32ac83909f8a.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzg5NDk0NTV9.AG7PuJvpAqPHq__erFVhAYJI6zlJ1i43RWRQTEAMqr8",
+		token:            "29c94a46e28a0ede1915137b52a1498b99a77c2e0570e1b363cd9e408563f24b.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzkzMDkzNDV9.xOFcytpyR7gmp1fSmMvLs-r6F9o7DJ-hW8jTKPj6TdA",
 	}, nil
 }

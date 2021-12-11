@@ -43,7 +43,7 @@ func CouponClientInit() error {
 
 	// set log
 	// grpclog.SetLoggerV2(logger.GetGrpcLogger())
-	target := "192.168.1.121:9503"
+	target := "192.168.1.128:9503"
 
 	// 连接到注册中心
 	Conn, err := grpc.Dial(

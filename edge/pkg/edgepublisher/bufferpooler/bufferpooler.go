@@ -23,8 +23,6 @@ func InitCachePools() {
 
 }
 
-var PermissionOfSending = true
-
 // StartListenLogMsg 发送日志到消息队列中
 func StartListenLogMsg() {
 	go func() {
@@ -32,7 +30,7 @@ func StartListenLogMsg() {
 			select {
 			case <-beehiveContext.Done():
 				// 收到信息停止接收所有消息
-				PermissionOfSending = false
+				//PermissionOfSending = false
 				return
 			default:
 			}
