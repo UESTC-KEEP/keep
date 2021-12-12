@@ -47,8 +47,8 @@ func FilterLogsByLevel(log string) {
 		if strings.Contains(log, "DEBG") {
 			//bufferpooler.SendLogInQueue(log)
 			messsage := model.NewMessage("")
-			counter++
 			messsage.Content = log
+			messsage.Router.Group = "/log"
 			//fmt.Println("+++++++++++++++++++++++  ", log)
 			//if bufferpooler.PermissionOfSending {
 			go func() {

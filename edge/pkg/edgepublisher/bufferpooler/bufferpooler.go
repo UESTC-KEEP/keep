@@ -52,7 +52,7 @@ func ReceiveFromBeehiveAndPublish() {
 		topic := edge.DefaultLogsTopic
 		//fmt.Println(chanmsgqueen.EdgePublishQueens)
 		cli := chanmsgqueen.EdgePublishQueens[topic]
-		err = cli.Publish(topic, msg.Content)
+		err = cli.Publish(topic, msg)
 		if err != nil {
 			logger.Error(err)
 		}

@@ -77,7 +77,7 @@ func (ep *EdgePublisher) Start() {
 	go StartEdgePublisher()
 	go bufferpooler.StartListenLogMsg()
 	go publisher.ReadQueueAndPublish()
-	go edgetunnel.StartEdgeTunnel(ep.hostnameOverride, ep.nodeIP)
+	edgetunnel.StartEdgeTunnel(ep.hostnameOverride, ep.nodeIP)
 	err := coupon.CouponClientInit()
 	if err != nil {
 		logger.Fatal("init coupon gRPC client failed", err)
@@ -117,6 +117,6 @@ func NewEdgePublisher(enable bool) (*EdgePublisher, error) {
 		enable:           enable,
 		hostnameOverride: edgepublisherconfig.Config.HostnameOverride,
 		nodeIP:           edgepublisherconfig.Config.LocalIP,
-		token:            "29c94a46e28a0ede1915137b52a1498b99a77c2e0570e1b363cd9e408563f24b.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzkzMDkzNDV9.xOFcytpyR7gmp1fSmMvLs-r6F9o7DJ-hW8jTKPj6TdA",
+		token:            "43d728fd05943f0ed2fe4c8b52b50f092f8523df492730345ae29c267f668890.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzkzNzE1NTV9.8jItszchYvuJvOZxRVhn_YkvJOnCIHRSa1OE6ttp7s0",
 	}, nil
 }

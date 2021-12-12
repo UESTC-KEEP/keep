@@ -7,8 +7,6 @@ import (
 	"keep/constants/cloud"
 	"keep/constants/edge"
 	"keep/edge/pkg/common/modules"
-	"keep/edge/pkg/edgepublisher/config"
-	"keep/edge/pkg/edgepublisher/tunnel/cert"
 	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/core/model"
 	logger "keep/pkg/util/loggerv1.0.1"
@@ -43,9 +41,8 @@ func (e *edgeTunnel) start() {
 		Host:   fmt.Sprintf("%s:%d", cloud.DefaultKeepCloudIP, cloud.DefaultWebSocketPort),
 		Path:   cloud.DefaultWebSocketUrl,
 	}
-
-	certManager := cert.NewCertManager(e.hostnameOverride, config.Config.Token)
-	certManager.Start()
+	//certManager := cert.NewCertManager(e.hostnameOverride, config.Config.Token)
+	//certManager.Start()
 
 	clientCert, err := tls.LoadX509KeyPair(edge.DefaultCertFile, edge.DefaultKeyFile)
 	if err != nil {

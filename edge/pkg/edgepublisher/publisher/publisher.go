@@ -24,17 +24,15 @@ func ReadQueueAndPublish() {
 		go func() {
 			for {
 				e := cli.GetPayLoad(ch)
-				Publish(e)
+				Publish((e).(model.Message))
 			}
 		}()
 	}
 }
 
 // Publish 将数据发送到云端
-func Publish(msg interface{}) {
-	fmt.Println("--------------------------  发送云端  msg:", msg)
-	message := model.Message{}
-	message.Content = msg
-	message.Router.Group = "/log"
-	edgetunnel.WriteToCloud(&message)
+func Publish(msg model.Message) {
+	fmt.Printf("--------------------------  发送云端  msg:%#v \n", msg)
+	//msg.Router.Group = "/log"
+	edgetunnel.WriteToCloud(&msg)
 }
