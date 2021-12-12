@@ -15,6 +15,7 @@ import (
 	"os"
 	"strconv"
 	"sync"
+	"time"
 )
 
 type K8sClient struct {
@@ -73,6 +74,12 @@ func (k *K8sClient) Start() {
 	go watchengine.StartAllInformers()
 	//	所有项目准备完成启动路由
 	go StartK8sClientRouter()
+	go func() {
+		time.Sleep(time.Second * 3)
+		logger.Error("====================")
+		//pods.NewPods().ReDeployPodToAnotherNode()
+	}()
+
 }
 
 func NewK8sClient(enable bool) (*K8sClient, error) {
