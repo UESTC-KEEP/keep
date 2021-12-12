@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
 
-Vue.config.productionTip = true
+Vue.config.productionTip = false
 Vue.use(ElementUI)
 
 /* eslint-disable no-new */

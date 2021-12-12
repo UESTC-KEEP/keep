@@ -1,5 +1,5 @@
 <template>
-    <div id="index">
+    <div id="create">
         <!--导航条-->
         <el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleSelect"
                  background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
@@ -25,23 +25,80 @@
                 <el-button type="success" round size="medium" style="float: right;" @click="dialogFormVisible = true">创建</el-button>
             </el-col>
         </el-row>
-        <el-dialog title="创建deployment" :visible.sync="dialogFormVisible">
-            <el-form :model="form">
-              <el-form-item label="活动名称" :label-width="formLabelWidth">
-                <el-input v-model="form.name" autocomplete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="活动区域" :label-width="formLabelWidth">
-                <el-select v-model="form.region" placeholder="请选择活动区域">
-                  <el-option label="区域一" value="shanghai"></el-option>
-                  <el-option label="区域二" value="beijing"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
+        <el-dialog title="创建" :visible.sync="dialogFormVisible">
+            <el-form ref="form" :model="form" label-width="80px" size="medium">
+                <el-form-item label="apiversion">
+                  <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="kind" label-width="50px">
+                  <el-col :span="150" style="padding-left: 30px;">
+                  <el-select v-model="form.region" placeholder="请选择创建类型" style="width: 100%;">
+                    <el-option label="deployment" value="deployment"></el-option>
+                    <el-option label="configmap" value="configmap"></el-option>
+                  </el-select>
+                </el-col>
+                </el-form-item>
+                <el-form-item label="metadata">
+                  <el-col :span="11">
+                    <el-input v-model="form.metadata.name" placeholder="Name"></el-input>
+                  </el-col>
+                  <el-col class="line" :span="2">-</el-col>
+                  <el-col :span="11">
+                    <el-input v-model="form.metadata.group" placeholder="Group"></el-input>
+                  </el-col>
+                </el-form-item>
+                <el-form-item label="labels">
+                  <el-col :span="11">
+                    <el-input v-model="form.metadata.labels.app" placeholder="app"></el-input>
+                  </el-col>
+                  <el-col class="line" :span="2">-</el-col>
+                  <el-col :span="11">
+                    <el-input v-model="form.metadata.labels.rc" placeholder="rc"></el-input>
+                  </el-col>
+                </el-form-item>
+                <el-form-item label="replicate">
+                  <el-select v-model="form.spec.replicas" placeholder="请选择副本数量">
+                    <el-option label="1" value="1"></el-option>
+                    <el-option label="2" value="2"></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="selector">
+                  <el-col :span="11">
+                    <el-input v-model="form.spec.selector.matchlabels.app" placeholder="app"></el-input>
+                  </el-col>
+                  <el-col class="line" :span="2">-</el-col>
+                  <el-col :span="11">
+                    <el-input v-model="form.spec.selector.matchlabels.rc" placeholder="rc"></el-input>
+                  </el-col>
+                </el-form-item>
+                <el-form-item label="template">
+                  <el-col :span="11">
+                    <el-input v-model="form.spec.template.metadata.labels.app" placeholder="app"></el-input>
+                  </el-col>
+                  <el-col class="line" :span="2">-</el-col>
+                  <el-col :span="11">
+                    <el-input v-model="form.spec.template.metadata.labels.rc" placeholder="rc"></el-input>
+                  </el-col>
+                </el-form-item>
+                <el-form-item label="spec">
+                  <el-col :span="11">
+                    <el-input v-model="form.spec.spec.containers.name" placeholder="name"></el-input>
+                  </el-col>
+                  <el-col class="line" :span="2">-</el-col>
+                  <el-col :span="11">
+                    <el-input v-model="form.spec.spec.containers.image" placeholder="imagepath"></el-input>
+                  </el-col>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" @click="onSubmit">立即创建</el-button>
+                  <el-button>取消</el-button>
+                </el-form-item>
+              </el-form>
+            <!-- <div slot="footer" class="dialog-footer">
               <el-button @click="dialogFormVisible = false">取 消</el-button>
               <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-            </div>
-        
+            </div> -->
+
         </el-dialog>
         <br>
         <!--表格数据及操作-->
@@ -85,6 +142,7 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
     export default {
         data() {
             return {
@@ -131,29 +189,67 @@
         dialogFormVisible: false,
         form: {
           name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
-        },
-        formLabelWidth: '120px'
+          metadata:{
+            name:'',
+            labels:{
+              app:'',
+              rc:''
             }
+          },
+          spec:{
+            replicas:'',
+            selector:{
+            matchlabels:{
+              app:'',
+              rc:''
+            }
+          },
+          template:{
+            metadata:{
+              labels:{
+                app:'',
+                rc:''
+              }
+            }
+          },
+          spec:{
+            containers:{
+              name:'',
+              image:''
+            }
+          },
+          }
         },
+        formLabelWidth: '120px',
+        }
+    },
         methods: {
             handleSelect(key, keyPath) {
                 console.log(key, keyPath);
             },
             indexMethod(index) {
                 return index;
+            },
+            onSubmit(){
+              let formdata=JSON.stringify(this.form)
+              var service = axios.create({
+                baseURL:'/api',
+                timeout:30000,
+                headers:{
+                  'content-type':'application/json'
+                }
+              });
+             service.post('/create',formdata).then((success) => {
+                console.log(success)
+              }).catch((err) => {
+                console.log(err)
+              });
             }
         }
     }
 </script>
 <style>
-    #app {
+    #create {
         font-family: Helvetica, sans-serif;
         text-align: center;
     }
