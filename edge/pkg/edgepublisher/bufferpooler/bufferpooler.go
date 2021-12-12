@@ -49,7 +49,7 @@ func ReceiveFromBeehiveAndPublish() {
 		fmt.Printf("接收消息 msg: %v\n", msg)
 		resp := msg.NewRespByMessage(&msg, " message received ")
 		beehiveContext.SendResp(*resp)
-		topic := edge.DefaultLogsTopic
+		topic := edge.DefaultDataTopic
 		//fmt.Println(chanmsgqueen.EdgePublishQueens)
 		cli := chanmsgqueen.EdgePublishQueens[topic]
 		err = cli.Publish(topic, msg)

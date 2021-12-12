@@ -1,13 +1,17 @@
 package edgetwin
 
 import (
+	"fmt"
 	"keep/edge/pkg/common/modules"
 	edgetwinconfig "keep/edge/pkg/edgetwin/config"
 	"keep/edge/pkg/edgetwin/sqlite"
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 	"keep/pkg/util/core"
+	beehiveContext "keep/pkg/util/core/context"
+	"keep/pkg/util/core/model"
 	"keep/pkg/util/loggerv1.0.1"
 	"os"
+	"time"
 )
 
 type EdgeTwin struct {
@@ -47,10 +51,24 @@ func (et *EdgeTwin) Enable() bool {
 func (et *EdgeTwin) Start() {
 	logger.Debug("EdgeTwin开始启动....")
 	sqlite.ReceiveFromBeehiveAndInsert()
+	go func() {
+		time.Sleep(time.Second * 2)
+		fmt.Println("====================")
+		testListPod()
+	}()
+
 }
 
 func NewEdgeTwin(enable bool) (*EdgeTwin, error) {
 	return &EdgeTwin{
 		enable: enable,
 	}, nil
+}
+
+func testListPod() {
+	msg := model.NewMessage("")
+	msg.SetResourceOperation("$uestc/keep/k8sclient/naiveengine/pods/", "list")
+	msg.SetRoute("$uestc/keep/k8sclient/naiveengine/pods/", "$uestc/keep/k8sclient/naiveengine/pods/")
+	msg.Content = map[string]string{"namespace": "default"}
+	beehiveContext.Send(modules.EdgePublisherModule, *msg)
 }

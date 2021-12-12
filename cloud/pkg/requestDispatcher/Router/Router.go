@@ -1,6 +1,7 @@
 package Router
 
 import (
+	"fmt"
 	"keep/cloud/pkg/common/kafka"
 	"keep/cloud/pkg/common/modules"
 	"keep/cloud/pkg/requestDispatcher/Router/routers"
@@ -19,14 +20,23 @@ func MessageRouter() {
 
 	// 监听通道 路由转发
 	for message := range RevMsgChan {
-
-		switch message.Router.Group {
-		case "/log":
-			kafkaMsg := message.Content.(string)
-			p.Msg <- kafkaMsg
-		case "/add":
-			kafkaMsg := message.Content.(string)
-			a.Msg <- kafkaMsg
+		for {
+			select {
+			case <-beehiveContext.Done():
+				return
+			case <-RevMsgChan:
+				switch message.Router.Group {
+				case "/log":
+					kafkaMsg := message.Content.(string)
+					p.Msg <- kafkaMsg
+				case "/add":
+					kafkaMsg := message.Content.(string)
+					a.Msg <- kafkaMsg
+				case "$uestc/keep/k8sclient/naiveengine/pods/":
+					fmt.Println("-------------------------")
+					beehiveContext.Send(modules.K8sClientModule, *message)
+				}
+			}
 		}
 
 	}
@@ -34,9 +44,6 @@ func MessageRouter() {
 	close(p.Msg)
 	close(a.Msg)
 	close(RevMsgChan)
-	//group := message.Router.Group
-	//beehiveContext.SendToGroup(group, *message)
-	// Router.MessageDispatcher(message)
 
 }
 

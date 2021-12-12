@@ -65,7 +65,7 @@ func (r *RequestDispatcher) Start() {
 
 	go receiver.StartHTTPServer()
 	// HttpServer mainly used to issue certificates for the edge
-	// receiver.StartReceiver()
+	//receiver.StartReceiver()
 
 	cloudtunnel.StartWebsocketServer()
 
