@@ -110,7 +110,7 @@ func NewSqliteCli() *Sqlite {
 	if err != nil {
 		logger.Error("Failed to open sqlite", err)
 	}
-
+	conn.Exec("CREATE TABLE IF NOT EXISTS logedgeagent(time TEXT ,content TEXT)")
 	sq := &Sqlite{
 		conn: conn,
 	}
@@ -136,7 +136,7 @@ func ReceiveFromBeehiveAndInsert() {
 }
 
 func ReceiveEdgeTwinMsg(cli *Sqlite) {
-	msg, err := beehiveContext.Receive(modules.EdgeTwinModule)
+	msg, err := beehiveContext.Receive(modules.EdgeTwinGroup)
 	if err != nil {
 		logger.Error(err)
 		time.Sleep(1 * time.Second)
