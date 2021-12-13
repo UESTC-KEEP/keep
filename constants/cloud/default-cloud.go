@@ -1,7 +1,7 @@
 package cloud
 
 const CloudAgentName = "CloudAgent"
-const CloudConfigeFilesSourceDir = "../../../cloud/shells/confs/keepedge"
+const CloudConfigeFilesSourceDir = "../../cloud/shells/confs/keepedge"
 
 // 全局配置
 const (
@@ -37,7 +37,7 @@ const (
 	DefaultCAURL                = "/ca.crt"
 	DefaultCertURL              = "/edge.crt"
 	DefaultWebSocketUrl         = "/v1/keepedge/connect"
-	DefaultKeepCloudIP          = "192.168.1.128"
+	DefaultKeepCloudIP          = "192.168.1.121"
 	DefaultTokenRefreshDuration = 12
 	SessionKeyHostNameOverride  = "SessionHostNameOverride"
 	SessionKeyInternalIP        = "SessionInternalIP"

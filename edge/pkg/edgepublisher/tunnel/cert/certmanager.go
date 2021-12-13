@@ -130,7 +130,7 @@ func (cm *CertManager) applyCerts() error {
 	}
 	// validate the CA certificate by hashcode
 	tokenParts := strings.Split(cm.token, ".")
-	fmt.Println("Cacert:", tokenParts)
+	// fmt.Println("Cacert:", tokenParts)
 	if len(tokenParts) != 4 {
 		fmt.Println("token:", cm.token)
 		return fmt.Errorf("token credentials are in the wrong format")
