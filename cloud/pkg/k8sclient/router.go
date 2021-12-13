@@ -9,6 +9,11 @@ import (
 	logger "keep/pkg/util/loggerv1.0.1"
 )
 
+// SendBeehiveMsg 发送beehive消息
+func SendBeehiveMsg(module string, msg model.Message) {
+	beehiveContext.Send(module, msg)
+}
+
 func StartK8sClientRouter() {
 	//fmt.Println("启动路由...")
 	go func() {
@@ -56,6 +61,7 @@ func ResolveRouter(msg *model.Message) {
 			for _, pod := range listPods.Items {
 				fmt.Print(pod.Name + "   ")
 			}
+			//SendBeehiveMsg()
 			//fmt.Println(listPods)
 		}
 	}

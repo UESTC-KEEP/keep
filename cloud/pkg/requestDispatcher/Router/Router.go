@@ -19,26 +19,23 @@ func MessageRouter() {
 	go func() { a.Publish() }()
 
 	// 监听通道 路由转发
-	for message := range RevMsgChan {
-		for {
-			select {
-			case <-beehiveContext.Done():
-				return
-			case <-RevMsgChan:
-				switch message.Router.Group {
-				case "/log":
-					kafkaMsg := message.Content.(string)
-					p.Msg <- kafkaMsg
-				case "/add":
-					kafkaMsg := message.Content.(string)
-					a.Msg <- kafkaMsg
-				case "$uestc/keep/k8sclient/naiveengine/pods/":
-					fmt.Println("-------------------------")
-					beehiveContext.Send(modules.K8sClientModule, *message)
-				}
+	for {
+		select {
+		case <-beehiveContext.Done():
+			return
+		case message := <-RevMsgChan:
+			switch message.Router.Group {
+			case "/log":
+				kafkaMsg := message.Content.(string)
+				p.Msg <- kafkaMsg
+			case "/add":
+				kafkaMsg := message.Content.(string)
+				a.Msg <- kafkaMsg
+			case "$uestc/keep/k8sclient/naiveengine/pods/":
+				fmt.Println("-------------------------")
+				beehiveContext.Send(modules.K8sClientModule, *message)
 			}
 		}
-
 	}
 
 	close(p.Msg)

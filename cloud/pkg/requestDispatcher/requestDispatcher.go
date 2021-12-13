@@ -67,9 +67,9 @@ func (r *RequestDispatcher) Start() {
 	// HttpServer mainly used to issue certificates for the edge
 	//receiver.StartReceiver()
 
-	cloudtunnel.StartWebsocketServer()
-
 	go Router.MessageRouter()
+	go cloudtunnel.StartWebsocketServer()
+
 	err := coupon.ServerInit()
 	if err != nil {
 		logger.Fatal("init gRPC server failed", err)
