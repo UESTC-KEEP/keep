@@ -54,38 +54,3 @@ func (t *tunnelSession) startPing(reconnectChan chan struct{}) {
 		}
 	}
 }
-
-func (t *tunnelSession) routeToEdge(reconnectChan chan struct{}) {
-	for {
-		select {
-		case <-beehiveContext.Done():
-			logger.Warn("EdgeTunnel RouteToEdge stop")
-			return
-		default:
-		}
-
-		_, r, err := t.Tunnel.NextReader()
-		if err != nil {
-			logger.Error("Read messsage error: ", err)
-			reconnectChan <- struct{}{}
-			return
-		}
-
-		messList, err := stream.ReadMessageFromTunnel(r)
-		if err != nil {
-			logger.Error("Get tunnel message error: ", err)
-			reconnectChan <- struct{}{}
-			return
-		}
-
-		//如果是对某条消息的响应消息
-		for _, contentMsg := range messList {
-			if contentMsg.Header.ParentID != "" {
-				beehiveContext.SendResp(*contentMsg)
-			} else {
-				beehiveContext.SendToGroup(contentMsg.Router.Group, *contentMsg)
-			}
-		}
-
-	}
-}
