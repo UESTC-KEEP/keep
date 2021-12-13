@@ -7,6 +7,7 @@ import (
 	"keep/constants/cloud"
 	"keep/constants/edge"
 	"keep/edge/pkg/common/modules"
+	"keep/pkg/stream"
 	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/core/model"
 	logger "keep/pkg/util/loggerv1.0.1"
@@ -19,19 +20,18 @@ import (
 type edgeTunnel struct {
 	hostnameOverride string
 	nodeIP           string
-	reconnectChan    chan struct{}
 }
 
-var session *tunnelSession
-var sessionConnected bool
-var msgSendBuffer = make([]*model.Message, edge.DefaultMsgSendBufferSize)
-var msgSendBufferLock sync.Locker
+var session *tunnelSession                                                //封装后的websocket连接
+var sessionConnected bool                                                 //云边是否连通
+var msgSendBuffer = make([]*model.Message, edge.DefaultMsgSendBufferSize) //发送到云的缓冲
+var msgSendBufferLock sync.Locker                                         //缓冲锁
+var reconnectChan = make(chan struct{}, 100)                              //需要重连时向此channel发
 
 func newEdgeTunnel(hostnameOverride, nodeIP string) *edgeTunnel {
 	return &edgeTunnel{
 		hostnameOverride: hostnameOverride,
 		nodeIP:           nodeIP,
-		reconnectChan:    make(chan struct{}),
 	}
 }
 
@@ -74,10 +74,11 @@ func (e *edgeTunnel) start() {
 		}
 		sessionConnected = true
 
-		go session.startPing(e.reconnectChan)
-		go session.routeToEdge(e.reconnectChan)
+		go session.startPing(reconnectChan)
+		go routeToEdge()
+		//go routeToCloud()
 
-		<-e.reconnectChan
+		<-reconnectChan
 		sessionConnected = false
 		session.Close()
 		logger.Warn("connection broken, reconnecting...")
@@ -87,7 +88,7 @@ func (e *edgeTunnel) start() {
 	clean:
 		for {
 			select {
-			case <-e.reconnectChan:
+			case <-reconnectChan:
 			default:
 				break clean
 			}
@@ -121,46 +122,24 @@ func StartEdgeTunnel(nodeName, nodeIP string) {
 }
 
 func WriteToCloud(msg *model.Message) {
-	for i := 0; i < 5 && !sessionConnected; i++ {
-		logger.Info("session not connected, waiting")
-		time.Sleep(3 * time.Second)
-	}
-	if !sessionConnected {
-		msgToEdgeTwin := model.NewMessage("")
-		msgToEdgeTwin.SetResourceOperation(msg.GetResource(), "")
-		beehiveContext.Send(modules.EdgeTwinGroup, *msgToEdgeTwin)
-		//if err != nil {
-		//	logger.Error("send message to edge twin error: ", err)
-		//}
-		return
-	}
 	err := session.Tunnel.WriteMessage([]*model.Message{msg})
 	if err != nil {
-		msgToEdgeTwin := model.NewMessage("")
-		msgToEdgeTwin.SetResourceOperation(msg.GetResource(), "")
-		_, err := beehiveContext.SendSync(modules.EdgeTwinGroup, *msgToEdgeTwin, time.Second)
+		reconnectChan <- struct{}{}
+		_, err := beehiveContext.SendSync(modules.EdgeTwinGroup, *msg, time.Second)
 		if err != nil {
 			logger.Error("send message to edge twin error: ", err)
 		}
 	}
-
 }
 
 func WriteToBufferToCloud(msg *model.Message) {
-	for i := 0; i < 5 && !sessionConnected; i++ {
-		logger.Info("session not connected, waiting")
-		time.Sleep(3 * time.Second)
-	}
-
 	msgSendBufferLock.Lock()
 	msgSendBuffer = append(msgSendBuffer, msg)
 	if len(msgSendBuffer) == edge.DefaultMsgSendBufferSize {
 		err := session.Tunnel.WriteMessage(msgSendBuffer)
 		if err != nil {
 			for _, contentMsg := range msgSendBuffer {
-				msgToEdgeTwin := model.NewMessage("")
-				msgToEdgeTwin.SetResourceOperation(contentMsg.GetResource(), "")
-				_, err := beehiveContext.SendSync(modules.EdgeTwinGroup, *msgToEdgeTwin, time.Second)
+				_, err := beehiveContext.SendSync(modules.EdgeTwinGroup, *contentMsg, time.Second)
 				if err != nil {
 					logger.Error("send message to edge twin error: ", err)
 				}
@@ -169,4 +148,60 @@ func WriteToBufferToCloud(msg *model.Message) {
 		msgSendBuffer = msgSendBuffer[0:0]
 	}
 	msgSendBufferLock.Unlock()
+}
+
+func routeToCloud() {
+	for {
+		select {
+		case <-beehiveContext.Done():
+			logger.Warn("EdgeTunnel RouteToEdge stop")
+			return
+		default:
+		}
+
+		message, err := beehiveContext.Receive(modules.EdgePublisherModule)
+		if err != nil {
+			logger.Error("failed to receive message from edge: ", err)
+			time.Sleep(time.Second)
+			continue
+		}
+
+		WriteToCloud(&message)
+
+	}
+}
+
+func routeToEdge() {
+	for {
+		select {
+		case <-beehiveContext.Done():
+			logger.Warn("EdgeTunnel RouteToEdge stop")
+			return
+		default:
+		}
+
+		_, r, err := session.Tunnel.NextReader()
+		if err != nil {
+			logger.Error("Read messsage error: ", err)
+			reconnectChan <- struct{}{}
+			return
+		}
+
+		messList, err := stream.ReadMessageFromTunnel(r)
+		if err != nil {
+			logger.Error("Get tunnel message error: ", err)
+			reconnectChan <- struct{}{}
+			return
+		}
+
+		//如果是对某条消息的响应消息
+		for _, contentMsg := range messList {
+			if contentMsg.Header.ParentID != "" {
+				beehiveContext.SendResp(*contentMsg)
+			} else {
+				beehiveContext.SendToGroup(contentMsg.Router.Group, *contentMsg)
+			}
+		}
+
+	}
 }
