@@ -122,48 +122,24 @@ func StartEdgeTunnel(nodeName, nodeIP string) {
 }
 
 func WriteToCloud(msg *model.Message) {
-	for i := 0; i < 5 && !sessionConnected; i++ {
-		logger.Info("session not connected, waiting")
-		time.Sleep(3 * time.Second)
-	}
-	if !sessionConnected {
-		reconnectChan <- struct{}{}
-		msgToEdgeTwin := model.NewMessage("")
-		msgToEdgeTwin.SetResourceOperation(msg.GetResource(), "")
-		_, err := beehiveContext.SendSync(modules.EdgeTwinGroup, *msgToEdgeTwin, time.Second)
-		if err != nil {
-			logger.Error("send message to edge twin error: ", err)
-		}
-		return
-	}
 	err := session.Tunnel.WriteMessage([]*model.Message{msg})
 	if err != nil {
 		reconnectChan <- struct{}{}
-		msgToEdgeTwin := model.NewMessage("")
-		msgToEdgeTwin.SetResourceOperation(msg.GetResource(), "")
-		_, err := beehiveContext.SendSync(modules.EdgeTwinGroup, *msgToEdgeTwin, time.Second)
+		_, err := beehiveContext.SendSync(modules.EdgeTwinGroup, *msg, time.Second)
 		if err != nil {
 			logger.Error("send message to edge twin error: ", err)
 		}
 	}
-
 }
 
 func WriteToBufferToCloud(msg *model.Message) {
-	for i := 0; i < 5 && !sessionConnected; i++ {
-		logger.Info("session not connected, waiting")
-		time.Sleep(3 * time.Second)
-	}
-
 	msgSendBufferLock.Lock()
 	msgSendBuffer = append(msgSendBuffer, msg)
 	if len(msgSendBuffer) == edge.DefaultMsgSendBufferSize {
 		err := session.Tunnel.WriteMessage(msgSendBuffer)
 		if err != nil {
 			for _, contentMsg := range msgSendBuffer {
-				msgToEdgeTwin := model.NewMessage("")
-				msgToEdgeTwin.SetResourceOperation(contentMsg.GetResource(), "")
-				_, err := beehiveContext.SendSync(modules.EdgeTwinGroup, *msgToEdgeTwin, time.Second)
+				_, err := beehiveContext.SendSync(modules.EdgeTwinGroup, *contentMsg, time.Second)
 				if err != nil {
 					logger.Error("send message to edge twin error: ", err)
 				}
