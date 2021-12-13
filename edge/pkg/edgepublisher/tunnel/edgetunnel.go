@@ -76,7 +76,7 @@ func (e *edgeTunnel) start() {
 
 		go session.startPing(reconnectChan)
 		go routeToEdge()
-		go routeToCloud()
+		//go routeToCloud()
 
 		<-reconnectChan
 		sessionConnected = false
