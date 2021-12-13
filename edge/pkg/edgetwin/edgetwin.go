@@ -51,10 +51,11 @@ func (et *EdgeTwin) Enable() bool {
 func (et *EdgeTwin) Start() {
 	logger.Debug("EdgeTwin开始启动....")
 	sqlite.ReceiveFromBeehiveAndInsert()
+
 	go func() {
-		time.Sleep(time.Second * 10)
-		fmt.Println("====================")
-		//testListPod()
+		time.Sleep(time.Second * 20)
+		logger.Error("====================")
+		testListPod()
 	}()
 
 }
@@ -69,6 +70,7 @@ func testListPod() {
 	msg := model.NewMessage("")
 	msg.SetResourceOperation("$uestc/keep/k8sclient/naiveengine/pods/", "list")
 	msg.SetRoute("$uestc/keep/k8sclient/naiveengine/pods/", "$uestc/keep/k8sclient/naiveengine/pods/")
+	msg.Router.Source = modules.EdgeTwinModule
 	reqMap := make(map[string]string)
 	reqMap["namespace"] = "default"
 	msg.Content = reqMap

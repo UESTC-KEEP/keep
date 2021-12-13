@@ -34,13 +34,13 @@ func NewDefaultEdgeAgentOptions() *EdgeAgentOptions {
 
 func (o *EdgeAgentOptions) Config() (*v1alpha1.EdgeAgentConfig, error) {
 	cfg := v1alpha1.NewDefaultEdgeAgentConfig()
-	logger.Error(cfg.Modules.HealthzAgent.Enable)
+	//logger.Error(cfg.Modules.HealthzAgent.Enable)
 	// 先读默认配置  然后在从配置文件读取用户配置   以用户配置的配置文件为主
-	logger.Error(o.ConfigFile)
+	//logger.Error(o.ConfigFile)
 	if err := cfg.Parse(o.ConfigFile); err != nil {
 		logger.Error(err)
 		return nil, err
 	}
-	logger.Error(cfg.Modules.HealthzAgent.Enable)
+	//logger.Error(cfg.Modules.HealthzAgent.Enable)
 	return cfg, nil
 }

@@ -3,6 +3,7 @@ package sqlite
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"github.com/robfig/cron"
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/edgetwin/config"
@@ -97,7 +98,7 @@ func (sq *Sqlite) SelectTimeFromSqliteToCloud(begintime int64) error {
 			logger.Error(err)
 			return err
 		}
-
+		msg.Router.Source = modules.EdgeTwinModule
 		beehiveContext.Send(modules.EdgePublisherModule, msg)
 
 	}
@@ -141,8 +142,8 @@ func ReceiveEdgeTwinMsg(cli *Sqlite) {
 		logger.Error(err)
 		time.Sleep(1 * time.Second)
 	} else {
-		logger.Trace("接收消息 msg: ", msg)
-
+		//logger.Trace("接收消息 msg: ", msg)
+		fmt.Printf("edtwin 接收消息 msg:%#v ", msg)
 		// 提高速度
 		go func() {
 			content, err := json.Marshal(msg)
@@ -156,8 +157,6 @@ func ReceiveEdgeTwinMsg(cli *Sqlite) {
 				logger.Error(err1)
 				return
 			}
-			resp := msg.NewRespByMessage(&msg, " message received ")
-			beehiveContext.SendResp(*resp)
 		}()
 	}
 }

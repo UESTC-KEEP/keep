@@ -8,8 +8,6 @@ import (
 
 	"keep/edge/pkg/common/modules"
 	"keep/edge/pkg/edgepublisher/chanmsgqueen"
-	//"keep/edge/pkg/edgepublisher/config"
-	"time"
 )
 
 // SentImmediately 被调用就即时给云端推送消息
@@ -44,17 +42,14 @@ func ReceiveFromBeehiveAndPublish() {
 	msg, err := beehiveContext.Receive(modules.EdgePublisherModule)
 	if err != nil {
 		logger.Error(err)
-		time.Sleep(1 * time.Second)
-	} else {
-		fmt.Printf("接收消息 msg: %#v\n", msg)
-		resp := msg.NewRespByMessage(&msg, " message received ")
-		beehiveContext.SendResp(*resp)
-		topic := edge.DefaultDataTopic
-		//fmt.Println(chanmsgqueen.EdgePublishQueens)
-		cli := chanmsgqueen.EdgePublishQueens[topic]
-		err = cli.Publish(topic, msg)
-		if err != nil {
-			logger.Error(err)
-		}
+		return
+	}
+	fmt.Printf("接收消息 msg: %#v\n", msg)
+	topic := edge.DefaultDataTopic
+	//fmt.Println(chanmsgqueen.EdgePublishQueens)
+	cli := chanmsgqueen.EdgePublishQueens[topic]
+	err = cli.Publish(topic, msg)
+	if err != nil {
+		logger.Error(err)
 	}
 }

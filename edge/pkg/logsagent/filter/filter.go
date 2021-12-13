@@ -3,9 +3,6 @@ package filter
 import (
 	"fmt"
 	beehiveContext "keep/pkg/util/core/context"
-	"keep/pkg/util/loggerv1.0.1"
-	"time"
-
 	//beehiveContext "github.com/kubeedge/beehive/pkg/core/context"
 	"keep/pkg/util/core/model"
 
@@ -49,17 +46,10 @@ func FilterLogsByLevel(log string) {
 			messsage := model.NewMessage("")
 			messsage.Content = log
 			messsage.Router.Group = "/log"
+			messsage.Router.Source = modules.LogsAgentModule
 			//fmt.Println("+++++++++++++++++++++++  ", log)
 			//if bufferpooler.PermissionOfSending {
-			go func() {
-				resp, err := beehiveContext.SendSync(modules.EdgePublisherModule, *messsage, 5*time.Second)
-				if err != nil {
-					logger.Error("logsagent消息"+modules.EdgePublisherModule+"发送超时:", err)
-				} else {
-					logger.Trace(modules.EdgePublisherModule+" 响应: %v, error: %v\n", resp, err)
-					logger.Trace("发送日志至bufferpooler成功...")
-				}
-			}()
+			beehiveContext.Send(modules.EdgePublisherModule, *messsage)
 			//}
 		}
 	case 7:
