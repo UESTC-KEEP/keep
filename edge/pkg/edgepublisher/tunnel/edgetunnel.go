@@ -128,10 +128,10 @@ func WriteToCloud(msg *model.Message) {
 	if !sessionConnected {
 		msgToEdgeTwin := model.NewMessage("")
 		msgToEdgeTwin.SetResourceOperation(msg.GetResource(), "")
-		_, err := beehiveContext.SendSync(modules.EdgeTwinGroup, *msgToEdgeTwin, time.Second)
-		if err != nil {
-			logger.Error("send message to edge twin error: ", err)
-		}
+		beehiveContext.Send(modules.EdgeTwinGroup, *msgToEdgeTwin)
+		//if err != nil {
+		//	logger.Error("send message to edge twin error: ", err)
+		//}
 		return
 	}
 	err := session.Tunnel.WriteMessage([]*model.Message{msg})

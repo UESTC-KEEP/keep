@@ -46,7 +46,7 @@ func ReceiveFromBeehiveAndPublish() {
 		logger.Error(err)
 		time.Sleep(1 * time.Second)
 	} else {
-		fmt.Printf("接收消息 msg: %v\n", msg)
+		fmt.Printf("接收消息 msg: %#v\n", msg)
 		resp := msg.NewRespByMessage(&msg, " message received ")
 		beehiveContext.SendResp(*resp)
 		topic := edge.DefaultDataTopic

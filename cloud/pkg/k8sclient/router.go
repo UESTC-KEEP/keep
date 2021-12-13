@@ -52,7 +52,9 @@ func ResolveRouter(msg *model.Message) {
 	case "$uestc/keep/k8sclient/naiveengine/pods/":
 		switch msg.Router.Operation {
 		case "list":
-			listPods, err := pods.NewPods().ListPods(msg.Content.(map[string]string)["namespace"])
+			msgMap := msg.Content.(map[string]interface{})
+
+			listPods, err := pods.NewPods().ListPods(msgMap["namespace"].(string))
 			if err != nil {
 				logger.Error(err)
 				return

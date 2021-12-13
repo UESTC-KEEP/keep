@@ -7,6 +7,7 @@ import (
 	"keep/cloud/pkg/requestDispatcher/Router/routers"
 	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/core/model"
+	logger "keep/pkg/util/loggerv1.0.1"
 )
 
 var RevMsgChan = make(chan *model.Message)
@@ -23,8 +24,12 @@ func MessageRouter() {
 	for {
 		select {
 		case <-beehiveContext.Done():
+			close(p.Msg)
+			close(a.Msg)
+			close(RevMsgChan)
 			return
 		case message := <-RevMsgChan:
+			logger.Error(fmt.Sprintf("%#v", message))
 			switch message.Router.Resource {
 			case "/log":
 				kafkaMsg := message.Content.(string)
@@ -36,19 +41,19 @@ func MessageRouter() {
 				fmt.Println("-------------------------")
 				beehiveContext.Send(modules.K8sClientModule, *message)
 			}
+		default:
 		}
 	}
 
 	// }
 
-	close(p.Msg)
-	close(a.Msg)
-	close(RevMsgChan)
-
 }
 
 func TestSendtoK8sClint() {
+	logger.Error("=======")
 	// 张连军：测试抄送一份到k8sclient 可注释之
+	testmap := make(map[string]interface{})
+	testmap["namespace"] = "default"
 	msg_zlj := model.Message{
 		Header: model.MessageHeader{},
 		Router: model.MessageRoute{
@@ -63,7 +68,7 @@ func TestSendtoK8sClint() {
 			Resource: routers.KeepRouter.K8sClientRouter.NaiveEngine.Pods.Operation.List.Resource,
 		},
 		// 内容及参数由RequestDispatcher与被调用模块协商
-		Content: map[string]string{"namespace": "default"},
+		Content: testmap,
 	}
 	beehiveContext.Send(modules.K8sClientModule, msg_zlj)
 	// ==================================================

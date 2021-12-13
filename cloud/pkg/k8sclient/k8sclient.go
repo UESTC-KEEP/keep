@@ -15,7 +15,6 @@ import (
 	"os"
 	"strconv"
 	"sync"
-	"time"
 )
 
 type K8sClient struct {
@@ -75,8 +74,8 @@ func (k *K8sClient) Start() {
 	//	所有项目准备完成启动路由
 	go StartK8sClientRouter()
 	go func() {
-		time.Sleep(time.Second * 3)
-		logger.Error("====================")
+		//time.Sleep(time.Second * 3)
+		//logger.Error("====================")
 		//pods.NewPods().ReDeployPodToAnotherNode()
 	}()
 

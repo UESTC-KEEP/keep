@@ -67,7 +67,7 @@ func (r *RequestDispatcher) Start() {
 	//receiver.StartReceiver()
 	go Router.MessageRouter()
 
-	cloudtunnel.StartWebsocketServer()
+	go cloudtunnel.StartWebsocketServer()
 
 	// err := coupon.ServerInit()
 	// if err != nil {
