@@ -19,12 +19,13 @@ func MessageRouter() {
 	go func() { a.Publish() }()
 
 	// 监听通道 路由转发
+	// for message := range RevMsgChan {
 	for {
 		select {
 		case <-beehiveContext.Done():
 			return
 		case message := <-RevMsgChan:
-			switch message.Router.Group {
+			switch message.Router.Resource {
 			case "/log":
 				kafkaMsg := message.Content.(string)
 				p.Msg <- kafkaMsg
@@ -37,6 +38,8 @@ func MessageRouter() {
 			}
 		}
 	}
+
+	// }
 
 	close(p.Msg)
 	close(a.Msg)

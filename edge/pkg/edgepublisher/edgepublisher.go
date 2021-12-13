@@ -117,6 +117,6 @@ func NewEdgePublisher(enable bool) (*EdgePublisher, error) {
 		enable:           enable,
 		hostnameOverride: edgepublisherconfig.Config.HostnameOverride,
 		nodeIP:           edgepublisherconfig.Config.LocalIP,
-		token:            "69f41dde5636e34eaeb4ccd0e144bb28697f48e62e4f63e6895a712bfd940eff.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzk0NjU5NzB9.U2eiwCV8AiFogpKG75e9domKr43xZpdhWHs5NM6J56Q",
+		token:            "9f030578baf92a75839978168a68f59cff1c057d63161aeb68c634e2c0a0d57f.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzk0NjA3NTl9.jy3QtsBgHhUZwKeaxcXCLaoVdPVXr1VplMtgbN8U2mk",
 	}, nil
 }
