@@ -1,5 +1,6 @@
 package kafka
-import(
+
+import (
 	"github.com/Shopify/sarama"
 	saramaCluster "github.com/bsm/sarama-cluster"
 )
