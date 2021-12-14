@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"keep/edge/pkg/common/modules"
-	coupon "keep/edge/pkg/edgepublisher/RPC"
 	"keep/edge/pkg/edgepublisher/bufferpooler"
 	"keep/edge/pkg/edgepublisher/chanmsgqueen"
 	edgepublisherconfig "keep/edge/pkg/edgepublisher/config"
@@ -68,8 +67,11 @@ func (ep *EdgePublisher) Start() {
 	name, _ := os.Hostname()
 	fmt.Println("name:", name)
 	logger.Debug("EdgePublisher 开始启动....")
+	// 申请证书
 	nm := cert.NewCertManager("NodeName", ep.token)
-	go nm.Start()
+	nm.Start()
+	edgetunnel.StartEdgeTunnel(ep.hostnameOverride, ep.nodeIP)
+
 	// 启动边端服务20350
 	// 初始化队列 确保队列初始化完成再启动服务
 	chanmsgqueen.InitMsgQueens()
@@ -77,11 +79,11 @@ func (ep *EdgePublisher) Start() {
 	go StartEdgePublisher()
 	go bufferpooler.StartListenLogMsg()
 	go publisher.ReadQueueAndPublish()
-	edgetunnel.StartEdgeTunnel(ep.hostnameOverride, ep.nodeIP)
-	err := coupon.CouponClientInit()
-	if err != nil {
-		logger.Fatal("init coupon gRPC client failed", err)
-	}
+
+	//err := coupon.CouponClientInit()
+	//if err != nil {
+	//	logger.Fatal("init coupon gRPC client failed", err)
+	//}
 }
 
 // StartEdgePublisher 边端健康检测 20350端口的/用于云端对边端进行健康性  存活性检测
@@ -117,6 +119,6 @@ func NewEdgePublisher(enable bool) (*EdgePublisher, error) {
 		enable:           enable,
 		hostnameOverride: edgepublisherconfig.Config.HostnameOverride,
 		nodeIP:           edgepublisherconfig.Config.LocalIP,
-		token:            "57359982289859d27a8991f3dfdd4545c333a83705c5b8ab647bea83c5dda570.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzk0NzIzNDN9.-3jHU9kke4dZziD482bshIeTGAH9lyhd2t4uD9-cukg",
+		token:            "630f3e6b363262ab595d14eb9665b48b40c2b70f591244d6dc32cd43bb69e83d.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzk1Mjk4Njd9.5zuMK9YIv9BWlv2_QypgRQysIGpWFni4LbxhRHJ36ys",
 	}, nil
 }

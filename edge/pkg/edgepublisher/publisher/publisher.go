@@ -21,12 +21,13 @@ func ReadQueueAndPublish() {
 		if err != nil {
 			logger.Error(err)
 		}
-		go func() {
+		go func(cli *chanmsgqueen.Client) {
 			for {
+				fmt.Println(cli)
 				e := cli.GetPayLoad(ch)
 				Publish((e).(model.Message))
 			}
-		}()
+		}(cli)
 	}
 }
 

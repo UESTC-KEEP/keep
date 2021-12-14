@@ -34,40 +34,16 @@ func NewPods() *PodsImpl {
 	return &PodsImpl{}
 }
 
-//func (pi *PodsImpl) ReDeployPodToAnotherNode() {
-//	pod, err := pi.GetPodInfoByPodName("clk-beep-mapper-7dc5855684-nkn5c")
-//	if err != nil {
-//		return
-//	}
-//	//newNode := "edge-zlj-ubuntu-1"
-//	//pod.Spec.NodeName
-//	patchData := map[string]interface{}{"metadata": map[string]map[string]string{"spec": {
-//		"nodename": "edge-zlj-ubuntu-1",
-//	}}}
-//
-//	playLoadBytes, err := json.Marshal(patchData)
-//	if err !=nil{
-//		logger.Error(err)
-//	}
-//	eviction := &policy.Eviction{
-//		TypeMeta: metav1.TypeMeta{
-//			APIVersion: policyGroupVersion,
-//			Kind:       eutils.EvictionKind,
-//		},
-//		ObjectMeta: metav1.ObjectMeta{
-//			Name:      pod.Name,
-//			Namespace: pod.Namespace,
-//		},
-//		DeleteOptions: deleteOptions,
-//	}
-//	pod_, err := config.Clientset.PolicyV1().Evictions().Evict(context.Background(),policy.Eviction{
-//		TypeMeta:      metav1.TypeMeta{},
-//		ObjectMeta:    metav1.ObjectMeta{},
-//		DeleteOptions: nil,
-//	})
-//	if err != nil {
-//		logger.Error(err)
-//		return
-//	}
-//	fmt.Println(pod_)
-//}
+func (pi *PodsImpl) ReDeployPodToAnotherNode() {
+	pod, err := pi.GetPodInfoByPodName("redis-0")
+	if err != nil {
+		return
+	}
+	pod.Spec.NodeSelector = map[string]string{"eqnd": "true"}
+
+	_, err = config.Clientset.CoreV1().Pods(metav1.NamespaceDefault).Bind()
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+}

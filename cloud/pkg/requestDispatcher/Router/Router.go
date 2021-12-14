@@ -50,7 +50,6 @@ func MessageRouter() {
 }
 
 func TestSendtoK8sClint() {
-	logger.Error("=======")
 	// 张连军：测试抄送一份到k8sclient 可注释之
 	testmap := make(map[string]interface{})
 	testmap["namespace"] = "default"

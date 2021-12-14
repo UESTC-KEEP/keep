@@ -122,6 +122,8 @@ func StartEdgeTunnel(nodeName, nodeIP string) {
 }
 
 func WriteToCloud(msg *model.Message) {
+	//fmt.Println(session)
+	//time.Sleep(time.Second*10)
 	err := session.Tunnel.WriteMessage([]*model.Message{msg})
 	if err != nil {
 		reconnectChan <- struct{}{}

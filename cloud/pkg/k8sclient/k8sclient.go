@@ -7,6 +7,7 @@ import (
 	k8sclientconfig "keep/cloud/pkg/k8sclient/config"
 	kubeedge_engine "keep/cloud/pkg/k8sclient/kubeedge-engine"
 	naive_engine "keep/cloud/pkg/k8sclient/naive-engine"
+	"keep/cloud/pkg/k8sclient/naive-engine/pods"
 	"keep/cloud/pkg/k8sclient/watchengine"
 	"keep/constants/cloud"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
@@ -75,8 +76,8 @@ func (k *K8sClient) Start() {
 	go StartK8sClientRouter()
 	go func() {
 		//time.Sleep(time.Second * 3)
-		//logger.Error("====================")
-		//pods.NewPods().ReDeployPodToAnotherNode()
+		logger.Error("====================")
+		pods.NewPods().ReDeployPodToAnotherNode()
 	}()
 
 }
