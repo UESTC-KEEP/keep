@@ -35,15 +35,15 @@ func NewPods() *PodsImpl {
 }
 
 func (pi *PodsImpl) ReDeployPodToAnotherNode() {
-	pod, err := pi.GetPodInfoByPodName("redis-0")
-	if err != nil {
-		return
-	}
-	pod.Spec.NodeSelector = map[string]string{"eqnd": "true"}
-
-	_, err = config.Clientset.CoreV1().Pods(metav1.NamespaceDefault).Bind()
-	if err != nil {
-		logger.Error(err)
-		return
-	}
+	//pod, err := pi.GetPodInfoByPodName("redis-0")
+	//if err != nil {
+	//	return
+	//}
+	//pod.Spec.NodeSelector = map[string]string{"eqnd": "true"}
+	//
+	//_, err = config.Clientset.CoreV1().Pods(metav1.NamespaceDefault).Bind()
+	//if err != nil {
+	//	logger.Error(err)
+	//	return
+	//}
 }
