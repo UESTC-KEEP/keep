@@ -1,7 +1,6 @@
 package kafka
 
 import (
-	"fmt"
 	"keep/constants/cloud"
 	"log"
 	"time"
@@ -41,11 +40,15 @@ func (k *ProducerConfig) Publish() {
 		for {
 			select {
 			case <-p.Successes():
+				//log.Println("noerr")
 			//fmt.Println("发送成功")
 			//fmt.Println("offsetCfg:", suc.Offset, " partitions:", suc.Partition, " metadata:", suc.Metadata, " value:", value)
 			case fail := <-p.Errors():
-				fmt.Println("err: ", fail.Err)
+				log.Println("err: ", fail)
+				// case <-p.Errors():
+				// fmt.Println("no err")
 			}
+			time.Sleep(500 * time.Millisecond)
 		}
 	}(produ)
 

@@ -72,3 +72,41 @@ func TestSendtoK8sClint() {
 	beehiveContext.Send(modules.K8sClientModule, msg_zlj)
 	// ==================================================
 }
+
+var SendChan = make(chan model.Message)
+
+func SendToEdge() {
+	// for {
+	// 	select {
+	// 	case <-beehiveContext.Done():
+	// 		close(SendChan)
+	// 		return
+	// 	default:
+	// 	}
+	// 	msg := <-SendChan
+
+	// }
+	for msg := range SendChan {
+		fmt.Println("message:", msg)
+	}
+
+}
+
+// 测试函数
+func TestRouter_SendToEdge() {
+
+	msg := &model.Message{}
+	msg.Content = "hello edge!!!"
+	msg.Router.Group = "/log"
+
+	beehiveContext.AddModule("router")
+
+	go SendToEdge()
+
+	beehiveContext.Send("router", *msg)
+	// time.Sleep(3 * time.Second)
+
+	message := <-SendChan
+	fmt.Println("------------------msg :", message.Content)
+
+}

@@ -1,6 +1,7 @@
 package Router
 
 import (
+	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/core/model"
 	"testing"
 	"time"
@@ -41,5 +42,26 @@ func TestRouter_MessageDispatcher1(t *testing.T) {
 
 	time.Sleep(3 * time.Second)
 	RevMsgChan <- msg1
+
+}
+
+func TestRouter_SendToEdge(t *testing.T) {
+	msg := &model.Message{}
+	msg.Content = "hello edge!!!"
+	msg.Router.Group = "/log"
+
+	beehiveContext.AddModule("router")
+	beehiveContext.Send("router", *msg)
+
+	time.Sleep(3 * time.Second)
+
+	SendToEdge()
+	time.Sleep(3 * time.Second)
+
+	// if msg, err := beehiveContext.Receive("router"); err != nil {
+	// 	fmt.Println("err:", err)
+	// } else {
+	// 	fmt.Println("msg :", msg.Content)
+	// }
 
 }

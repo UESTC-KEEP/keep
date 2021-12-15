@@ -25,8 +25,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gorilla/websocket"
 	"keep/pkg/util/core/model"
+
+	"github.com/gorilla/websocket"
 )
 
 type SafeWriteTunneler interface {

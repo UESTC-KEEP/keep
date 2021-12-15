@@ -3,7 +3,6 @@ package requestDispatcher
 import (
 	"keep/cloud/pkg/common/modules"
 	"keep/cloud/pkg/requestDispatcher/Router"
-	"keep/cloud/pkg/requestDispatcher/Router/routers"
 	"keep/cloud/pkg/requestDispatcher/cloudtunnel"
 	requestDispatcherconfig "keep/cloud/pkg/requestDispatcher/config"
 	"keep/cloud/pkg/requestDispatcher/receiver"
@@ -12,7 +11,6 @@ import (
 	"keep/pkg/util/core"
 	logger "keep/pkg/util/loggerv1.0.1"
 	"os"
-	"time"
 )
 
 type RequestDispatcher struct {
@@ -67,19 +65,22 @@ func (r *RequestDispatcher) Start() {
 	//receiver.StartReceiver()
 	go Router.MessageRouter()
 
-	go cloudtunnel.StartWebsocketServer()
+	// 测试边端发送函数
+	// Router.TestRouter_SendToEdge()
+
+	cloudtunnel.StartWebsocketServer()
 
 	// err := coupon.ServerInit()
 	// if err != nil {
 	// 	logger.Fatal("init gRPC server failed", err)
 	// }
-	// 初始化路由
-	routers.InitRouters()
-	// 张连军测试
-	go func() {
-		time.Sleep(2 * time.Second)
-		Router.TestSendtoK8sClint()
-	}()
+	// // 初始化路由
+	// routers.InitRouters()
+	// // 张连军测试
+	// go func() {
+	// 	time.Sleep(2 * time.Second)
+	// 	Router.TestSendtoK8sClint()
+	// }()
 }
 func (r *RequestDispatcher) Enable() bool {
 	return r.enable

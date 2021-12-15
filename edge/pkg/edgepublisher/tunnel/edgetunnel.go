@@ -2,6 +2,7 @@ package edgetunnel
 
 import (
 	"crypto/tls"
+	"errors"
 	"fmt"
 	"github.com/gorilla/websocket"
 	"keep/constants/cloud"
@@ -122,9 +123,13 @@ func StartEdgeTunnel(nodeName, nodeIP string) {
 }
 
 func WriteToCloud(msg *model.Message) {
-	//fmt.Println(session)
-	//time.Sleep(time.Second*10)
-	err := session.Tunnel.WriteMessage([]*model.Message{msg})
+	var err error
+	if session != nil {
+		err = session.Tunnel.WriteMessage([]*model.Message{msg})
+	} else {
+		err = errors.New("websocket session is nil")
+	}
+
 	if err != nil {
 		reconnectChan <- struct{}{}
 		_, err := beehiveContext.SendSync(modules.EdgeTwinGroup, *msg, time.Second)
@@ -135,10 +140,16 @@ func WriteToCloud(msg *model.Message) {
 }
 
 func WriteToBufferToCloud(msg *model.Message) {
+	var err error
 	msgSendBufferLock.Lock()
 	msgSendBuffer = append(msgSendBuffer, msg)
 	if len(msgSendBuffer) == edge.DefaultMsgSendBufferSize {
-		err := session.Tunnel.WriteMessage(msgSendBuffer)
+		if session != nil {
+			err = session.Tunnel.WriteMessage(msgSendBuffer)
+		} else {
+			err = errors.New("websocket session is nil")
+		}
+
 		if err != nil {
 			for _, contentMsg := range msgSendBuffer {
 				_, err := beehiveContext.SendSync(modules.EdgeTwinGroup, *contentMsg, time.Second)
