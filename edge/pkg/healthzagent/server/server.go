@@ -11,7 +11,10 @@ import (
 	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/mem"
 	"github.com/shirou/gopsutil/net"
+	"keep/edge/pkg/common/modules"
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
+	beehiveContext "keep/pkg/util/core/context"
+	"keep/pkg/util/core/model"
 	"keep/pkg/util/loggerv1.0.1"
 	"strconv"
 	"time"
@@ -27,11 +30,24 @@ func GetMachineStatus() {
 	Healagent.Mem = GetMemStatus()
 	Healagent.DiskPartitionStat, Healagent.DiskIOCountersStat = GetDiskStatus()
 	Healagent.NetIOCountersStat, _ = GetNetIOStatus()
-	logger.Debug(fmt.Sprintf("\n内存用量：%.2f%%  cpu用量：%.2f%% ", Healagent.Mem.UsedPercent, Healagent.CpuUsage))
-	for i := 0; i < len(*Healagent.NetIOCountersStat); i++ {
-		fmt.Println(fmt.Sprintf("网卡名字：%s 发送数据：%vKB 接收数据：%vKB",
-			(*Healagent.NetIOCountersStat)[i].Name, (*Healagent.NetIOCountersStat)[i].BytesSent/1024, (*Healagent.NetIOCountersStat)[i].BytesRecv/1024))
+	//同步数据到sqlite
+	msg := model.Message{
+		Header: model.MessageHeader{},
+		Router: model.MessageRoute{
+			Source:    modules.LogsAgentModule,
+			Group:     "",
+			Operation: "",
+			Resource:  "",
+		},
+		Content: Healagent,
 	}
+	beehiveContext.Send(modules.EdgePublisherModule, msg)
+
+	//logger.Debug(fmt.Sprintf("\n内存用量：%.2f%%  cpu用量：%.2f%% ", Healagent.Mem.UsedPercent, Healagent.CpuUsage))
+	//for i := 0; i < len(*Healagent.NetIOCountersStat); i++ {
+	//	fmt.Println(fmt.Sprintf("网卡名字：%s 发送数据：%vKB 接收数据：%vKB",
+	//		(*Healagent.NetIOCountersStat)[i].Name, (*Healagent.NetIOCountersStat)[i].BytesSent/1024, (*Healagent.NetIOCountersStat)[i].BytesRecv/1024))
+	//}
 }
 
 // DescribeMachine 描述主机信息

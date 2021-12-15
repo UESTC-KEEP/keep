@@ -70,7 +70,7 @@ func (ep *EdgePublisher) Start() {
 	// 申请证书
 	nm := cert.NewCertManager("NodeName", ep.token)
 	nm.Start()
-	edgetunnel.StartEdgeTunnel(ep.hostnameOverride, ep.nodeIP)
+	go edgetunnel.StartEdgeTunnel(ep.hostnameOverride, ep.nodeIP)
 
 	// 启动边端服务20350
 	// 初始化队列 确保队列初始化完成再启动服务

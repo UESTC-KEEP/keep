@@ -44,7 +44,7 @@ func ReceiveFromBeehiveAndPublish() {
 		logger.Error(err)
 		return
 	}
-	fmt.Printf("接收消息 msg: %#v\n", msg)
+	fmt.Printf("edgepublisher  接收消息 msg: %#v\n", msg.GetID())
 	topic := edge.DefaultDataTopic
 	//fmt.Println(chanmsgqueen.EdgePublishQueens)
 	cli := chanmsgqueen.EdgePublishQueens[topic]

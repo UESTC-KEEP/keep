@@ -69,6 +69,7 @@ func (h *HealthzAgent) Start() {
 	// 启动周期性任务轮询本机用量
 	//cron := server.StartMetricEdgeInterval(config.Config.DefaultEdgeHealthInterval)
 	// 启动本机StartMertricsServer
+	server.StartMetricEdgeInterval(3)
 	go prome.StartMertricsServer(edge.DefaultMetricsPort)
 	//os.Exit(1)
 	//defer cron.Stop()

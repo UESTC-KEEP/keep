@@ -11,7 +11,6 @@ import (
 	"keep/pkg/util/core/model"
 	"keep/pkg/util/loggerv1.0.1"
 	"os"
-	"time"
 )
 
 type EdgeTwin struct {
@@ -51,12 +50,12 @@ func (et *EdgeTwin) Enable() bool {
 func (et *EdgeTwin) Start() {
 	logger.Debug("EdgeTwin开始启动....")
 	sqlite.ReceiveFromBeehiveAndInsert()
-
-	go func() {
-		time.Sleep(time.Second * 20)
-		logger.Error("====================")
-		testListPod()
-	}()
+	// 测试边端向云端发送数据
+	//go func() {
+	//	time.Sleep(time.Second * 20)
+	//	logger.Error("====================")
+	//	testListPod()
+	//}()
 
 }
 

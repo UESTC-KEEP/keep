@@ -100,7 +100,6 @@ func (sq *Sqlite) SelectTimeFromSqliteToCloud(begintime int64) error {
 		}
 		msg.Router.Source = modules.EdgeTwinModule
 		beehiveContext.Send(modules.EdgePublisherModule, msg)
-
 	}
 
 	return err
@@ -143,7 +142,7 @@ func ReceiveEdgeTwinMsg(cli *Sqlite) {
 		time.Sleep(1 * time.Second)
 	} else {
 		//logger.Trace("接收消息 msg: ", msg)
-		fmt.Printf("edtwin 接收消息 msg:%#v ", msg)
+		fmt.Printf("edtwin 接收消息 msg:%#v ", msg.GetID())
 		// 提高速度
 		go func() {
 			content, err := json.Marshal(msg)
@@ -163,7 +162,6 @@ func ReceiveEdgeTwinMsg(cli *Sqlite) {
 
 func DeletePeriod(sq *Sqlite) *cron.Cron {
 	c := cron.New()
-
 	c.AddFunc("@every 48h", func() {
 		err := sq.DeleteTimeOutFromSqlite(time.Now().UnixNano())
 		if err != nil {
@@ -172,7 +170,6 @@ func DeletePeriod(sq *Sqlite) *cron.Cron {
 		}
 		logger.Info("周期性删除日志记录完成")
 	})
-
 	c.Start()
 	return c
 }
