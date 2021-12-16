@@ -1,13 +1,16 @@
 package cloud
 
 const CloudAgentName = "CloudAgent"
-const CloudConfigeFilesSourceDir = "../../cloud/shells/confs/keepedge"
+const CloudConfigeFilesSourceDir = "../../../cloud/shells/confs/keepedge"
 
 // 全局配置
 const (
 	DefaultKeepEdgeNameSpace = "keepedge"
+	DefaultKeepConfigDir     = "/etc/keepedge/"
 	DefaultKubeConfigPath    = "/home/et/.kube/config"
-	DefaultCloudConfigFile   = "/etc/keepedge/config/cloudagent.yml"
+	DefaultCloudConfigFile   = DefaultKeepConfigDir + "config/cloudagent.yml"
+	DefaultKeepCrd           = DefaultKeepConfigDir + "ymls/keepcrd/equivalentnode.yaml"
+	DefualtKeepNamespace     = "keepedge"
 	DefaultDecoderBufferSize = 100
 	NodeName                 = "NodeName"
 )
@@ -23,11 +26,10 @@ const (
 	DefaultMasterLBPort        = 6443
 	DefaultRedisServerIp       = DefaultMasterLBIp
 	DefaultRedisServerPort     = 32379
-	DefaultRedisConfigMap      = "/etc/keepedge/ymls/redis-standalone-conf.yaml"
-	DefaultRedisSVC            = "/etc/keepedge/ymls/redis-svc.yaml"
-	DefaultRedisStatefulSet    = "/etc/keepedge/ymls/redis-statefulset.yaml"
+	DefaultRedisConfigMap      = DefaultKeepConfigDir + "ymls/redis-standalone-conf.yaml"
+	DefaultRedisSVC            = DefaultKeepConfigDir + "ymls/redis-svc.yaml"
+	DefaultRedisStatefulSet    = DefaultKeepConfigDir + "ymls/redis-statefulset.yaml"
 	DefaultNameSpace           = "default"
-	DefaultCrdsDir             = "/etc/keepedge/keep-crds"
 )
 
 // requestDispatcher配置
@@ -50,7 +52,6 @@ const (
 // equalnodeController配置
 const (
 	DefaultMasterURL       = DefaultMasterLBIp
-	DefaultKubeConfig      = DefaultKubeConfigPath
 	DefaultAlsoLogToStdErr = true
 )
 

@@ -95,6 +95,8 @@ func initKeepEdgeEnv() {
 	// 检查k8s集群apiserver状态
 	// 检查redis在线状态 如果不在线就由naive_engine 在master集群中创建statefulset
 	checkRedisAliveness()
+	// 创建crd
+	checkeepCrd()
 
 }
 
@@ -113,6 +115,7 @@ func checkNamespaceAliveness() {
 	logger.Debug("查询到ns: ", ns)
 }
 
+// 检查集群中redis状态  无法通信就拉起redis
 func checkRedisAliveness() {
 	port := k8sclientconfig.Config.RedisPort
 	_, err := redis.Dial("tcp", k8sclientconfig.Config.RedisIp+":"+strconv.Itoa(port))
@@ -152,4 +155,10 @@ func deleteRedis() {
 		}(i)
 	}
 	wg.Wait()
+}
+
+// 拉起keep crd
+func checkeepCrd() {
+	// 创建crd
+	naive_engine.NewNaiveEngine().CreatResourcesByYAML(cloud.DefaultKeepCrd, cloud.DefualtKeepNamespace)
 }
