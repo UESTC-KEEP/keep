@@ -65,8 +65,8 @@ func NewCloudAgentCommand() *cobra.Command {
 
 // register all modules in system
 func registerModules(config *cloudagent.CloudAgentConfig) {
-	equalnodecontroller.Register(config.Modules.EqualNodeController)
 	k8sclient.Register(config.Modules.K8sClient)
+	equalnodecontroller.Register(config.Modules.EqualNodeController)
 	promserver.Register(config.Modules.PromServer)
 	requestDispatcher.Register(config.Modules.RequestDispatcher)
 	cloudimageManager.Register(config.Modules.CloudImageManager)

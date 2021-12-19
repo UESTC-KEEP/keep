@@ -8,6 +8,7 @@ import (
 	"io"
 	"io/ioutil"
 	corev1 "k8s.io/api/core/v1"
+	k8serr "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -82,7 +83,13 @@ func (nei *NaiveEngineImpl) CreatResourcesByYAML(yamlFileName, namespace string)
 	}
 	obj2, err := dri.Create(context.Background(), unstructuredObj, metav1.CreateOptions{})
 	if err != nil {
-		logger.Error(err)
+		if k8serr.IsAlreadyExists(err) {
+			logger.Warn("资源已存在：", err)
+			return err
+		} else {
+			logger.Error(err)
+			return err
+		}
 	} else {
 		logger.Debug("%s/%s created", obj2.GetKind(), obj2.GetName())
 	}
@@ -197,6 +204,15 @@ func (nei *NaiveEngineImpl) CreateNamespaceByName(nsName string) (*corev1.Namesp
 		return nil, err
 	}
 	return namespace, err
+}
+
+func (nei *NaiveEngineImpl) GetK8sVersion() string {
+	versioninfo, err := config.Clientset.ServerVersion()
+	if err != nil {
+		logger.Error(err)
+		return ""
+	}
+	return versioninfo.GitVersion
 }
 
 func NewNaiveEngine() *NaiveEngineImpl {

@@ -127,14 +127,15 @@ func WriteToCloud(msg *model.Message) {
 	if session != nil {
 		err = session.Tunnel.WriteMessage([]*model.Message{msg})
 	} else {
-		err = errors.New("websocket session is nil")
+		err = errors.New("websocket session is nil,try write to edgetwin...")
+		logger.Trace("send message to edge cloud error: ", err)
 	}
 
 	if err != nil {
 		reconnectChan <- struct{}{}
-		_, err := beehiveContext.SendSync(modules.EdgeTwinGroup, *msg, time.Second)
+		_, err = beehiveContext.SendSync(modules.EdgeTwinModule, *msg, time.Second)
 		if err != nil {
-			logger.Error("send message to edge twin error: ", err)
+			logger.Warn("send message to edge twin error: ", err)
 		}
 	}
 }

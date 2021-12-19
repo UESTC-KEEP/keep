@@ -1,7 +1,6 @@
 package equalnodecontroller
 
 import (
-	"fmt"
 	flag "github.com/spf13/pflag"
 	"keep/cloud/pkg/common/informers"
 	"keep/cloud/pkg/common/modules"
@@ -40,9 +39,9 @@ func (eqndc *EqualNodeController) Enable() bool {
 func (eqndc *EqualNodeController) Start() {
 	flag.Parse()
 	if err := eqndc.equalnodecontroller.Start(); err != nil {
-		logger.Fatal("启动了equalnodecontroller crd 失败...", err)
+		logger.Fatal("启动 equalnodecontroller crd 失败...", err)
 	}
-	fmt.Println("++++++++++++===", lister.GetAllEqnd())
+	logger.Debug(lister.GetAllEqnd())
 	//go controller.StartEqualNodecontroller()
 }
 

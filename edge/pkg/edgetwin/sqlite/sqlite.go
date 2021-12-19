@@ -136,13 +136,13 @@ func ReceiveFromBeehiveAndInsert() {
 }
 
 func ReceiveEdgeTwinMsg(cli *Sqlite) {
-	msg, err := beehiveContext.Receive(modules.EdgeTwinGroup)
+	msg, err := beehiveContext.Receive(modules.EdgeTwinModule)
 	if err != nil {
 		logger.Error(err)
-		time.Sleep(1 * time.Second)
 	} else {
 		//logger.Trace("接收消息 msg: ", msg)
-		fmt.Printf("edtwin 接收消息 msg:%#v ", msg.GetID())
+		fmt.Printf("edtwin 接收消息 msg:%#v ", msg.GetContent())
+		beehiveContext.SendResp(*msg.NewRespByMessage(&msg, "收到消息:"+msg.GetID()))
 		// 提高速度
 		go func() {
 			content, err := json.Marshal(msg)
@@ -150,7 +150,6 @@ func ReceiveEdgeTwinMsg(cli *Sqlite) {
 				logger.Error(err)
 				return
 			}
-
 			err1 := cli.InserBlobIntoMetricsSqlite(content, strconv.FormatInt(msg.Header.Timestamp, 10))
 			if err1 != nil {
 				logger.Error(err1)

@@ -13,6 +13,7 @@ import (
 func StartModules() {
 	beehiveContext.InitContext(beehiveContext.MsgCtxTypeChannel)
 	modules := GetModules()
+
 	for name, module := range modules {
 		// Init the module
 		beehiveContext.AddModule(name)

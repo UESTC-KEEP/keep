@@ -13,7 +13,13 @@ type PodsImpl struct {
 }
 
 func (pi *PodsImpl) ListPods(namespace string) (*corev1.PodList, error) {
-	podlist, err := config.Clientset.CoreV1().Pods(namespace).List(context.Background(), metav1.ListOptions{})
+	podlist, err := config.Clientset.CoreV1().Pods(namespace).List(context.Background(), metav1.ListOptions{
+		// ResourceVersion设置为0 apiserver就不用查etcd 直接用缓存
+		//resourceVersion 未设置	resourceVersion="0"	resourceVersion="<非零值>"
+		//最新版本					任何版本				不老于给定版本
+		ResourceVersion: "0",
+	})
+
 	if err != nil {
 		return nil, nil
 	}

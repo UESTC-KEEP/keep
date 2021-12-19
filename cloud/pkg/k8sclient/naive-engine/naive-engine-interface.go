@@ -22,6 +22,8 @@ type NaiveEngine interface {
 		传入参数：nsName: 需要查询的ns名字
 	*/
 	CreateNamespaceByName(nsName string) (*corev1.Namespace, error)
+	// GetK8sVersion	 获取当前集群的版本变量 支持：1.16-1.21
+	GetK8sVersion() string
 }
 
 type PodInterface interface {

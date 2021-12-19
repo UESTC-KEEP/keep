@@ -7,14 +7,15 @@ import (
 	k8sclientconfig "keep/cloud/pkg/k8sclient/config"
 	kubeedge_engine "keep/cloud/pkg/k8sclient/kubeedge-engine"
 	naive_engine "keep/cloud/pkg/k8sclient/naive-engine"
-	"keep/cloud/pkg/k8sclient/naive-engine/pods"
 	"keep/cloud/pkg/k8sclient/watchengine"
 	"keep/constants/cloud"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"keep/pkg/util/core"
+	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/loggerv1.0.1"
 	"os"
 	"strconv"
+	"strings"
 	"sync"
 )
 
@@ -74,12 +75,6 @@ func (k *K8sClient) Start() {
 	go watchengine.StartAllInformers()
 	//	所有项目准备完成启动路由
 	go StartK8sClientRouter()
-	go func() {
-		//time.Sleep(time.Second * 3)
-		logger.Error("====================")
-		pods.NewPods().ReDeployPodToAnotherNode()
-	}()
-
 }
 
 func NewK8sClient(enable bool) (*K8sClient, error) {
@@ -89,6 +84,8 @@ func NewK8sClient(enable bool) (*K8sClient, error) {
 }
 
 func initKeepEdgeEnv() {
+	// 检查k8s版本是否支持
+	checkK8sVersion()
 	// 检查有没有keepedge的namesopace
 	// 没有就创建
 	checkNamespaceAliveness()
@@ -155,6 +152,19 @@ func deleteRedis() {
 		}(i)
 	}
 	wg.Wait()
+}
+
+func checkK8sVersion() {
+	version := strings.Split(naive_engine.NewNaiveEngine().GetK8sVersion(), ".")
+	// 只检查大版本不查小版本
+	for _, surpport := range strings.Split(cloud.DefaultKubeEdgeSupportedK8sVersion, ";") {
+		if version[1] == surpport {
+			logger.Debug("kubernetes版本：" + naive_engine.NewNaiveEngine().GetK8sVersion())
+			return
+		}
+	}
+	beehiveContext.Cancel()
+	logger.Fatal("kubernetes version:", naive_engine.NewNaiveEngine().GetK8sVersion(), " 不受kubeedge支持无法启动...")
 }
 
 // 拉起keep crd

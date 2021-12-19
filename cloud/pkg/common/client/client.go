@@ -17,7 +17,7 @@ limitations under the License.
 package client
 
 import (
-	crdClientset "keep/cloud/pkg/client/keepcrdClient/clientset/versioned"
+	crdClientset "keep/cloud/pkg/client/clientset/versioned"
 	"os"
 	"sync"
 

@@ -17,10 +17,6 @@ import (
 //
 //}
 
-func InitCachePools() {
-
-}
-
 // StartListenLogMsg 发送日志到消息队列中
 func StartListenLogMsg() {
 	go func() {
@@ -44,7 +40,7 @@ func ReceiveFromBeehiveAndPublish() {
 		logger.Error(err)
 		return
 	}
-	fmt.Printf("edgepublisher  接收消息 msg: %#v\n", msg.GetID())
+	fmt.Printf("edgepublisher  接收消息 msg: %#v\n", msg.GetContent())
 	topic := edge.DefaultDataTopic
 	//fmt.Println(chanmsgqueen.EdgePublishQueens)
 	cli := chanmsgqueen.EdgePublishQueens[topic]

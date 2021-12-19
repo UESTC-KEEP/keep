@@ -34,7 +34,7 @@ func GetMachineStatus() {
 	msg := model.Message{
 		Header: model.MessageHeader{},
 		Router: model.MessageRoute{
-			Source:    modules.LogsAgentModule,
+			Source:    modules.HealthzAgentModule,
 			Group:     "",
 			Operation: "",
 			Resource:  "",

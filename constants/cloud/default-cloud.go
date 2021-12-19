@@ -5,14 +5,15 @@ const CloudConfigeFilesSourceDir = "../../../cloud/shells/confs/keepedge"
 
 // 全局配置
 const (
-	DefaultKeepEdgeNameSpace = "keepedge"
-	DefaultKeepConfigDir     = "/etc/keepedge/"
-	DefaultKubeConfigPath    = "/home/et/.kube/config"
-	DefaultCloudConfigFile   = DefaultKeepConfigDir + "config/cloudagent.yml"
-	DefaultKeepCrd           = DefaultKeepConfigDir + "ymls/keepcrd/equivalentnode.yaml"
-	DefualtKeepNamespace     = "keepedge"
-	DefaultDecoderBufferSize = 100
-	NodeName                 = "NodeName"
+	DefaultKeepEdgeNameSpace           = "keepedge"
+	DefaultKeepConfigDir               = "/etc/keepedge/"
+	DefaultKubeConfigPath              = "/root/.kube/config"
+	DefaultCloudConfigFile             = DefaultKeepConfigDir + "config/cloudagent.yml"
+	DefaultKeepCrd                     = DefaultKeepConfigDir + "ymls/keepcrd/equivalentnode.yaml"
+	DefualtKeepNamespace               = "keepedge"
+	DefaultDecoderBufferSize           = 100
+	NodeName                           = "NodeName"
+	DefaultKubeEdgeSupportedK8sVersion = "15;16;17;18;19;20;21"
 )
 
 // k8sclient配置

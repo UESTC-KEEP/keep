@@ -10,6 +10,7 @@ import (
 
 func GetAllEqnd() *v1.EqualNodeList {
 	eqndlist, err := config.EqndClient.KeepedgeV1().EqualNodes("default").List(context.Background(), metav1.ListOptions{})
+	//config.EqndClient.KeepedgeV1().EqualNodes(corev1.NamespaceAll).List(context.TODO(),metav1.ListOptions{})
 	if err != nil {
 		logger.Error(err)
 		return nil
