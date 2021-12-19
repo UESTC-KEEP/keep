@@ -19,9 +19,9 @@ type EqualNodeSpec struct {
 	Eqnd []string `json:"eqnd"`
 }
 
+// EqualNodeList is a list of Student resources
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// EqualNodeList is a list of Student resources
 type EqualNodeList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata"`

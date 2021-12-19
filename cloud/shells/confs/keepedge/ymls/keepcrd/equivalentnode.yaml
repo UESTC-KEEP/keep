@@ -16,6 +16,16 @@ spec:
       schema:
         openAPIV3Schema:
           type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                eqnd:
+                  type: array
+                  items:
+                    type: string
   # 范围是属于namespace的
   scope: Namespaced
   names:
@@ -24,7 +34,7 @@ spec:
     # 单数名
     singular: equalnode
     # 类型名
-    kind: Equalnode
+    kind: EqualNode
     # 简称，就像service的简称是svc
     shortNames:
     - eqnd
