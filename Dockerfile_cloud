@@ -1,0 +1,30 @@
+FROM golang:1.17
+
+
+ENV GO111MODULE=on
+ENV GOPROXY=https://goproxy.cn,direct
+
+#工作目录作目录
+WORKDIR $GOPATH/src/keep
+
+COPY . .
+RUN mkdir -p /root/.kube/
+COPY  config  /root/.kube/
+
+# RUN ls
+# RUN go mod vendor
+# RUN go mod download
+
+RUN go build cloud/cmd/cloudagent/cloudagent.go
+
+EXPOSE 20350
+EXPOSE 20351
+EXPOSE 8888
+ENTRYPOINT ["./cloudagent"]
+
+# docker build -t keep-cloud .
+# docker run --name keep-cloud -p 20350:20350 -p 8888:8888  `docker images | grep  'keep-cloud' | awk '{print $3}'`
+#   一条命令实现停用并删除所有容器：
+#   docker stop $(docker ps -q) & docker rm $(docker ps -aq)
+#   删除none镜像
+#   docker rmi `docker images | grep  '<none>' | awk '{print $3}'`

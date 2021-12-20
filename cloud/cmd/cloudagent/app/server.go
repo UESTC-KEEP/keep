@@ -13,7 +13,6 @@ import (
 	"keep/constants/cloud"
 	"keep/edge/pkg/common/utils"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
-	commonutil "keep/pkg/util"
 	"keep/pkg/util/core"
 	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/loggerv1.0.1"
@@ -35,7 +34,6 @@ func NewCloudAgentCommand() *cobra.Command {
 			go func() {
 				logger.Debug(http.ListenAndServe(":6060", nil))
 			}()
-			commonutil.OrganizeConfigurationFile(cloud.CloudAgentName)
 			config, err := opts.Config()
 			text, err := yaml.Marshal(&config)
 			// 写入配置文件

@@ -155,7 +155,14 @@ func deleteRedis() {
 }
 
 func checkK8sVersion() {
-	version := strings.Split(naive_engine.NewNaiveEngine().GetK8sVersion(), ".")
+	versionstr := naive_engine.NewNaiveEngine().GetK8sVersion()
+	if versionstr == "" {
+		logger.Error("获取kubernetes版本失败...")
+		return
+	}
+	version := strings.Split(versionstr, ".")
+	logger.Error(len(version))
+
 	// 只检查大版本不查小版本
 	for _, surpport := range strings.Split(cloud.DefaultKubeEdgeSupportedK8sVersion, ";") {
 		if version[1] == surpport {

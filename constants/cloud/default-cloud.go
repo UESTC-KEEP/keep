@@ -1,7 +1,9 @@
 package cloud
 
 const CloudAgentName = "CloudAgent"
-const CloudConfigeFilesSourceDir = "../../shells/confs/keepedge"
+const CloudConfigeFilesSourceDir = "cloud/shells/confs/keepedge"
+
+//const CloudConfigeFilesSourceDir = "../confs/keepedge"
 
 // 全局配置
 const (
