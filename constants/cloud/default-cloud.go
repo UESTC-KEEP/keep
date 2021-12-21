@@ -37,12 +37,13 @@ const (
 
 // requestDispatcher配置
 const (
-	DefaultHTTPPort             = 20001
-	DefaultWebSocketPort        = 20000
-	DefaultCAURL                = "/ca.crt"
-	DefaultCertURL              = "/edge.crt"
-	DefaultWebSocketUrl         = "/v1/keepedge/connect"
-	DefaultKeepCloudIP          = "192.168.1.121"
+	DefaultHTTPPort      = 20001
+	DefaultWebSocketPort = 20000
+	DefaultCAURL         = "/ca.crt"
+	DefaultCertURL       = "/edge.crt"
+	DefaultWebSocketUrl  = "/v1/keepedge/connect"
+	// 签证ip
+	DefaultKeepCloudIP          = "172.17.14.195"
 	DefaultTokenRefreshDuration = 12
 	SessionKeyHostNameOverride  = "SessionHostNameOverride"
 	SessionKeyInternalIP        = "SessionInternalIP"

@@ -179,3 +179,5 @@ func checkeepCrd() {
 	// 创建crd
 	naive_engine.NewNaiveEngine().CreatResourcesByYAML(cloud.DefaultKeepCrd, cloud.DefualtKeepNamespace)
 }
+
+// 拉起service

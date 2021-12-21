@@ -13,7 +13,7 @@ spec:
       labels:
         name: redis
     spec:
-      nodeName: cloud-master1
+      nodeName: k8s-node03
       initContainers:
         - name: init-redis
           image: busybox

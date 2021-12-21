@@ -76,7 +76,7 @@ func NewCertManager(nodename string, token string) CertManager {
 	}
 	HTTPServer := (&url.URL{
 		Scheme: "https",
-		Host:   net.JoinHostPort(cloud.DefaultKeepCloudIP, strconv.Itoa(cloud.DefaultHTTPPort)),
+		Host:   net.JoinHostPort(edge.DefaultHttpServer, strconv.Itoa(edge.DefaultCloudHttpPort)),
 	}).String()
 	return CertManager{
 		RotateCertificates: true,
