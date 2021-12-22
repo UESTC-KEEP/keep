@@ -1,29 +1,52 @@
 package server
 
 import (
+	"keep/pkg/util/kplogger"
+
 	"github.com/shirou/gopsutil/disk"
-	logger "keep/pkg/util/loggerv1.0.1"
 )
 
-// GetDiskStatus 获取节点磁盘用量信息
-func GetDiskStatus() (*[]disk.PartitionStat, *map[string]disk.IOCountersStat) {
-	parts, err := disk.Partitions(true)
+// GetDiskStorageStatus 获取节点磁盘用量信息
+func GetDiskStorageStatus() *map[string]*disk.UsageStat {
+	parts, err := disk.Partitions(false) //只需要管实际的物理磁盘
 	if err != nil {
-		logger.Warn("get Partitions failed, err:%v\n", err)
-		return nil, nil
-	}
-	//fmt.Println(parts)
-	for _, part := range parts {
-		//fmt.Printf("part:%v\n", part.String())
-		_, err := disk.Usage(part.Mountpoint)
-		if err != nil {
-			//logger.Warn("路径：", part.Mountpoint, " 磁盘查询失败...", err)
-			continue
-		}
-		//fmt.Printf("disk info:used:%v free:%v\n", diskInfo.UsedPercent, diskInfo.Free)
+		kplogger.Errorf("get Partitions failed, err:%v", err)
+		return nil
 	}
 
-	ioStat, _ := disk.IOCounters()
-	//fmt.Println(ioStat)
-	return &parts, &ioStat
+	usage_map := make(map[string]*disk.UsageStat)
+	for _, part := range parts {
+		usage, err := disk.Usage(part.Mountpoint) //不是用Device获取分区空间信息
+		if err != nil {
+			kplogger.Errorf("Cannont access disk partition %s", part.Device)
+			continue
+		} else {
+			usage_map[part.Device] = usage
+		}
+	}
+
+	return &usage_map
+}
+
+func GetDiskIOStatus() *map[string]*disk.IOCountersStat {
+	parts, err := disk.Partitions(false) //只需要管实际的物理磁盘
+	if err != nil {
+		kplogger.Warn("get Partitions failed, err:%v", err)
+		return nil
+	}
+
+	io_map := make(map[string]*disk.IOCountersStat)
+	for _, part := range parts {
+		ioStat, err := disk.IOCounters(part.Device) //如果不指定分区名，那就会把根分区和子分区算在一起
+		if err != nil {
+			kplogger.Errorf("Cannont access disk partition %s", part.Device)
+			continue
+		} else {
+			for _, v := range ioStat {
+				io_map[part.Device] = &v
+			}
+		}
+	}
+
+	return &io_map
 }

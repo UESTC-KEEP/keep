@@ -20,8 +20,19 @@ func TestGetBasicStatus(t *testing.T) {
 	fmt.Println(server.GetBasicStatus())
 }
 
-func TestGetDiskStatus(t *testing.T) {
-	server.GetDiskStatus()
+func TestGetDiskStorageStatus(t *testing.T) {
+	info := server.GetDiskStorageStatus()
+	for name, obj := range *info {
+		fmt.Println(name, "\t", obj)
+	}
+
+}
+
+func TestGetDiskIOStatus(t *testing.T) {
+	info := server.GetDiskIOStatus()
+	for name, obj := range *info {
+		fmt.Println(name, "\t", obj)
+	}
 }
 
 func TestGetNetIOStatus(t *testing.T) {

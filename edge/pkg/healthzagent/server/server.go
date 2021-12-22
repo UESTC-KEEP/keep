@@ -5,14 +5,15 @@ package server
 
 import (
 	"fmt"
-	"github.com/robfig/cron"
-	"github.com/shirou/gopsutil/host"
 	"keep/edge/pkg/common/modules"
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/core/model"
-	"keep/pkg/util/loggerv1.0.1"
+	logger "keep/pkg/util/loggerv1.0.1"
 	"strconv"
+
+	"github.com/robfig/cron"
+	"github.com/shirou/gopsutil/host"
 )
 
 var Healagent edgeagent.HealthzAgent
@@ -23,7 +24,8 @@ func GetMachineStatus() {
 	Healagent.HostInfoStat, _ = GetBasicStatus()
 	Healagent.Cpu, Healagent.CpuUsage, _ = GetCpuStatus()
 	Healagent.Mem = GetMemStatus()
-	Healagent.DiskPartitionStat, Healagent.DiskIOCountersStat = GetDiskStatus()
+	Healagent.DiskPartitionStat = GetDiskStorageStatus()
+	Healagent.DiskIOCountersStat = GetDiskIOStatus()
 	Healagent.NetIOCountersStat, _ = GetNetIOStatus()
 	//同步数据到sqlite
 	msg := model.Message{
