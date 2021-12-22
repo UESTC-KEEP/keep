@@ -54,7 +54,7 @@ func (dmi *DeviceMapperInterface) Enable() bool {
 
 func (dmi *DeviceMapperInterface) Start() {
 	//获取设备列表
-
+	WriteToCloud()
 }
 
 func NewDeviceMapperInterface(enable bool) (*DeviceMapperInterface, error) {

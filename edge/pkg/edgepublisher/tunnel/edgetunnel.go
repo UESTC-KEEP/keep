@@ -27,7 +27,7 @@ var session *tunnelSession                                                //封�
 var sessionConnected bool                                                 //云边是否连通
 var msgSendBuffer = make([]*model.Message, edge.DefaultMsgSendBufferSize) //发送到云的缓冲
 var msgSendBufferLock sync.Locker                                         //缓冲锁
-var reconnectChan = make(chan struct{}, 100)                              //需要重连时向此channel发
+var reconnectChan = make(chan struct{})                                   //需要重连时向此channel发
 
 func newEdgeTunnel(hostnameOverride, nodeIP string) *edgeTunnel {
 	return &edgeTunnel{
@@ -132,7 +132,6 @@ func WriteToCloud(msg *model.Message) {
 	}
 
 	if err != nil {
-		reconnectChan <- struct{}{}
 		_, err = beehiveContext.SendSync(modules.EdgeTwinModule, *msg, time.Second)
 		if err != nil {
 			logger.Warn("send message to edge twin error: ", err)

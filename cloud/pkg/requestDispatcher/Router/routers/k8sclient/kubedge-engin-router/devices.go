@@ -1,10 +1,11 @@
-package naive_engin_router
+package kubedge_engin_router
 
-type Pods struct {
+type Devices struct {
 	Resources string
 	Operation Operation
 }
 
 type Operation struct {
 	List string
+	Get  string
 }
