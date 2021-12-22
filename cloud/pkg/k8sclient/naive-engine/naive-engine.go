@@ -18,11 +18,16 @@ import (
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/restmapper"
 	"keep/cloud/pkg/k8sclient/config"
+	naive_engin_pod_informer "keep/cloud/pkg/k8sclient/naive-engine/pods/informer"
 	"keep/pkg/util/loggerv1.0.1"
 	"os"
 )
 
 type NaiveEngineImpl struct {
+}
+
+func StartNaiveEngineInformers() {
+	naive_engin_pod_informer.StartPodInformer()
 }
 
 func (nei *NaiveEngineImpl) CreatePod() {
