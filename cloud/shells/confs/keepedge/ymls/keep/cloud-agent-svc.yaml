@@ -20,6 +20,6 @@ spec:
       port: 20080
       protocol: TCP
       targetPort: 20080
-      nodePort: 30080
+      nodePort: 30180
   selector:
     app: keep-cloud
