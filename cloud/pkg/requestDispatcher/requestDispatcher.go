@@ -11,6 +11,7 @@ import (
 	"keep/pkg/util/core"
 	logger "keep/pkg/util/loggerv1.0.1"
 	"os"
+	"time"
 )
 
 type RequestDispatcher struct {
@@ -68,6 +69,12 @@ func (r *RequestDispatcher) Start() {
 	// 测试边端发送函数
 	// Router.TestRouter_SendToEdge()
 
+	// 张连军测试
+	go func() {
+		time.Sleep(5 * time.Second)
+		Router.TestSendtoK8sClint()
+	}()
+
 	cloudtunnel.StartWebsocketServer()
 
 	// err := coupon.ServerInit()
@@ -76,11 +83,7 @@ func (r *RequestDispatcher) Start() {
 	// }
 	// // 初始化路由
 	// routers.InitRouters()
-	// // 张连军测试
-	// go func() {
-	// 	time.Sleep(2 * time.Second)
-	// 	Router.TestSendtoK8sClint()
-	// }()
+
 }
 func (r *RequestDispatcher) Enable() bool {
 	return r.enable

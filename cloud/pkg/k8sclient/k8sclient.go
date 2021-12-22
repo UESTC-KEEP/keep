@@ -161,7 +161,6 @@ func checkK8sVersion() {
 		return
 	}
 	version := strings.Split(versionstr, ".")
-	logger.Error(len(version))
 
 	// 只检查大版本不查小版本
 	for _, surpport := range strings.Split(cloud.DefaultKubeEdgeSupportedK8sVersion, ";") {

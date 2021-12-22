@@ -1,4 +1,4 @@
-package lister
+package kubeedge_device_lister
 
 import (
 	"context"

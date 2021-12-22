@@ -2,8 +2,8 @@ package routers
 
 import (
 	k8sclientrouter "keep/cloud/pkg/requestDispatcher/Router/routers/k8sclient"
+	kubedge_engin_router "keep/cloud/pkg/requestDispatcher/Router/routers/k8sclient/kubedge-engin-router"
 	naive_engin_router "keep/cloud/pkg/requestDispatcher/Router/routers/k8sclient/naive-engin-router"
-	"keep/pkg/util/core/model"
 	"sync"
 )
 
@@ -23,11 +23,17 @@ func InitRouters() {
 			K8sClientRouter: k8sclientrouter.K8sClientRouter{
 				NaiveEngine: naive_engin_router.NaiveEngine{
 					Pods: naive_engin_router.Pods{
+						Resources: "$uestc/keep/k8sclient/naiveengine/pods/",
 						Operation: naive_engin_router.Operation{
-							List: model.MessageRoute{
-								Operation: "list",
-								Resource:  "$uestc/keep/k8sclient/naiveengine/pods/",
-							},
+							List: "list",
+						},
+					},
+				},
+				KubeedgeEngine: kubedge_engin_router.KubeedgeEngine{
+					Devices: kubedge_engin_router.Devices{
+						Resources: "$uestc/keep/k8sclient/kubeedgeengin/devices/",
+						Operation: kubedge_engin_router.Operation{
+							List: "list",
 						},
 					},
 				},
