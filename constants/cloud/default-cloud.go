@@ -43,7 +43,7 @@ const (
 	DefaultCertURL       = "/edge.crt"
 	DefaultWebSocketUrl  = "/v1/keepedge/connect"
 	// 签证ip
-	DefaultKeepCloudIP          = "172.17.14.195"
+	DefaultKeepCloudIP          = "172.17.14.196"
 	DefaultTokenRefreshDuration = 12
 	SessionKeyHostNameOverride  = "SessionHostNameOverride"
 	SessionKeyInternalIP        = "SessionInternalIP"

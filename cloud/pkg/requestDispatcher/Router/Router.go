@@ -30,7 +30,7 @@ func MessageRouter() {
 			close(RevMsgChan)
 			return
 		case message := <-RevMsgChan:
-			logger.Error(fmt.Sprintf("%#v", message))
+			logger.Trace(fmt.Sprintf("%#v", message))
 			switch message.Router.Resource {
 			case "/log":
 				kafkaMsg := message.Content.(string)
