@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keep-cloud-agent
+  labels:
+    app: keep-cloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keep-cloud
+  template:
+    metadata:
+      labels:
+        app: keep-cloud
+    spec:
+      containers:
+        - name: keep-cloud
+          image: 172.17.15.242/library/keep-cloud:latest
+          ports:
+            - containerPort: 20350
+            - containerPort: 8080

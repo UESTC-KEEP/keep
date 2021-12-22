@@ -39,7 +39,7 @@ func newEdgeTunnel(hostnameOverride, nodeIP string) *edgeTunnel {
 func (e *edgeTunnel) start() {
 	serverURL := url.URL{
 		Scheme: "wss",
-		Host:   fmt.Sprintf("%s:%d", cloud.DefaultKeepCloudIP, cloud.DefaultWebSocketPort),
+		Host:   fmt.Sprintf("%s:%d", edge.DefaultHttpServer, edge.DefaultWebSocketPort),
 		Path:   cloud.DefaultWebSocketUrl,
 	}
 	//certManager := cert.NewCertManager(e.hostnameOverride, config.Config.Token)

@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloud-agent-svc
+  namespace: default
+spec:
+  type: NodePort
+  ports:
+    - name: default-websocket-port
+      port: 20000
+      protocol: TCP
+      targetPort: 20000
+      nodePort: 30000
+    - name: default-http-port
+      port: 20001
+      protocol: TCP
+      targetPort: 20001
+      nodePort: 30001
+    - name: default-metrics-port
+      port: 20080
+      protocol: TCP
+      targetPort: 20080
+      nodePort: 30180
+  selector:
+    app: keep-cloud

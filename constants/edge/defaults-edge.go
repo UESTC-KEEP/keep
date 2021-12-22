@@ -37,8 +37,9 @@ const (
 
 // EdgePublisher 全局配置
 const (
-	DefaultHttpServer    = "http://192.168.1.121"
-	DefaultCloudHttpPort = 20000
+	DefaultHttpServer    = "183.230.142.218"
+	DefaultCloudHttpPort = 30001
+	DefaultWebSocketPort = 30000
 	DefaultEdgeHeartBeat = 15
 	DefaultEdgePort      = 20350
 	DefaultLogsTopic     = "keep_log_topic"

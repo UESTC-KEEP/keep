@@ -18,14 +18,14 @@ func StartDeviceInformer() {
 	logger.Debug("启动device ingfoinformer...")
 	informer := dynamicinformer.NewFilteredDynamicInformer(config.DynamicClient, kubeedge_engine.KubeedgeGVR, "default", 2*time.Second, nil, nil).Informer()
 	informer.AddEventHandler(cache.ResourceEventHandlerFuncs{
-		AddFunc:    AddDevice,
+		AddFunc:    OnAddDevice,
 		UpdateFunc: nil,
 		DeleteFunc: nil,
 	})
 	informer.Run(beehiveContext.Done())
 }
 
-func AddDevice(newObj interface{}) {
+func OnAddDevice(newObj interface{}) {
 	// 类型转换
 	device := &kedevice.Device{}
 	err := runtime.DefaultUnstructuredConverter.FromUnstructured(newObj.(*unstructured.Unstructured).UnstructuredContent(), device)
