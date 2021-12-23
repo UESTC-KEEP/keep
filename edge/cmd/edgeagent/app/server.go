@@ -8,7 +8,7 @@ import (
 	"keep/constants/edge"
 	"keep/edge/cmd/edgeagent/app/options"
 	"keep/edge/pkg/common/utils"
-	device_mapper_interface "keep/edge/pkg/device-mapper-interface"
+	device_manage_interface "keep/edge/pkg/device-manage-interface"
 	"keep/edge/pkg/edgepublisher"
 	"keep/edge/pkg/edgetwin"
 	"keep/edge/pkg/healthzagent"
@@ -74,5 +74,5 @@ func registerModules(config *edgeagent.EdgeAgentConfig) {
 	logsagent.Register(config.Modules.LogsAgent)
 	edgepublisher.Register(config.Modules.EdgePublisher)
 	edgetwin.Register(config.Modules.EdgeTwin)
-	device_mapper_interface.Register(config.Modules.DeviceMapperInterface)
+	device_manage_interface.Register(config.Modules.DeviceMapperInterface)
 }
