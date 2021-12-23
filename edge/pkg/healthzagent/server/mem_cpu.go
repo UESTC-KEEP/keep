@@ -1,11 +1,12 @@
 package server
 
 import (
+	logger "keep/pkg/util/loggerv1.0.1"
+	"time"
+
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/mem"
 	"github.com/shirou/gopsutil/net"
-	logger "keep/pkg/util/loggerv1.0.1"
-	"time"
 )
 
 // GetCpuStatus 获取当前边缘机器的cpu用量
@@ -16,7 +17,7 @@ func GetCpuStatus() (*[]cpu.InfoStat, float64, error) {
 	}
 	//logger.Debug("获取边缘节点的cpu信息：",cpuInfos)
 	// CPU使用率
-	percent, _ := cpu.Percent(time.Second, false)
+	percent, err := cpu.Percent(time.Second, false)
 	return &cpuInfos, percent[0], err
 }
 

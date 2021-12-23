@@ -2,13 +2,11 @@ package app
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"keep/constants/edge"
 	"keep/edge/cmd/edgeagent/app/options"
 	"keep/edge/pkg/common/utils"
-	device_manage_interface "keep/edge/pkg/device-manage-interface"
+	dmi "keep/edge/pkg/device_manage_interface"
 	"keep/edge/pkg/edgepublisher"
 	"keep/edge/pkg/edgetwin"
 	"keep/edge/pkg/healthzagent"
@@ -16,8 +14,11 @@ import (
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 	commonutil "keep/pkg/util"
 	"keep/pkg/util/core"
-	"keep/pkg/util/loggerv1.0.1"
+	kplogger "keep/pkg/util/loggerv1.0.1"
 	"os"
+
+	"github.com/spf13/cobra"
+	"gopkg.in/yaml.v2"
 )
 
 var versionCmd = &cobra.Command{
@@ -51,7 +52,7 @@ func NewEdgeAgentCommand() *cobra.Command {
 			// 下发配置文件
 			commonutil.OrganizeConfigurationFile(edge.EdgeAgentName)
 			if err != nil {
-				logger.Error(err)
+				kplogger.Error(err)
 				os.Exit(1)
 			}
 			utils.PrintKEEPLogo()
@@ -74,5 +75,5 @@ func registerModules(config *edgeagent.EdgeAgentConfig) {
 	logsagent.Register(config.Modules.LogsAgent)
 	edgepublisher.Register(config.Modules.EdgePublisher)
 	edgetwin.Register(config.Modules.EdgeTwin)
-	device_manage_interface.Register(config.Modules.DeviceMapperInterface)
+	dmi.Register(config.Modules.DeviceMapperInterface)
 }
