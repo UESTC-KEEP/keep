@@ -1,10 +1,13 @@
 package docker
 
 type ContainerMetrics struct {
-	Cpu    float64
-	Memory float64
-	Disk   map[string]float64
-	Net    map[string]int
+	Name             string
+	ID               string
+	Cpu              float64
+	Memory           float64
+	MemoryPercentage float64
+	Disk             map[string]float64
+	Net              map[string]float64
 }
 
 type DockerInterface interface {
