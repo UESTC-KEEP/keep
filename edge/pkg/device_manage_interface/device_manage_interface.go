@@ -2,11 +2,11 @@ package device_manage_interface
 
 import (
 	"keep/edge/pkg/common/modules"
-	devicemapperinterfaceconfig "keep/edge/pkg/device-manage-interface/config"
+	devicemapperinterfaceconfig "keep/edge/pkg/device_manage_interface/config"
 	"keep/edge/pkg/healthzagent/mqtt"
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 	"keep/pkg/util/core"
-	logger "keep/pkg/util/loggerv1.0.1"
+	"keep/pkg/util/kplogger"
 	"os"
 )
 
@@ -22,7 +22,7 @@ func Register(dmi *edgeagent.DeviceMapperInterface) {
 	devicemapperinterfaceconfig.InitConfigure(dmi)
 	devicemapperinter, err := NewDeviceMapperInterface(dmi.Enable)
 	if err != nil {
-		logger.Error("初始化DeviceMapperInterface失败...:", err)
+		kplogger.Error("初始化DeviceMapperInterface失败...:", err)
 		os.Exit(1)
 		return
 	}
@@ -54,7 +54,9 @@ func (dmi *DeviceMapperInterface) Enable() bool {
 
 func (dmi *DeviceMapperInterface) Start() {
 	//获取设备列表
-	WriteToCloud()
+	// var msg model.Message
+	// msg.Router
+	// publisher.Publish(msg)
 }
 
 func NewDeviceMapperInterface(enable bool) (*DeviceMapperInterface, error) {

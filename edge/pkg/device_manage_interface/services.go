@@ -1,6 +1,6 @@
 package device_manage_interface
 
-import v1 "keep/edge/pkg/device-manage-interface/apis/devices/v1"
+import v1 "keep/edge/pkg/device_manage_interface/apis/devices/v1"
 
 type DeviceStatus interface {
 	// GetDeviceStatus 获取设备的状态
