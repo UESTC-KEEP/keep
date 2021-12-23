@@ -4,9 +4,10 @@ const EdgeAgentName = "EdgeAgent"
 const EdgeConfigeFilesSourceDir = "edge/shells/confs/keepedge"
 
 const (
-	KeepBasepath     = "/etc/keepedge/"
-	KeepBaseConfPath = KeepBasepath + "config/"
-	KeepBaseLogPath  = "/var/log/keepedge/"
+	KeepBasepath              = "/etc/keepedge/"
+	DefaultEdgecoreConfigFile = "/etc/kubeedge/config/edgecore.yaml"
+	KeepBaseConfPath          = KeepBasepath + "config/"
+	KeepBaseLogPath           = "/var/log/keepedge/"
 	// DefaultBeehiveTimeout	等待接收消息时间上限 ms
 	DefaultBeehiveTimeout = 500
 )
