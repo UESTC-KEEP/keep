@@ -18,6 +18,7 @@ package v1alpha1
 
 import (
 	"io/ioutil"
+	"keep/constants/edge"
 
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/yaml"
@@ -34,5 +35,20 @@ func (c *EdgeAgentConfig) Parse(filename string) error {
 		klog.Errorf("Failed to unmarshal configfile %s: %v", filename, err)
 		return err
 	}
+
+	data, err = ioutil.ReadFile(edge.DefaultEdgecoreConfigFile)
+	if err != nil {
+		klog.Errorf("Failed to read edgecore configfile %s: %v", edge.DefaultEdgecoreConfigFile, err)
+		return nil
+	}
+
+	var edgecoreConfig EdgeCoreConfig
+	err = yaml.Unmarshal(data, &edgecoreConfig)
+	if err != nil {
+		klog.Errorf("Failed to unmarshal configfile %s: %v", edge.DefaultEdgecoreConfigFile, err)
+		return nil
+	}
+	c.Modules.EdgePublisher.HostnameOverride = edgecoreConfig.Modules.Edged.HostnameOverride
+
 	return nil
 }

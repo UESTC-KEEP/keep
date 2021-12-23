@@ -119,3 +119,15 @@ type EdgeTwin struct {
 type DeviceMapperInterface struct {
 	Enable bool `json:"enable"`
 }
+
+type Edged struct {
+	HostnameOverride string `json:"hostnameOverride,omitempty"`
+}
+
+type EdgeCoreModules struct {
+	Edged *Edged `json:"edged,omitempty"`
+}
+
+type EdgeCoreConfig struct {
+	Modules *EdgeCoreModules `json:"modules,omitempty"`
+}
