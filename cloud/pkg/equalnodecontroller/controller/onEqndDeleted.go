@@ -4,7 +4,7 @@ import (
 	"context"
 	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	crdv1 "keep/cloud/pkg/apis/keepedge/v1"
+	crdv1 "keep/cloud/pkg/apis/keepedge/equalnode/v1alpha1"
 	"keep/cloud/pkg/common/client"
 	logger "keep/pkg/util/loggerv1.0.1"
 )

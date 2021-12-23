@@ -1,7 +1,7 @@
 package controller
 
 import (
-	crdv1 "keep/cloud/pkg/apis/keepedge/v1"
+	crdv1 "keep/cloud/pkg/apis/keepedge/equalnode/v1alpha1"
 	logger "keep/pkg/util/loggerv1.0.1"
 	"reflect"
 )

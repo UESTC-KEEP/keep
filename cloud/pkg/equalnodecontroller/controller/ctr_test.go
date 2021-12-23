@@ -71,7 +71,7 @@ func TestInformer(t *testing.T) {
 /*
 kubebuilder create api \
 --group keepcrd \
---version v1 \
+--version v1alpha1 \
 --kind EqualNode
 */
 

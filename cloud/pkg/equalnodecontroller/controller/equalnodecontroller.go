@@ -5,7 +5,7 @@ import (
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
-	crdv1 "keep/cloud/pkg/apis/keepedge/v1"
+	crdv1 "keep/cloud/pkg/apis/keepedge/equalnode/v1alpha1"
 	"keep/cloud/pkg/client/clientset/versioned"
 	crdinformers "keep/cloud/pkg/client/informers/externalversions"
 	"keep/cloud/pkg/common/client"
@@ -31,7 +31,7 @@ func (eqndctl *EqualNodeController) Start() error {
 func NewEqualNodeController(crdInformerFactory crdinformers.SharedInformerFactory) (*EqualNodeController, error) {
 	//var workqueue workqueue.RateLimitingInterface
 	//workqueue.Done()
-	equalnodeManager, err := manager.NewEqualNodeManager(crdInformerFactory.Keepedge().V1().EqualNodes().Informer())
+	equalnodeManager, err := manager.NewEqualNodeManager(crdInformerFactory.Keepedge().V1alpha1().EqualNodes().Informer())
 	if err != nil {
 		logger.Warn("创建equalnode manager警告：", err)
 		return nil, err
@@ -94,7 +94,7 @@ func StartEqualNodecontroller() {
 
 	//得到controller
 	controller := NewController(kubeClient, equalnodeClient,
-		equalnodeInformerFactory.Keepedge().V1().EqualNodes())
+		equalnodeInformerFactory.Keepedge().V1alpha1().EqualNodes())
 
 	//启动informer
 	go equalnodeInformerFactory.Start(stopCh)

@@ -20,8 +20,8 @@ package fake
 
 import (
 	clientset "keep/cloud/pkg/client/clientset/versioned"
-	keepedgev1 "keep/cloud/pkg/client/clientset/versioned/typed/keepedge/v1"
-	fakekeepedgev1 "keep/cloud/pkg/client/clientset/versioned/typed/keepedge/v1/fake"
+	keepedgev1alpha1 "keep/cloud/pkg/client/clientset/versioned/typed/equalnode/v1alpha1"
+	fakekeepedgev1alpha1 "keep/cloud/pkg/client/clientset/versioned/typed/equalnode/v1alpha1/fake"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
@@ -80,7 +80,7 @@ var (
 	_ testing.FakeClient  = &Clientset{}
 )
 
-// KeepedgeV1 retrieves the KeepedgeV1Client
-func (c *Clientset) KeepedgeV1() keepedgev1.KeepedgeV1Interface {
-	return &fakekeepedgev1.FakeKeepedgeV1{Fake: &c.Fake}
+// KeepedgeV1alpha1 retrieves the KeepedgeV1alpha1Client
+func (c *Clientset) KeepedgeV1alpha1() keepedgev1alpha1.KeepedgeV1alpha1Interface {
+	return &fakekeepedgev1alpha1.FakeKeepedgeV1alpha1{Fake: &c.Fake}
 }

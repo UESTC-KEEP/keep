@@ -176,7 +176,8 @@ func checkK8sVersion() {
 // 拉起keep crd
 func checkeepCrd() {
 	// 创建crd
-	naive_engine.NewNaiveEngine().CreatResourcesByYAML(cloud.DefaultKeepCrd, cloud.DefualtKeepNamespace)
+	naive_engine.NewNaiveEngine().CreatResourcesByYAML(cloud.DefaultKeepEqndCrd, cloud.DefualtKeepNamespace)
+	naive_engine.NewNaiveEngine().CreatResourcesByYAML(cloud.DefaultKeepTrqCrd, cloud.DefualtKeepNamespace)
 }
 
 // 拉起service

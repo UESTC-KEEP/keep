@@ -2,6 +2,7 @@ package cloud
 
 import (
 	eqndconstants "keep/cloud/pkg/equalnodecontroller/constants"
+	trquotaconstants "keep/cloud/pkg/tenantresourcequotacontroller/constants"
 	"keep/constants/cloud"
 	"path/filepath"
 	"strings"
@@ -62,6 +63,18 @@ func NewDefaultEdgeAgentConfig() *CloudAgentConfig {
 				AlsoLogToStdErr: cloud.DefaultAlsoLogToStdErr,
 				Buffer: &EqualNodeControllerBuffer{
 					EqualNodeEvent: eqndconstants.DefaultEqualNodeEventBuffer,
+				},
+			},
+			TenantResourceQuotaController: &TenantResourceQuotaController{
+				Enable: true,
+				Tenant: "",
+				ResourceQuata: &ResourceQuata{
+					Pods:  0,
+					Cpu:   0,
+					Scope: "NotBestEffort",
+				},
+				Buffer: &TenantResourceQuotaControllerBuffer{
+					TenantResourceQuotaEvent: trquotaconstants.DefaultTRQuotaEventBuffer,
 				},
 			},
 		},

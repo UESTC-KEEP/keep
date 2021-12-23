@@ -11,7 +11,8 @@ const (
 	DefaultKeepConfigDir               = "/etc/keepedge/"
 	DefaultKubeConfigPath              = "/root/.kube/config"
 	DefaultCloudConfigFile             = DefaultKeepConfigDir + "config/cloudagent.yml"
-	DefaultKeepCrd                     = DefaultKeepConfigDir + "ymls/keepcrd/equivalentnode.yaml"
+	DefaultKeepEqndCrd                 = DefaultKeepConfigDir + "ymls/keepcrd/eqnd/equivalentnode.yaml"
+	DefaultKeepTrqCrd                  = DefaultKeepConfigDir + "ymls/keepcrd/tenantresourcequota/tenantresourcequota.yaml"
 	DefualtKeepNamespace               = "keepedge"
 	DefaultDecoderBufferSize           = 100
 	NodeName                           = "NodeName"
@@ -41,7 +42,7 @@ const (
 	DefaultWebSocketPort = 20000
 	DefaultCAURL         = "/ca.crt"
 	DefaultCertURL       = "/edge.crt"
-	DefaultWebSocketUrl  = "/v1/keepedge/connect"
+	DefaultWebSocketUrl  = "/v1alpha1/keepedge/connect"
 	// 签证ip
 	DefaultKeepCloudIP          = "172.17.14.196"
 	DefaultTokenRefreshDuration = 12

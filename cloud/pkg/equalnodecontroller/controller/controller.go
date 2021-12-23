@@ -1,13 +1,13 @@
 package controller
 
-// $GOPATH/src/k8s.io/code-generator/generate-groups.sh all keep/cloud/pkg/client keep/cloud/pkg/k8sclient/crd_engin/keepedge/pkg/apis keepedge:v1
+// $GOPATH/src/k8s.io/code-generator/generate-groups.sh all keep/cloud/pkg/client keep/cloud/pkg/k8sclient/crd_engin/keepedge/pkg/apis keepedge:v1alpha1
 import (
 	"fmt"
-	keepcrdv1 "keep/cloud/pkg/apis/keepedge/v1"
+	keepcrdv1 "keep/cloud/pkg/apis/keepedge/equalnode/v1alpha1"
 	clientset "keep/cloud/pkg/client/clientset/versioned"
 	equalnodescheme "keep/cloud/pkg/client/clientset/versioned/scheme"
-	informers "keep/cloud/pkg/client/informers/externalversions/keepedge/v1"
-	listers "keep/cloud/pkg/client/listers/keepedge/v1"
+	informers "keep/cloud/pkg/client/informers/externalversions/equalnode/v1alpha1"
+	listers "keep/cloud/pkg/client/listers/equalnode/v1alpha1"
 	"keep/cloud/pkg/equalnodecontroller/constants"
 	"keep/pkg/util/kplogger"
 	"keep/pkg/util/loggerv1.0.1"

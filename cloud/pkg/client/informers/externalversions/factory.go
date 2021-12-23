@@ -20,8 +20,8 @@ package externalversions
 
 import (
 	versioned "keep/cloud/pkg/client/clientset/versioned"
+	equalnode "keep/cloud/pkg/client/informers/externalversions/equalnode"
 	internalinterfaces "keep/cloud/pkg/client/informers/externalversions/internalinterfaces"
-	keepedge "keep/cloud/pkg/client/informers/externalversions/keepedge"
 	reflect "reflect"
 	sync "sync"
 	time "time"
@@ -172,9 +172,9 @@ type SharedInformerFactory interface {
 	ForResource(resource schema.GroupVersionResource) (GenericInformer, error)
 	WaitForCacheSync(stopCh <-chan struct{}) map[reflect.Type]bool
 
-	Keepedge() keepedge.Interface
+	Keepedge() equalnode.Interface
 }
 
-func (f *sharedInformerFactory) Keepedge() keepedge.Interface {
-	return keepedge.New(f, f.namespace, f.tweakListOptions)
+func (f *sharedInformerFactory) Keepedge() equalnode.Interface {
+	return equalnode.New(f, f.namespace, f.tweakListOptions)
 }

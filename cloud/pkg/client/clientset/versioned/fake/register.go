@@ -19,7 +19,7 @@ limitations under the License.
 package fake
 
 import (
-	keepedgev1 "keep/cloud/pkg/apis/keepedge/v1"
+	keepedgev1alpha1 "keep/cloud/pkg/apis/keepedge/equalnode/v1alpha1"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -32,7 +32,7 @@ var scheme = runtime.NewScheme()
 var codecs = serializer.NewCodecFactory(scheme)
 
 var localSchemeBuilder = runtime.SchemeBuilder{
-	keepedgev1.AddToScheme,
+	keepedgev1alpha1.AddToScheme,
 }
 
 // AddToScheme adds all types of this clientset into the given scheme. This allows composition

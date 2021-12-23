@@ -1,0 +1,16 @@
+apiVersion: keepedge.io/v1alpha1
+kind: EqualNode
+metadata:
+  name: object-eqnd
+spec:
+  name: "edge-zlj-ubuntu-1"
+  eqnd:
+    - edge-mini-1
+    - edge-zlj-1
+
+#  kubebuilder init --domain io.keepedge
+#
+#  kubebuilder create api \
+#  --group keepedge.io \
+#  --version v1alpha1 \
+#  --kind EqualNode

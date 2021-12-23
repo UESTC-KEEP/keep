@@ -8,11 +8,12 @@ import (
 )
 
 type Modules struct {
-	K8sClient           *K8sClient           `json:"k8s_client"`
-	PromServer          *PromServer          `json:"prom_server"`
-	RequestDispatcher   *RequestDispatcher   `json:"request_dispatcher"`
-	CloudImageManager   *CloudImageManager   `json:"cloud_image_manager"`
-	EqualNodeController *EqualNodeController `json:"equal_node_controller"`
+	K8sClient                     *K8sClient                     `json:"k8s_client"`
+	PromServer                    *PromServer                    `json:"prom_server"`
+	RequestDispatcher             *RequestDispatcher             `json:"request_dispatcher"`
+	CloudImageManager             *CloudImageManager             `json:"cloud_image_manager"`
+	EqualNodeController           *EqualNodeController           `json:"equal_node_controller"`
+	TenantResourceQuotaController *TenantResourceQuotaController `json:"tenant_resource_quota_controller"`
 }
 
 type CloudAgentConfig struct {
@@ -84,4 +85,21 @@ type EqualNodeController struct {
 // EqualNodeControllerBuffer 定义EqualNodeController的各类通道、buffer的大小
 type EqualNodeControllerBuffer struct {
 	EqualNodeEvent int32 `json:"equal_node_event,omitempty"`
+}
+
+type TenantResourceQuotaController struct {
+	Enable        bool                                 `json:"enable"`
+	Tenant        string                               `json:"tenant"`
+	ResourceQuata *ResourceQuata                       `json:"resourcequata"`
+	Buffer        *TenantResourceQuotaControllerBuffer `json:"buffer"`
+}
+
+type ResourceQuata struct {
+	Pods  int    `json:"pods"`
+	Cpu   int    `json:"cpu"`
+	Scope string `json:"scope"`
+}
+
+type TenantResourceQuotaControllerBuffer struct {
+	TenantResourceQuotaEvent int32 `json:"tenantResourceQuotaEvent"`
 }

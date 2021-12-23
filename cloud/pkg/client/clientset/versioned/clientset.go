@@ -20,7 +20,7 @@ package versioned
 
 import (
 	"fmt"
-	keepedgev1 "keep/cloud/pkg/client/clientset/versioned/typed/keepedge/v1"
+	keepedgev1alpha1 "keep/cloud/pkg/client/clientset/versioned/typed/equalnode/v1alpha1"
 
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
@@ -29,19 +29,19 @@ import (
 
 type Interface interface {
 	Discovery() discovery.DiscoveryInterface
-	KeepedgeV1() keepedgev1.KeepedgeV1Interface
+	KeepedgeV1alpha1() keepedgev1alpha1.KeepedgeV1alpha1Interface
 }
 
 // Clientset contains the clients for groups. Each group has exactly one
 // version included in a Clientset.
 type Clientset struct {
 	*discovery.DiscoveryClient
-	keepedgeV1 *keepedgev1.KeepedgeV1Client
+	keepedgeV1alpha1 *keepedgev1alpha1.KeepedgeV1alpha1Client
 }
 
-// KeepedgeV1 retrieves the KeepedgeV1Client
-func (c *Clientset) KeepedgeV1() keepedgev1.KeepedgeV1Interface {
-	return c.keepedgeV1
+// KeepedgeV1alpha1 retrieves the KeepedgeV1alpha1Client
+func (c *Clientset) KeepedgeV1alpha1() keepedgev1alpha1.KeepedgeV1alpha1Interface {
+	return c.keepedgeV1alpha1
 }
 
 // Discovery retrieves the DiscoveryClient
@@ -65,7 +65,7 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	}
 	var cs Clientset
 	var err error
-	cs.keepedgeV1, err = keepedgev1.NewForConfig(&configShallowCopy)
+	cs.keepedgeV1alpha1, err = keepedgev1alpha1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
 	}
@@ -81,7 +81,7 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 // panics if there is an error in the config.
 func NewForConfigOrDie(c *rest.Config) *Clientset {
 	var cs Clientset
-	cs.keepedgeV1 = keepedgev1.NewForConfigOrDie(c)
+	cs.keepedgeV1alpha1 = keepedgev1alpha1.NewForConfigOrDie(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClientForConfigOrDie(c)
 	return &cs
@@ -90,7 +90,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 // New creates a new Clientset for the given RESTClient.
 func New(c rest.Interface) *Clientset {
 	var cs Clientset
-	cs.keepedgeV1 = keepedgev1.New(c)
+	cs.keepedgeV1alpha1 = keepedgev1alpha1.New(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClient(c)
 	return &cs

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// Package v1 contains API Schema definitions for the rules v1 API group
+// Package v1alpha1 contains API Schema definitions for the rules v1alpha1 API group
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=package,register
 // +k8s:conversion-gen=kubeedge/cloud/pkg/apis/rules
@@ -38,7 +38,7 @@ const (
 	// GroupName is the group name use in this package.
 	GroupName = "rules.kubeedge.io"
 	// Version is the API version.
-	Version = "v1"
+	Version = "v1alpha1"
 )
 
 var (

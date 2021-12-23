@@ -76,6 +76,7 @@ func ResolveRouter(msg *model.Message) {
 				Router: model.MessageRoute{
 					Source:    modules.K8sClientModule,
 					Operation: "publish",
+					Resource:  "k8s-node03",
 				},
 				Content: devicelist,
 			})

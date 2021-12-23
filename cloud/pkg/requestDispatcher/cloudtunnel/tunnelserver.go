@@ -124,18 +124,26 @@ func (s *tunnelServer) Start() {
 		},
 	}
 	logger.Info("Prepare to start tunnel server")
+
+	go s.sendBeehiveMessageToEdge()
+
 	err = tunnelServer.ListenAndServeTLS("", "")
 	if err != nil {
 		logger.Fatal("Start tunnelServer error", err)
 		return
 	}
-	go s.sendBeehiveMessageToEdge()
 }
 
 func (s *tunnelServer) sendBeehiveMessageToEdge() {
 	logger.Info("send message to edge goroutine started")
 	for {
+		select {
+		case <-beehiveContext.Done():
+			return
+		default:
+		}
 		msg, err := beehiveContext.Receive(modules.RequestDispatcherModule)
+		fmt.Printf("%#v\n", msg)
 		logger.Info("send message to edge: ", msg)
 		if err != nil {
 			logger.Info("receive not Message format message")

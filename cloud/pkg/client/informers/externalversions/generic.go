@@ -20,7 +20,7 @@ package externalversions
 
 import (
 	"fmt"
-	v1 "keep/cloud/pkg/apis/keepedge/v1"
+	v1alpha1 "keep/cloud/pkg/apis/keepedge/equalnode/v1alpha1"
 
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
@@ -52,9 +52,9 @@ func (f *genericInformer) Lister() cache.GenericLister {
 // TODO extend this to unknown resources with a client pool
 func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource) (GenericInformer, error) {
 	switch resource {
-	// Group=keepedge.k8s.io, Version=v1
-	case v1.SchemeGroupVersion.WithResource("equalnodes"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Keepedge().V1().EqualNodes().Informer()}, nil
+	// Group=keepedge.k8s.io, Version=v1alpha1
+	case v1alpha1.SchemeGroupVersion.WithResource("equalnodes"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Keepedge().V1alpha1().EqualNodes().Informer()}, nil
 
 	}
 

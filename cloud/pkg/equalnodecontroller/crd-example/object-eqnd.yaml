@@ -1,4 +1,4 @@
-apiVersion: keepedge.io/v1
+apiVersion: keepedge.io/v1alpha1
 kind: EqualNode
 metadata:
   name: object-eqnd
@@ -12,5 +12,5 @@ spec:
 
   kubebuilder create api \
   --group keepedge.io \
-  --version v1 \
+  --version v1alpha1 \
   --kind EqualNode
