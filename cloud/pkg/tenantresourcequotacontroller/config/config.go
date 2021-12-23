@@ -1,7 +1,7 @@
 package config
 
 import (
-	crdClientset "keep/cloud/pkg/client/clientset/versioned"
+	trqcrdClientset "keep/cloud/pkg/client/trq/clientset/versioned"
 	"keep/cloud/pkg/common/client"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"sync"
@@ -9,7 +9,7 @@ import (
 
 var Config Configure
 var once sync.Once
-var KeepCrdClient crdClientset.Interface
+var KeepCrdClient trqcrdClientset.Interface
 
 type Configure struct {
 	cloudagent.TenantResourceQuotaController
@@ -17,7 +17,7 @@ type Configure struct {
 
 func InitConfigure(trq *cloudagent.TenantResourceQuotaController) {
 	once.Do(func() {
-		KeepCrdClient = client.GetCRDClient()
+		KeepCrdClient = client.GetTrqCRDClient()
 		Config = Configure{
 			TenantResourceQuotaController: *trq,
 		}

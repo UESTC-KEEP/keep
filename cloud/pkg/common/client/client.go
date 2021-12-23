@@ -17,7 +17,8 @@ limitations under the License.
 package client
 
 import (
-	crdClientset "keep/cloud/pkg/client/clientset/versioned"
+	eqndcrdClientset "keep/cloud/pkg/client/eqnd/clientset/versioned"
+	trqcrdClientset "keep/cloud/pkg/client/trq/clientset/versioned"
 	"os"
 	"sync"
 
@@ -31,7 +32,7 @@ import (
 	cloudagentConfig "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 )
 
-var keClient *kubeEdgeClient
+var kpClient *kubeEdgeClient
 var once sync.Once
 
 func InitKubeEdgeClient(config *cloudagentConfig.K8sClient) {
@@ -51,31 +52,38 @@ func InitKubeEdgeClient(config *cloudagentConfig.K8sClient) {
 
 	crdKubeConfig := rest.CopyConfig(kubeConfig)
 	crdKubeConfig.ContentType = runtime.ContentTypeJSON
-	crdClient := crdClientset.NewForConfigOrDie(crdKubeConfig)
+	eqndcrdClient := eqndcrdClientset.NewForConfigOrDie(crdKubeConfig)
+	trqcrdClient := trqcrdClientset.NewForConfigOrDie(crdKubeConfig)
 
 	once.Do(func() {
-		keClient = &kubeEdgeClient{
+		kpClient = &kubeEdgeClient{
 			kubeClient:    kubeClient,
-			crdClient:     crdClient,
+			eqndcrdClient: eqndcrdClient,
+			trqcrdClient:  trqcrdClient,
 			dynamicClient: dynamicClient,
 		}
 	})
 }
 
 func GetKubeClient() kubernetes.Interface {
-	return keClient.kubeClient
+	return kpClient.kubeClient
 }
 
-func GetCRDClient() crdClientset.Interface {
-	return keClient.crdClient
+func GetEqndCRDClient() eqndcrdClientset.Interface {
+	return kpClient.eqndcrdClient
+}
+
+func GetTrqCRDClient() trqcrdClientset.Interface {
+	return kpClient.trqcrdClient
 }
 
 func GetDynamicClient() dynamic.Interface {
-	return keClient.dynamicClient
+	return kpClient.dynamicClient
 }
 
 type kubeEdgeClient struct {
 	kubeClient    *kubernetes.Clientset
-	crdClient     *crdClientset.Clientset
+	eqndcrdClient *eqndcrdClientset.Clientset
+	trqcrdClient  *trqcrdClientset.Clientset
 	dynamicClient dynamic.Interface
 }

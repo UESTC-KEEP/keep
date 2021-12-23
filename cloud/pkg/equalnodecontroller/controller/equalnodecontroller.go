@@ -6,8 +6,8 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 	crdv1 "keep/cloud/pkg/apis/keepedge/equalnode/v1alpha1"
-	"keep/cloud/pkg/client/clientset/versioned"
-	crdinformers "keep/cloud/pkg/client/informers/externalversions"
+	"keep/cloud/pkg/client/eqnd/clientset/versioned"
+	crdinformers "keep/cloud/pkg/client/eqnd/informers/externalversions"
 	"keep/cloud/pkg/common/client"
 	"keep/cloud/pkg/equalnodecontroller/config"
 	"keep/cloud/pkg/equalnodecontroller/manager"
@@ -80,7 +80,7 @@ func StartEqualNodecontroller() {
 		logger.Fatal("Error building kubeconfig: ", err.Error())
 	}
 
-	kubeClient, err := kubernetes.NewForConfig(cfg)
+	kubeClient := client.GetKubeClient()
 	if err != nil {
 		logger.Fatal("Error building kubernetes clientset:", err.Error())
 	}

@@ -61,7 +61,7 @@ func (dmi *DeviceMapperInterface) Start() {
 
 func NewDeviceMapperInterface(enable bool) (*DeviceMapperInterface, error) {
 	dmi_obj := new(DeviceMapperInterface)
-	dmi_obj.mqtt_cli = mqtt.CreateMqttClientNoName("192.168.1.40", "1833")
+	dmi_obj.mqtt_cli = mqtt.CreateMqttClientNoName("192.168.1.40", "1883")
 	if nil == dmi_obj.mqtt_cli {
 		dmi_obj.enable = false
 	} else {

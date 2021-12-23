@@ -1,0 +1,9 @@
+apiVersion: keepedge.io/v1alpha1
+kind: TenantResourceQuota
+metadata:
+  name: object-trq
+spec:
+  name: "test-trq"
+  resourcequotas:
+    pods: "50"
+    cpu: "200"
