@@ -6,7 +6,7 @@ import (
 	k8sinformer "k8s.io/client-go/informers"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/cache"
-	crdinformers "keep/cloud/pkg/client/informers/externalversions"
+	crdinformers "keep/cloud/pkg/client/eqnd/informers/externalversions"
 	"keep/cloud/pkg/common/client"
 	"keep/pkg/util/loggerv1.0.1"
 	"sync"
@@ -41,7 +41,7 @@ func GetInformersManager() Manager {
 			defaultResync:                0,
 			keepClient:                   client.GetKubeClient(),
 			informers:                    make(map[string]cache.SharedIndexInformer),
-			crdSharedInformerFactory:     crdinformers.NewSharedInformerFactory(client.GetCRDClient(), 0),
+			crdSharedInformerFactory:     crdinformers.NewSharedInformerFactory(client.GetEqndCRDClient(), 0),
 			k8sSharedInformerFactory:     k8sinformer.NewSharedInformerFactory(client.GetKubeClient(), 0),
 			dynamicSharedInformerFactory: dynamicinformer.NewFilteredDynamicSharedInformerFactory(client.GetDynamicClient(), 0, v1.NamespaceAll, nil),
 		}

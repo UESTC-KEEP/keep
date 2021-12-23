@@ -64,7 +64,7 @@ const (
 const Url = DefaultMasterLBIp + ":4560"
 const ContentType = "apllication/json;charset=utf-8"
 
-var Address = []string{"192.168.1.103:9092", "192.168.1.103:9093"}
+var Address = []string{"183.230.142.218:30901", "183.230.142.218:30902"}
 
 const (
 	OrginTopic = "topic"

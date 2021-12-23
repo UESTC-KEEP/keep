@@ -1,7 +1,7 @@
 package config
 
 import (
-	crdClientset "keep/cloud/pkg/client/clientset/versioned"
+	crdClientset "keep/cloud/pkg/client/eqnd/clientset/versioned"
 	"keep/cloud/pkg/common/client"
 	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"sync"
@@ -17,7 +17,7 @@ type Configure struct {
 
 func InitConfigure(eqndc *cloudagent.EqualNodeController) {
 	once.Do(func() {
-		EqndClient = client.GetCRDClient()
+		EqndClient = client.GetEqndCRDClient()
 		Config = Configure{
 			EqualNodeController: *eqndc,
 		}
