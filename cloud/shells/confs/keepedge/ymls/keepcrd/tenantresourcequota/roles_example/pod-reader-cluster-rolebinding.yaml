@@ -1,0 +1,14 @@
+# 允许dave在集群范围内读取pod
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: read-secrets
+  namespace: development # This only grants permissions within the "development" namespace.
+subjects:
+  - kind: User
+    name: dave
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
