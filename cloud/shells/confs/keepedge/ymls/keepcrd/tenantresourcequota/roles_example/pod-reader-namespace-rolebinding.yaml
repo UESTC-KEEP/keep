@@ -1,0 +1,14 @@
+# 以下的RoleBinding在“default”namespace中将“pod-reader”Role授予用户“jane”。将允许“jane”在“default”namespace中读取pod权限。
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: read-pods
+  namespace: default
+subjects:
+  - kind: User
+    name: jane
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io

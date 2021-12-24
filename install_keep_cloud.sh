@@ -1,5 +1,6 @@
 #!/bin/bash
 rm -rf cloudagent
+cp /root/.kube/config .
 # docker build -f /path/to/a/Dockerfile .
 # 构建镜像
 docker build -f Dockerfile_cloud -t keep-cloud .

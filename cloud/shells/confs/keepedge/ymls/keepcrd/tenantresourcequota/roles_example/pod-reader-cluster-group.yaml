@@ -1,0 +1,13 @@
+# ClusterRoleBinding可以用于集群中所有命名空间中授予权限。以下ClusterRoleBinding允许组“manager”中的任何用户在任何命名空间中读取pod。
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: read-secrets-global
+subjects:
+  - kind: Group
+    name: manager
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io

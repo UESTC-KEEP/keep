@@ -20,7 +20,7 @@ var Healagent edgeagent.HealthzAgent
 
 // GetMachineStatus  获取节点综合信息
 func GetMachineStatus() {
-	logger.Debug("查询节点用量...")
+	logger.Trace("查询节点用量...")
 	Healagent.HostInfoStat, _ = GetBasicStatus()
 	Healagent.Cpu, Healagent.CpuUsage, _ = GetCpuStatus()
 	Healagent.Mem = GetMemStatus()
@@ -79,6 +79,6 @@ func StartMetricEdgeInterval(interval int) *cron.Cron {
 		logger.Error(err)
 	}
 	cron2.Start()
-	logger.Debug("定时检测边缘节点健康状态启动成功...")
+	logger.Trace("定时检测边缘节点健康状态启动成功...")
 	return cron2
 }

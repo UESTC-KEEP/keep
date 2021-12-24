@@ -40,5 +40,5 @@ spec:
     kind: TenantResourceQuota
     # 简称，就像service的简称是svc
     shortNames:
-      - trquota
+      - trq
 
