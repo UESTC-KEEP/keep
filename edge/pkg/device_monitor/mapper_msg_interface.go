@@ -2,6 +2,7 @@ package devicemonitor
 
 import (
 	"context"
+	"encoding/json"
 	"keep/edge/pkg/healthzagent/mqtt"
 	"keep/pkg/util/kplogger"
 	"net/http"
@@ -14,19 +15,29 @@ import (
 
 type MessageInterface struct {
 	ctx         context.Context
+	cancel      context.CancelFunc
 	device_name string
 	mqtt_cli    *mqtt.MqttClient
 }
 
-func NewMsgInterface(ctx context.Context, device_name string) *MessageInterface {
+type MapperMessageDef map[string]interface{}
+type MapperMessage struct {
+	data MapperMessageDef
+}
+
+func NewMsgInterface(device_name string) *MessageInterface {
 	msg_interface := new(MessageInterface)
+
+	ctx, cancel := context.WithCancel(context.Background())
 	msg_interface.ctx = ctx
+	msg_interface.cancel = cancel
+
 	msg_interface.mqtt_cli = mqtt.CreateMqttClientNoName(MQTT_BROKER_ADDR, MQTT_BROKER_PORT)
 	msg_interface.device_name = device_name
 
 	go msg_interface.tryRegistToDeviceMonitor()
 
-	go msg_interface.deviceNameReporter()
+	go msg_interface.deviceNameReporterDaemon()
 
 	return msg_interface
 }
@@ -37,7 +48,7 @@ func (obj *MessageInterface) tryRegistToDeviceMonitor() {
 	defer retry_timer.Stop()
 	for {
 		err := obj.registToDeviceMonitor()
-		if err == nil { //每10s尝试一次
+		if err == nil { //每10s尝试一次，成功后就停止
 			return
 		}
 		retry_timer.Reset(retry_period)
@@ -62,21 +73,14 @@ func (obj *MessageInterface) registToDeviceMonitor() error { //目前只是把�
 }
 
 func (obj *MessageInterface) Destroy() {
+	obj.cancel()
 	if obj.mqtt_cli != nil {
 		obj.mqtt_cli.DestroyMqttClient()
 	}
 }
 
-//TODO 还要实现其他的mapper和edgetopic接口
-
-//用map生成json
-func (obj *MessageInterface) SendStatusData(data []byte) {
-	topic := TopicDeviceDataUpdate(obj.device_name)
-	obj.mqtt_cli.PublishMsg(topic, data)
-}
-
 //额外添加处理DM广播设备发现的接口 ,收到DM发的广播后，就会向DM报告本设备的名称
-func (obj *MessageInterface) deviceNameReporter() {
+func (obj *MessageInterface) deviceNameReporterDaemon() {
 	topic := TopicInquireDeviceName()
 	obj.mqtt_cli.RegistSubscribeTopic(&mqtt.TopicConf{
 		TopicName: topic,
@@ -84,11 +88,32 @@ func (obj *MessageInterface) deviceNameReporter() {
 		DataMode:  mqtt.MQTT_BLOCK_MODE,
 	})
 
-	for {
+	for { //mqtt客户端在关闭后会结束阻塞
 		_, err := obj.mqtt_cli.GetTopicData(topic) //TODO 应该写点数据，当作校验
 		if nil != err {
 			kplogger.Error(err)
+			continue
 		}
 		obj.registToDeviceMonitor()
 	}
+}
+
+func NewMapperMsg() *MapperMessage {
+	msg := new(MapperMessage)
+	msg.data = make(MapperMessageDef)
+	//BaseMessage
+	msg.data["EventID"] = "0" //TODO 这两个地方是随便填的
+	msg.data["Timestamp"] = 123456789
+	return msg
+}
+
+func (msg *MapperMessage) AddItem(item_name string, data interface{}) {
+	msg.data[item_name] = data
+}
+
+//TODO 还要实现其他的mapper和edgetopic接口
+func (obj *MessageInterface) SendStatusData(msg MapperMessage) {
+	topic := TopicDeviceDataUpdate(obj.device_name)
+	mjson, _ := json.Marshal(msg.data) //用map生成json
+	obj.mqtt_cli.PublishMsg(topic, mjson)
 }
