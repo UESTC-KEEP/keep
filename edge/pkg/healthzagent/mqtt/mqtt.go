@@ -106,7 +106,7 @@ func CreateMqttClient(clientName string, broker_ip string, brokerPort string) *M
 
 	if nil != err {
 		kplogger.Fatal(err)
-		panic(err)
+		panic(err) //TODO 感觉这个地方用panic不合适，得考虑wumqtt时也能运行
 	}
 
 	pCli := new(MqttClient)

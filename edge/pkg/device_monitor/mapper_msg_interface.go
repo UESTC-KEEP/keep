@@ -17,7 +17,7 @@ type MessageInterface struct {
 
 func NewMsgInterface(device_name string) *MessageInterface {
 	msg_interface := new(MessageInterface)
-	msg_interface.mqtt_cli = mqtt.CreateMqttClientNoName("localhost", "1883")
+	msg_interface.mqtt_cli = mqtt.CreateMqttClientNoName(MQTT_BROKER_ADDR, MQTT_BROKER_PORT)
 	msg_interface.device_name = device_name
 
 	msg_interface.registToDeviceMonitor()
@@ -25,7 +25,7 @@ func NewMsgInterface(device_name string) *MessageInterface {
 	return msg_interface
 }
 
-func (obj *MessageInterface) registToDeviceMonitor() { //目前只是b把本设备名称通知给device monitor
+func (obj *MessageInterface) registToDeviceMonitor() { //目前只是把本设备名称通知给device monitor
 	url := "localhost:8085" + "/" + obj.device_name
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -37,13 +37,26 @@ func (obj *MessageInterface) registToDeviceMonitor() { //目前只是b把本设�
 	client.Do(req)
 }
 
+func (obj *MessageInterface) Destroy() {
+	if obj.mqtt_cli != nil {
+		obj.mqtt_cli.DestroyMqttClient()
+	}
+}
+
+//TODO 还要实现其他的mapper和edgetopic接口
+
 func (obj *MessageInterface) SendStatusData(data []byte) {
 	topic := TopicDeviceDataUpdate(obj.device_name)
 	obj.mqtt_cli.PublishMsg(topic, data)
 }
 
-func (obj *MessageInterface) Destroy() {
-	if obj.mqtt_cli != nil {
-		obj.mqtt_cli.DestroyMqttClient()
-	}
+//额外添加处理DM广播设备发现的接口 ,收到DM发的广播后，就会向DM报告本设备的名称
+func (obj *MessageInterface) deviceNameReporter() {
+	obj.mqtt_cli.RegistSubscribeTopic(&mqtt.TopicConf{
+		TopicName: TopicInquireDeviceName(),
+		TimeoutMs: 0,
+		DataMode:  mqtt.MQTT_BLOCK_MODE,
+	})
+
+	// obj.mqtt_cli.PublishMsg()
 }
