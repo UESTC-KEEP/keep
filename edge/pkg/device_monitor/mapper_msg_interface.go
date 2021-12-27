@@ -22,11 +22,13 @@ func NewMsgInterface(device_name string) *MessageInterface {
 
 	msg_interface.registToDeviceMonitor()
 
+	go deviceNameReporter()
+
 	return msg_interface
 }
 
 func (obj *MessageInterface) registToDeviceMonitor() { //目前只是把本设备名称通知给device monitor
-	url := "localhost:8085" + "/" + obj.device_name
+	url := HTTP_SERVER_ADDR + ":" + DEVICE_REG_PORT + "/" + obj.device_name
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		kplogger.Emer("Cannont regist device =", obj.device_name)
@@ -52,11 +54,18 @@ func (obj *MessageInterface) SendStatusData(data []byte) {
 
 //额外添加处理DM广播设备发现的接口 ,收到DM发的广播后，就会向DM报告本设备的名称
 func (obj *MessageInterface) deviceNameReporter() {
+	topic := TopicInquireDeviceName()
 	obj.mqtt_cli.RegistSubscribeTopic(&mqtt.TopicConf{
-		TopicName: TopicInquireDeviceName(),
+		TopicName: topic,
 		TimeoutMs: 0,
 		DataMode:  mqtt.MQTT_BLOCK_MODE,
 	})
 
-	// obj.mqtt_cli.PublishMsg()
+	for {
+		_, err := obj.mqtt_cli.GetTopicData(topic) //TODO 应该写点数据，当作校验
+		if nil != err {
+			kplogger.Error(err)
+		}
+		obj.registToDeviceMonitor()
+	}
 }

@@ -39,7 +39,8 @@ func (monitor *DeviceMonitor) Run() {
 }
 
 func (monitor *DeviceMonitor) ServeHTTP(resp http.ResponseWriter, req *http.Request) { //  监听本机上的新mapper的注册请求
-	fmt.Fprintln(resp, "TODO")
+	fmt.Fprintln(resp, req.URL, "TODO")
+
 }
 
 func (monitor *DeviceMonitor) LocalDeviceRegistryServer() {

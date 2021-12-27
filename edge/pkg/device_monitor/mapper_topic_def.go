@@ -1,7 +1,7 @@
 package devicemonitor
 
 //device monitor 发起查询本机上的设备
-func TopicInquireDeviceName(device_name string) string {
+func TopicInquireDeviceName() string {
 	return "$kp/events/edge/dm/inqurie_device"
 }
 
