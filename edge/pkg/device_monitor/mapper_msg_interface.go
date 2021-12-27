@@ -3,6 +3,7 @@ package devicemonitor
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"keep/edge/pkg/healthzagent/mqtt"
 	"keep/pkg/util/kplogger"
 	"net/http"
@@ -60,15 +61,21 @@ func (obj *MessageInterface) tryRegistToDeviceMonitor() {
 }
 
 func (obj *MessageInterface) registToDeviceMonitor() error { //目前只是把本设备名称通知给device monitor
-	url := HTTP_SERVER_ADDR + ":" + DEVICE_REG_PORT + "/" + obj.device_name
+	kplogger.Infof("Try to Regist device <%s> to DM", obj.device_name)
+	url := "http://" + HTTP_SERVER_ADDR + ":" + DEVICE_REG_PORT + "/" + obj.device_name
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
-		kplogger.Error("Cannont regist device =", obj.device_name)
+		kplogger.Error("Cannont create http req")
 		return err
 	}
 
 	client := &http.Client{}
-	client.Do(req)
+	_, err = client.Do(req)
+	if err != nil {
+		kplogger.Errorf("Cannont regist device <%s>", obj.device_name)
+		fmt.Println(err)
+		return err
+	}
 	return nil
 }
 

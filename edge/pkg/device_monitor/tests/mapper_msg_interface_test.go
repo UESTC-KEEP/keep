@@ -9,7 +9,9 @@ import (
 
 //dummy mapper
 func TestMapperMsgInterface(t *testing.T) {
-	t.Log("TestMapperMsgInterfacet")
+	go TestDeviceMonitor(t)
+	time.Sleep(time.Second)
+	t.Log("TestMapperMsgInterface")
 	fmt.Println("test")
 	msg_interface := devicemonitor.NewMsgInterface("dummy")
 	defer msg_interface.Destroy()

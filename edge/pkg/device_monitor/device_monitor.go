@@ -30,7 +30,7 @@ func NewDeviceMonitor() *DeviceMonitor {
 	ctx, cancel := context.WithCancel(context.Background())
 	monitor.ctx = ctx
 	monitor.cancel = cancel
-
+	monitor.device_list = make(map[string]interface{})
 	monitor.mqtt_cli = mqtt.CreateMqttClientNoName(MQTT_BROKER_ADDR, MQTT_BROKER_PORT)
 	//TODO 只是开了客户端，没监听
 
@@ -51,6 +51,7 @@ func (monitor *DeviceMonitor) Run() {
 
 func (monitor *DeviceMonitor) ServeHTTP(resp http.ResponseWriter, req *http.Request) { //  监听本机上的新mapper的注册请求
 	fmt.Fprintln(resp, req.URL.String(), "TODO")
+	fmt.Println("recv=", req.URL.String())
 	monitor.addDeviceToRecord(req.URL.String())
 }
 

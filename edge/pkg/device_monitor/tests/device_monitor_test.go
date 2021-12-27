@@ -6,10 +6,11 @@ import (
 	"testing"
 )
 
-func TestDeiceMonitor(t *testing.T) {
-	fmt.Println("TestDeiceMonitor")
+func TestDeviceMonitor(t *testing.T) {
+	fmt.Println("TestDeviceMonitor")
 	monitor := devicemonitor.NewDeviceMonitor()
 	defer monitor.Destroy()
 
 	monitor.Run()
+	fmt.Println("TestDeviceMonitor END")
 }
