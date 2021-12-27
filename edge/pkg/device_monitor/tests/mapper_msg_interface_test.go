@@ -1,13 +1,16 @@
 package tests
 
 import (
+	"fmt"
 	devicemonitor "keep/edge/pkg/device_monitor"
 	"testing"
 	"time"
 )
 
-func TestMapperMsgInterfacet(t *testing.T) {
+//dummy mapper
+func TestMapperMsgInterface(t *testing.T) {
 	t.Log("TestMapperMsgInterfacet")
+	fmt.Println("test")
 	msg_interface := devicemonitor.NewMsgInterface("dummy")
 	defer msg_interface.Destroy()
 

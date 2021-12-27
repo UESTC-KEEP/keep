@@ -115,5 +115,5 @@ func (msg *MapperMessage) AddItem(item_name string, data interface{}) {
 func (obj *MessageInterface) SendStatusData(msg *MapperMessage) {
 	topic := TopicDeviceDataUpdate(obj.device_name)
 	mjson, _ := json.Marshal(msg.data) //用map生成json
-	obj.mqtt_cli.PublishMsg(topic, mjson)
+	obj.mqtt_cli.PublishMsg(topic, mjson, false)
 }
