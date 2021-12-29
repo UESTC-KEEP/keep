@@ -9,8 +9,8 @@ import (
 func TestDeviceMonitor(t *testing.T) {
 	fmt.Println("TestDeviceMonitor")
 	monitor := devicemonitor.NewDeviceMonitor()
-	defer monitor.Destroy()
+	defer monitor.Cleanup()
 
-	monitor.Run()
+	monitor.Start()
 	fmt.Println("TestDeviceMonitor END")
 }
