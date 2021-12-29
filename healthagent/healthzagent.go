@@ -5,6 +5,7 @@ import (
 	"keep/healthagent/config"
 	prome "keep/healthagent/promethus"
 	"keep/healthagent/server"
+	"keep/pkg/util/kplogger"
 	logger "keep/pkg/util/loggerv1.0.1"
 	"strings"
 
@@ -39,7 +40,7 @@ func (h *HealthzAgent) Start() {
 	logger.Debug("healthzagent开始启动....")
 	// 打印机器配置
 	server.GetMachineStatus()
-	logger.Debug(server.DescribeMachine(&server.Healagent))
+	kplogger.Debug(server.DescribeMachine(&server.Healagent))
 	// 启动周期性任务轮询本机用量
 	//cron := server.StartMetricEdgeInterval(config.Config.DefaultEdgeHealthInterval)
 	// 启动本机StartMertricsServer
