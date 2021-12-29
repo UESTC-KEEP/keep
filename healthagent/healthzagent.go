@@ -79,6 +79,7 @@ func main() {
 		os.Exit(1)
 		return
 	}
+
 	defer healthzagent.Cleanup()
 	healthzagent.Start()
 }
