@@ -3,7 +3,11 @@ package devicemonitor
 import (
 	"context"
 	"fmt"
-	"keep/edge/pkg/healthzagent/mqtt"
+	"os"
+
+	"keep/edge/pkg/common/modules"
+	"keep/edge/pkg/device_monitor/mqtt"
+	"keep/pkg/util/core"
 	"keep/pkg/util/kplogger"
 	"net/http"
 	"time"
@@ -16,12 +20,51 @@ const MQTT_BROKER_PORT = "1883"
 const MQTT_BROKER_ADDR = "192.168.1.40"
 
 type DeviceMonitor struct {
+	enable   bool `json:"enable"`
 	ctx      context.Context
 	cancel   context.CancelFunc
 	mqtt_cli *mqtt.MqttClient
 	// http_server
 	device_list map[string]interface{} //记录已经注册的设备
 	// recorded_device_list [] string //TODO 已经在k8s中注册的设备，可以直接查到
+}
+
+func Register() { //TODO 以后添加输入配置项
+	monitor := NewDeviceMonitor()
+	if monitor == nil {
+		kplogger.Error("初始化DDeviceMonitor失败...:")
+		os.Exit(1)
+		return
+	}
+	monitor.enable = true
+	core.Register(monitor)
+}
+
+func (monitor *DeviceMonitor) Group() string {
+	return modules.DeviceMonitorGroup
+}
+
+func (monitor *DeviceMonitor) Name() string {
+	return modules.DeviceMonitorModule
+}
+
+func (monitor *DeviceMonitor) Enable() bool {
+	return monitor.enable
+}
+
+func (monitor *DeviceMonitor) Start() {
+	go monitor.monitorDevice()
+	monitor.LocalDeviceRegistryServer()
+}
+
+func (monitor *DeviceMonitor) Cleanup() {
+	if !(monitor.enable) {
+		return
+	}
+	monitor.cancel()
+	if monitor.mqtt_cli != nil {
+		monitor.mqtt_cli.DestroyMqttClient()
+	}
 }
 
 func NewDeviceMonitor() *DeviceMonitor {
@@ -35,18 +78,6 @@ func NewDeviceMonitor() *DeviceMonitor {
 	//TODO 只是开了客户端，没监听
 
 	return monitor
-}
-
-func (monitor *DeviceMonitor) Destroy() {
-	monitor.cancel()
-	if monitor.mqtt_cli != nil {
-		monitor.mqtt_cli.DestroyMqttClient()
-	}
-}
-
-func (monitor *DeviceMonitor) Run() {
-	go monitor.monitorDevice()
-	monitor.LocalDeviceRegistryServer()
 }
 
 func (monitor *DeviceMonitor) ServeHTTP(resp http.ResponseWriter, req *http.Request) { //  监听本机上的新mapper的注册请求
