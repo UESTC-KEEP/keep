@@ -1,6 +1,6 @@
 syntax = "proto3";
 package v1;
-option go_package = "../../devices/v1";
+option go_package = "../../devices/v1alpha1";
 
 // 生成仅包含结构体定义的go语言代码 protoc --go_out=../services/ prod.proto
 // 生成定义了函数之后的go语言代码   protoc --go_out=plugins=grpc:../../devices/v1 api.proto

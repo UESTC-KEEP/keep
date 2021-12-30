@@ -6,5 +6,6 @@ const (
 	LogsAgentModule             = "logsagent"
 	EdgePublisherModule         = "edgepublisher"
 	EdgeTwinModule              = "edgetwin"
-	DeviceMapperInterfaceModule = "devicemapperinterface"
+	DeviceMapperInterfaceModule = "devicemapperinterface" //Obsolute
+	DeviceMonitorModule         = "DeviceMonitor"
 )

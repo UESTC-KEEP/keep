@@ -106,7 +106,7 @@ func CreateMqttClient(clientName string, broker_ip string, brokerPort string) *M
 
 	if nil != err {
 		kplogger.Fatal(err)
-		panic(err)
+		panic(err) //TODO 感觉这个地方用panic不合适，得考虑wumqtt时也能运行
 	}
 
 	pCli := new(MqttClient)
@@ -322,7 +322,12 @@ func (mqtt_cli *MqttClient) GetTopicNum() int { //返回当前监听的topic数�
 	return len(mqtt_cli.topicMap)
 }
 
-func (mqtt_cli *MqttClient) PublishMsg(topic string, data []byte) {
-	kplogger.Fatal("unimplemented function")
-	panic(nil)
+func (mqtt_cli *MqttClient) PublishMsg(topic string, data []byte, retain bool) {
+	opt := client.PublishOptions{
+		QoS:       mqtt.QoS0,
+		TopicName: []byte(topic),
+		Retain:    retain, //如果将RETAIN标志位设置为true，那么MQTT服务器会将最近收到的一条RETAIN标志位为true的消息保存在服务器端
+		Message:   data,
+	}
+	mqtt_cli.pMqttClient.Publish(&opt)
 }

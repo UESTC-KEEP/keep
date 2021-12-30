@@ -3,8 +3,9 @@ package device_manage_interface
 import (
 	"keep/edge/pkg/common/modules"
 	dmi_cfg "keep/edge/pkg/device_manage_interface/config"
+	"keep/edge/pkg/device_monitor/mqtt"
 	"keep/edge/pkg/edgepublisher/publisher"
-	"keep/edge/pkg/healthzagent/mqtt"
+
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 	"keep/pkg/util/core"
 	beehiveContext "keep/pkg/util/core/context"

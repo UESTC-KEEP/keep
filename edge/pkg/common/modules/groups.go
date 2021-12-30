@@ -7,4 +7,5 @@ const (
 	EdgePublisherGroup         = "edgepublisher"
 	EdgeTwinGroup              = "edgetwin"
 	DeviceMapperInterfaceGroup = "devicemapperinterface"
+	DeviceMonitorGroup         = "DeviceMonitor"
 )

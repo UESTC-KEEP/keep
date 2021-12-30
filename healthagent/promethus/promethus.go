@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"keep/edge/pkg/device_monitor/mqtt" //TODO 以后这个得找device_monitor要数据，而不是自己读mqtt
-	"keep/edge/pkg/healthzagent/server"
+	"keep/healthagent/server"
 	"keep/pkg/util/kplogger"
 	"net/http"
 	"strconv"

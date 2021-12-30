@@ -7,6 +7,7 @@ import (
 	"keep/edge/pkg/edgepublisher/bufferpooler"
 	"keep/edge/pkg/edgepublisher/chanmsgqueen"
 	edgepublisherconfig "keep/edge/pkg/edgepublisher/config"
+	"keep/edge/pkg/edgepublisher/httpserver"
 	"keep/edge/pkg/edgepublisher/publisher"
 	edgetunnel "keep/edge/pkg/edgepublisher/tunnel"
 	"keep/edge/pkg/edgepublisher/tunnel/cert"
@@ -79,6 +80,7 @@ func (ep *EdgePublisher) Start() {
 	go StartEdgePublisher()
 	go bufferpooler.StartListenLogMsg()
 	go publisher.ReadQueueAndPublish()
+	go httpserver.ListenAndRoute()
 
 	//err := coupon.CouponClientInit()
 	//if err != nil {
