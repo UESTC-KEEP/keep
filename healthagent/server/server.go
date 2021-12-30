@@ -4,11 +4,14 @@ Package server 用于收集边缘主机的资源用量
 package server
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 	"keep/pkg/util/core/model"
 	"keep/pkg/util/kplogger"
 	logger "keep/pkg/util/loggerv1.0.1"
+	"net/http"
 	"strconv"
 
 	"github.com/robfig/cron"
@@ -37,7 +40,26 @@ func GetMachineStatus() {
 		},
 		Content: Healagent,
 	}
-	kplogger.Error("unimplemented function\t", msg) //TODO
+
+	data, _ := json.Marshal(msg)
+	post_data := bytes.NewReader(data)
+	url := "http://localhost:8083/healthagent"
+
+	kplogger.Info("send data to ", url, "\tdata=", msg) //TODO
+
+	req, err := http.NewRequest("POST", url, post_data)
+
+	if err != nil {
+		kplogger.Error("Cannont POST info")
+	}
+
+	client := &http.Client{}
+	_, err = client.Do(req)
+	if err != nil {
+		kplogger.Errorf("cannont update info")
+		fmt.Println(err)
+	}
+
 	// beehiveContext.Send(modules.EdgePublisherModule, msg)
 
 	//logger.Debug(fmt.Sprintf("\n内存用量：%.2f%%  cpu用量：%.2f%% ", Healagent.Mem.UsedPercent, Healagent.CpuUsage))
