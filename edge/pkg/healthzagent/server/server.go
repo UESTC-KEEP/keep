@@ -18,6 +18,22 @@ import (
 
 var Healagent edgeagent.HealthzAgent
 
+type EdgeMetrics struct {
+	MemoryIntototal  int `json:"memoryIntototal"`
+	MemInuseMiBytes  int `json:"memInuseMiBytes"`
+	MemInuserPercent int `json:"memInuserPercent"`
+
+	CpuIntotalMi    int `json:"cpuIntotal"`
+	CpuInusePercent int `json:"cpuInusePercent"`
+
+	DiskIntotalMiBytes   int              `json:"diskIntotal"`
+	DiskInuseByPartition []map[string]int `json:"diskInuseByPartition"`
+	DiskIO               int              `json:"diskIO"`
+
+	NetBandWidth int `json:"netBandWidth"`
+	NetIO        int `json:"netIO"`
+}
+
 // GetMachineStatus  获取节点综合信息
 func GetMachineStatus() {
 	logger.Trace("查询节点用量...")

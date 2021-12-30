@@ -5,6 +5,7 @@ import (
 	"keep/cloud/pkg/common/modules"
 	kubeedge_device_lister "keep/cloud/pkg/k8sclient/kubeedge-engine/devices/lister"
 	"keep/cloud/pkg/k8sclient/naive-engine/pods"
+	edgemodules "keep/edge/pkg/common/modules"
 	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/core/model"
 	logger "keep/pkg/util/loggerv1.0.1"
@@ -77,6 +78,7 @@ func ResolveRouter(msg *model.Message) {
 					Source:    modules.K8sClientModule,
 					Operation: "publish",
 					Resource:  "edge03-zlj",
+					Group:     edgemodules.DeviceMapperInterfaceGroup,
 				},
 				Content: devicelist,
 			})

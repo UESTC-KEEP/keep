@@ -7,9 +7,12 @@ import (
 	"keep/edge/pkg/healthzagent/mqtt"
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 	"keep/pkg/util/core"
+	beehiveContext "keep/pkg/util/core/context"
 	"keep/pkg/util/core/model"
 	"keep/pkg/util/kplogger"
+	logger "keep/pkg/util/loggerv1.0.1"
 	"os"
+	"time"
 )
 
 // 我叫interface但是我不是一个interface 我是一个模块
@@ -60,6 +63,32 @@ func (dmi *DeviceManageInterface) Start() {
 	msg.SetResourceOperation("$uestc/keep/k8sclient/kubeedgeengin/devices/", "list")
 
 	publisher.Publish(msg)
+
+	// 测试查询云端设备列表
+	go func() {
+		time.Sleep(5 * time.Second)
+		logger.Warn("开始测试查询divece 列表...")
+		// 张连军：测试抄送一份到k8sclient 可注释之
+		testmap := make(map[string]interface{})
+		testmap["namespace"] = "default"
+		msg_zlj := model.Message{
+			Header: model.MessageHeader{},
+			Router: model.MessageRoute{
+				// 指明调用函数后  功能模块返回结果的接收模块(查询pod列表后由RequestDispatcher 下发节点)
+				Source: modules.HealthzAgentModule,
+				// 如果需要群发模块则填写此之段
+				Group: "",
+				// 以下两个内容由调用的资源模块进行解析 先定位到操作资源 在定位增删查改
+				// 对资源进行的操作
+				Operation: "list",
+				// 资源所在路由
+				Resource: "$uestc/keep/k8sclient/kubeedgeengin/devices/",
+			},
+			// 内容及参数由RequestDispatcher与被调用模块协商
+			Content: testmap,
+		}
+		beehiveContext.Send(modules.EdgePublisherModule, msg_zlj)
+	}()
 }
 
 func NewDeviceManageInterface(enable bool) (*DeviceManageInterface, error) {

@@ -212,6 +212,7 @@ func routeToEdge() {
 			if contentMsg.Header.ParentID != "" {
 				beehiveContext.SendResp(*contentMsg)
 			} else {
+				fmt.Printf("%#v", contentMsg)
 				beehiveContext.SendToGroup(contentMsg.Router.Group, *contentMsg)
 			}
 		}

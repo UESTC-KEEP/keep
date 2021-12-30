@@ -18,7 +18,7 @@ modules:
   logsagent:
     enable: true
     loglevel: 6
-    logtime: 2021-12-24T13:39:18.640949097+08:00
+    logtime: 2021-12-27T11:01:57.40508683+08:00
     logfilename: ""
     loginfo: ""
     logfiles:

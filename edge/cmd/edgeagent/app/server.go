@@ -14,7 +14,7 @@ import (
 	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 	commonutil "keep/pkg/util"
 	"keep/pkg/util/core"
-	kplogger "keep/pkg/util/loggerv1.0.1"
+	logger "keep/pkg/util/loggerv1.0.1"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -52,15 +52,15 @@ func NewEdgeAgentCommand() *cobra.Command {
 			// 下发配置文件
 			commonutil.OrganizeConfigurationFile(edge.EdgeAgentName)
 			if err != nil {
-				kplogger.Error(err)
+				logger.Error(err)
 				os.Exit(1)
 			}
 			utils.PrintKEEPLogo()
 			err = utils.EnvironmentCheck()
-			//if err != nil {
-			//	logger.Fatal(err)
-			//	os.Exit(1)
-			//}
+			if err != nil {
+				logger.Fatal(err)
+				os.Exit(1)
+			}
 			registerModules(config)
 			core.Run()
 		},
