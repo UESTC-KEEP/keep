@@ -18,6 +18,7 @@ package client
 
 import (
 	eqndcrdClientset "keep/cloud/pkg/client/eqnd/clientset/versioned"
+	tenantClientset "keep/cloud/pkg/client/tenant/clientset/versioned"
 	trqcrdClientset "keep/cloud/pkg/client/trq/clientset/versioned"
 	"os"
 	"sync"
@@ -54,12 +55,14 @@ func InitKubeEdgeClient(config *cloudagentConfig.K8sClient) {
 	crdKubeConfig.ContentType = runtime.ContentTypeJSON
 	eqndcrdClient := eqndcrdClientset.NewForConfigOrDie(crdKubeConfig)
 	trqcrdClient := trqcrdClientset.NewForConfigOrDie(crdKubeConfig)
+	tenantClient := tenantClientset.NewForConfigOrDie(crdKubeConfig)
 
 	once.Do(func() {
 		kpClient = &kubeEdgeClient{
 			kubeClient:    kubeClient,
 			eqndcrdClient: eqndcrdClient,
 			trqcrdClient:  trqcrdClient,
+			tenantClient:  tenantClient,
 			dynamicClient: dynamicClient,
 		}
 	})
@@ -77,6 +80,10 @@ func GetTrqCRDClient() trqcrdClientset.Interface {
 	return kpClient.trqcrdClient
 }
 
+func GetTenantClient() tenantClientset.Interface {
+	return kpClient.tenantClient
+}
+
 func GetDynamicClient() dynamic.Interface {
 	return kpClient.dynamicClient
 }
@@ -85,5 +92,6 @@ type kubeEdgeClient struct {
 	kubeClient    *kubernetes.Clientset
 	eqndcrdClient *eqndcrdClientset.Clientset
 	trqcrdClient  *trqcrdClientset.Clientset
+	tenantClient  *tenantClientset.Clientset
 	dynamicClient dynamic.Interface
 }

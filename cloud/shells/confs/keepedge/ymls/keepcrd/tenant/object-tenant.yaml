@@ -1,0 +1,10 @@
+apiVersion: keepedge.io/v1alpha1
+kind: Tenant
+metadata:
+  name: object-tenant
+spec:
+  username: "test-tenant"
+  password: "741258"
+  tenant_id: ""
+  status: "initializing"
+  message: "租户创建中..."

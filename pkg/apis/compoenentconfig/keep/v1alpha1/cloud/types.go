@@ -14,6 +14,7 @@ type Modules struct {
 	CloudImageManager             *CloudImageManager             `json:"cloud_image_manager"`
 	EqualNodeController           *EqualNodeController           `json:"equal_node_controller"`
 	TenantResourceQuotaController *TenantResourceQuotaController `json:"tenant_resource_quota_controller"`
+	TenantController              *TenantController              `json:"tenant_controller"`
 }
 
 type CloudAgentConfig struct {
@@ -92,6 +93,20 @@ type TenantResourceQuotaController struct {
 	Tenant        string                               `json:"tenant"`
 	ResourceQuata *ResourceQuata                       `json:"resourcequata"`
 	Buffer        *TenantResourceQuotaControllerBuffer `json:"buffer"`
+}
+
+type TenantController struct {
+	Enable bool `json:"enable"`
+	// 创建tenant资源对象时新建租户管理员用户的用户名
+	Username string `json:"username"`
+	// 创建tenant资源对象时新建租户管理员用户的密码
+	Password string `json:"password"`
+	// 通过指定tenantＩＤ复用Ｋｅｙｓｔｏｎｅ中己有的租户
+	TenantID string `json:"tenant_id"`
+	// tenant资源对象所处的状态
+	Status string `json:"status"`
+	// 显示tenant资源对象处于当前状态的原因
+	Message string `json:"message"`
 }
 
 type ResourceQuata struct {

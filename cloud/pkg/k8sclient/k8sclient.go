@@ -68,7 +68,6 @@ func (k *K8sClient) Start() {
 	//	fmt.Println(count)
 	//	time.Sleep(time.Second)
 	//}
-	naive_engine.TestFunctions()
 	// 查询所有的device
 	go kubeedge_engine.NewKubeEdgeEngine().GetDevicesByNodeName("")
 	// 启动系统需要的所有informers们
@@ -85,15 +84,15 @@ func NewK8sClient(enable bool) (*K8sClient, error) {
 
 func initKeepEdgeEnv() {
 	// 检查k8s版本是否支持
-	checkK8sVersion()
+	go checkK8sVersion()
 	// 检查有没有keepedge的namesopace
 	// 没有就创建
-	checkNamespaceAliveness()
+	go checkNamespaceAliveness()
 	// 检查k8s集群apiserver状态
 	// 检查redis在线状态 如果不在线就由naive_engine 在master集群中创建statefulset
-	checkRedisAliveness()
+	go checkRedisAliveness()
 	// 创建crd
-	checkeepCrd()
+	go checkeepCrd()
 
 }
 
@@ -178,6 +177,7 @@ func checkeepCrd() {
 	// 创建crd
 	naive_engine.NewNaiveEngine().CreatResourcesByYAML(cloud.DefaultKeepEqndCrd, cloud.DefualtKeepNamespace)
 	naive_engine.NewNaiveEngine().CreatResourcesByYAML(cloud.DefaultKeepTrqCrd, cloud.DefualtKeepNamespace)
+	naive_engine.NewNaiveEngine().CreatResourcesByYAML(cloud.DefualtKeepTenantCrd, cloud.DefualtKeepNamespace)
 }
 
 // 拉起service

@@ -10,6 +10,7 @@ import (
 	"keep/cloud/pkg/k8sclient"
 	"keep/cloud/pkg/promserver"
 	"keep/cloud/pkg/requestDispatcher"
+	tenant_controller "keep/cloud/pkg/tenantcontroller"
 	"keep/cloud/pkg/tenantresourcequotacontroller"
 	"keep/constants/cloud"
 	"keep/edge/pkg/common/utils"
@@ -67,6 +68,7 @@ func registerModules(config *cloudagent.CloudAgentConfig) {
 	k8sclient.Register(config.Modules.K8sClient)
 	equalnodecontroller.Register(config.Modules.EqualNodeController)
 	tenantresourcequotacontroller.Register(config.Modules.TenantResourceQuotaController)
+	tenant_controller.Register(config.Modules.TenantController)
 	promserver.Register(config.Modules.PromServer)
 	requestDispatcher.Register(config.Modules.RequestDispatcher)
 	cloudimageManager.Register(config.Modules.CloudImageManager)

@@ -13,6 +13,7 @@ const (
 	DefaultCloudConfigFile             = DefaultKeepConfigDir + "config/cloudagent.yml"
 	DefaultKeepEqndCrd                 = DefaultKeepConfigDir + "ymls/keepcrd/eqnd/equivalentnode.yaml"
 	DefaultKeepTrqCrd                  = DefaultKeepConfigDir + "ymls/keepcrd/tenantresourcequota/tenantresourcequota.yaml"
+	DefualtKeepTenantCrd               = DefaultKeepConfigDir + "ymls/keepcrd/tenant/tenant.yaml"
 	DefualtKeepNamespace               = "keepedge"
 	DefaultDecoderBufferSize           = 100
 	NodeName                           = "NodeName"

@@ -77,6 +77,9 @@ func NewDefaultEdgeAgentConfig() *CloudAgentConfig {
 					TenantResourceQuotaEvent: trquotaconstants.DefaultTRQuotaEventBuffer,
 				},
 			},
+			TenantController: &TenantController{
+				Enable: true,
+			},
 		},
 	}
 }

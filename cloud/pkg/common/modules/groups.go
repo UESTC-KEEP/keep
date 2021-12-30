@@ -7,4 +7,5 @@ const (
 	CloudImageManagerGroup             = "cloudImagemanager"
 	EqualNodeControllerGroup           = "equalnodecontroller"
 	TenantResourceQuotaControllerGroup = "tenantresourcequotacontroller"
+	TenantControllerGroup              = "tenantcontroller"
 )
