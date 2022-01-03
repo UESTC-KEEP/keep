@@ -30,6 +30,10 @@ spec:
                   type: string
                 message:
                   type: string
+                namespaces:
+                  type: array
+                  items:
+                    type: string
 
   # 范围是属于namespace的
   scope: Namespaced

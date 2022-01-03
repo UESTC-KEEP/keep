@@ -23,16 +23,18 @@ const (
 )
 
 type TenantSpec struct {
-	// 创建Ｔｅｎａｎｔ资源对象时新建租户管理员用户的用户名
+	// 创建Tenant资源对象时新建租户管理员用户的用户名
 	Username string `json:"username"`
-	// 创建Ｔｅｎａｎｔ资源对象时新建租户管理员用户的密码
+	// 创建Tenant资源对象时新建租户管理员用户的密码
 	Password string `json:"password"`
-	// 通过指定ｔｅｎａｎｔＩＤ复用Ｋｅｙｓｔｏｎｅ中己有的租户
+	// 通过指定Tenantid复用keystone中己有的租户
 	TenantID string `json:"tenant_id"`
-	// Ｔｅｎａｎｔ资源对象所处的状态
+	// Tenant资源对象所处的状态
 	Status string `json:"status"`
-	// 显示Ｔｅｎａｎｔ资源对象处于当前状态的原因
+	// 显示Tenant资源对象处于当前状态的原因
 	Message string `json:"message"`
+	// 当前租户拥有的ns
+	Namespaces []string `json:"namespaces"`
 }
 
 // TenantResourceQuotaList is a list of TenantResourceQuota resources

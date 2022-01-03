@@ -4,7 +4,10 @@ metadata:
   name: object-tenant
 spec:
   username: "test-tenant"
-  password: "741258"
+  password: "74125899"
   tenant_id: ""
   status: "initializing"
   message: "租户创建中..."
+  namespaces:
+    - "dev"
+    - "production"
