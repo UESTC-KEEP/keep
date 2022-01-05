@@ -23,9 +23,8 @@ func AddedTenant(newtenant *tenantv1.Tenant) {
 	//newNs := corev1.Create
 	// 创建与租户唯一绑定的ns  设置为username '-' uuid
 	createNamespace(newtenant)
-	// 配置网络隔离策略  默认不与其他pod通信
+	// 配置网络隔离策略  默认不与其他namespace通信 自己的ns的所有流量可以出去
 	createNetworkPolicy(newtenant)
-
 }
 
 func UpdateTenantStatus(in_tenant *tenantv1.Tenant, status string) {
