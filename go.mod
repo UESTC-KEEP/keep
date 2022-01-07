@@ -1,4 +1,4 @@
-module keep
+module github.com/UESTC-KEEP/keep
 
 go 1.17
 
