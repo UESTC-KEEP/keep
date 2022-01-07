@@ -2,10 +2,10 @@ package cloudtunnel
 
 import (
 	"fmt"
-	"keep/cloud/pkg/requestDispatcher/Router"
-	"keep/pkg/stream"
-	"keep/pkg/util/core/model"
-	logger "keep/pkg/util/loggerv1.0.1"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/Router"
+	"github.com/UESTC-KEEP/keep/pkg/stream"
+	"github.com/UESTC-KEEP/keep/pkg/util/core/model"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 
 	"github.com/gorilla/websocket"
 )

@@ -17,8 +17,8 @@ limitations under the License.
 package options
 
 import (
-	cloud2 "keep/constants/cloud"
-	"keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
+	cloud2 "github.com/UESTC-KEEP/keep/constants/cloud"
+	"github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 )
 
 type CloudAgentOptions struct {

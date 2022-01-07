@@ -1,12 +1,12 @@
 package core
 
 import (
-	"keep/pkg/util/loggerv1.0.1"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"os"
 	"os/signal"
 	"syscall"
 
-	beehiveContext "keep/pkg/util/core/context"
+	beehiveContext "github.com/UESTC-KEEP/keep/pkg/util/core/context"
 )
 
 // StartModules starts modules that are registered

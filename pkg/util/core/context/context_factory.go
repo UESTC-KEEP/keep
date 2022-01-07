@@ -2,8 +2,8 @@ package context
 
 import (
 	gocontext "context"
+	"github.com/UESTC-KEEP/keep/pkg/util/core/model"
 	"k8s.io/klog/v2"
-	"keep/pkg/util/core/model"
 	"sync"
 	"time"
 )

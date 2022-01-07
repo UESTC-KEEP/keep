@@ -1,6 +1,6 @@
 package trqCrdcontroller
 
-import trqCrdinformer "keep/cloud/pkg/tenantresourcequotacontroller/controller/informer"
+import trqCrdinformer "github.com/UESTC-KEEP/keep/cloud/pkg/tenantresourcequotacontroller/controller/informer"
 
 func StartTrqController() {
 	trqCrdinformer.StartTrqInformer()

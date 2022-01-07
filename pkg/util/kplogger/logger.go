@@ -3,8 +3,8 @@ package kplogger
 import (
 	"encoding/json"
 	"fmt"
-	"keep/constants/edge"
-	"keep/pkg/util/loggerv1.0.1"
+	"github.com/UESTC-KEEP/keep/constants/edge"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"os"
 	"path/filepath"
 )

@@ -20,8 +20,8 @@ package v1alpha1
 
 import (
 	"context"
-	v1alpha1 "keep/cloud/pkg/apis/keepedge/equalnode/v1alpha1"
-	scheme "keep/cloud/pkg/client/eqnd/clientset/versioned/scheme"
+	v1alpha1 "github.com/UESTC-KEEP/keep/cloud/pkg/apis/keepedge/equalnode/v1alpha1"
+	scheme "github.com/UESTC-KEEP/keep/cloud/pkg/client/eqnd/clientset/versioned/scheme"
 	"time"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"

@@ -1,9 +1,9 @@
 package config
 
 import (
-	trqcrdClientset "keep/cloud/pkg/client/trq/clientset/versioned"
-	"keep/cloud/pkg/common/client"
-	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
+	trqcrdClientset "github.com/UESTC-KEEP/keep/cloud/pkg/client/trq/clientset/versioned"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/common/client"
+	cloudagent "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"sync"
 )
 

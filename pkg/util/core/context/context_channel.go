@@ -9,7 +9,7 @@ import (
 
 	"k8s.io/klog/v2"
 
-	"keep/pkg/util/core/model"
+	"github.com/UESTC-KEEP/keep/pkg/util/core/model"
 )
 
 // constants for channel context

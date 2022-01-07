@@ -4,9 +4,9 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"github.com/mitchellh/go-ps"
 	"io"
-	"keep/pkg/util/loggerv1.0.1"
 	"os"
 )
 

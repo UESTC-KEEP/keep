@@ -3,14 +3,14 @@ package controller
 // $GOPATH/src/k8s.io/code-generator/generate-groups.sh all keep/cloud/pkg/client keep/cloud/pkg/k8sclient/crd_engin/keepedge/pkg/apis keepedge:v1alpha1
 import (
 	"fmt"
-	keepcrdv1 "keep/cloud/pkg/apis/keepedge/equalnode/v1alpha1"
-	clientset "keep/cloud/pkg/client/eqnd/clientset/versioned"
-	equalnodescheme "keep/cloud/pkg/client/eqnd/clientset/versioned/scheme"
-	informers "keep/cloud/pkg/client/eqnd/informers/externalversions/equalnode/v1alpha1"
-	listers "keep/cloud/pkg/client/eqnd/listers/equalnode/v1alpha1"
-	"keep/cloud/pkg/equalnodecontroller/constants"
-	"keep/pkg/util/kplogger"
-	"keep/pkg/util/loggerv1.0.1"
+	keepcrdv1 "github.com/UESTC-KEEP/keep/cloud/pkg/apis/keepedge/equalnode/v1alpha1"
+	clientset "github.com/UESTC-KEEP/keep/cloud/pkg/client/eqnd/clientset/versioned"
+	equalnodescheme "github.com/UESTC-KEEP/keep/cloud/pkg/client/eqnd/clientset/versioned/scheme"
+	informers "github.com/UESTC-KEEP/keep/cloud/pkg/client/eqnd/informers/externalversions/equalnode/v1alpha1"
+	listers "github.com/UESTC-KEEP/keep/cloud/pkg/client/eqnd/listers/equalnode/v1alpha1"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/equalnodecontroller/constants"
+	"github.com/UESTC-KEEP/keep/pkg/util/kplogger"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"time"
 
 	"github.com/golang/glog"

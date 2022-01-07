@@ -1,7 +1,7 @@
 package context
 
 import (
-	"keep/pkg/util/core/model"
+	"github.com/UESTC-KEEP/keep/pkg/util/core/model"
 	"sync"
 	"time"
 )

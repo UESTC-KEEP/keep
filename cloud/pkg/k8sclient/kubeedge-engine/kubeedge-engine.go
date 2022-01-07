@@ -2,12 +2,12 @@ package kubeedge_engine
 
 import (
 	"context"
+	kedevice "github.com/UESTC-KEEP/keep/cloud/pkg/apis/kubeedge/devices/v1alpha2"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/k8sclient/config"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
-	kedevice "keep/cloud/pkg/apis/kubeedge/devices/v1alpha2"
-	"keep/cloud/pkg/k8sclient/config"
-	logger "keep/pkg/util/loggerv1.0.1"
 )
 
 type KubeEdgeEngineImpl struct {

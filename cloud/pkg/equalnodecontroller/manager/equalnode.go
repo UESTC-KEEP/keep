@@ -1,9 +1,9 @@
 package manager
 
 import (
+	"github.com/UESTC-KEEP/keep/cloud/pkg/equalnodecontroller/config"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/tools/cache"
-	"keep/cloud/pkg/equalnodecontroller/config"
 	"sync"
 )
 

@@ -19,8 +19,8 @@ limitations under the License.
 package tenantresourcequota
 
 import (
-	internalinterfaces "keep/cloud/pkg/client/trq/informers/externalversions/internalinterfaces"
-	v1alpha1 "keep/cloud/pkg/client/trq/informers/externalversions/tenantresourcequota/v1alpha1"
+	internalinterfaces "github.com/UESTC-KEEP/keep/cloud/pkg/client/trq/informers/externalversions/internalinterfaces"
+	v1alpha1 "github.com/UESTC-KEEP/keep/cloud/pkg/client/trq/informers/externalversions/tenantresourcequota/v1alpha1"
 )
 
 // Interface provides access to each of this group's versions.

@@ -2,13 +2,13 @@ package kubeedge_device_lister
 
 import (
 	"context"
+	kedevice "github.com/UESTC-KEEP/keep/cloud/pkg/apis/kubeedge/devices/v1alpha2"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/k8sclient/config"
+	kubeedge_engine "github.com/UESTC-KEEP/keep/cloud/pkg/k8sclient/kubeedge-engine"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
-	kedevice "keep/cloud/pkg/apis/kubeedge/devices/v1alpha2"
-	"keep/cloud/pkg/k8sclient/config"
-	kubeedge_engine "keep/cloud/pkg/k8sclient/kubeedge-engine"
-	logger "keep/pkg/util/loggerv1.0.1"
 )
 
 func GetAllDevice() (*kedevice.DeviceList, error) {

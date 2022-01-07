@@ -5,8 +5,8 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
-	hubconfig "keep/cloud/pkg/requestDispatcher/config"
-	"keep/pkg/util/kplogger"
+	hubconfig "github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/config"
+	"github.com/UESTC-KEEP/keep/pkg/util/kplogger"
 	"net/http"
 
 	certutil "k8s.io/client-go/util/cert"

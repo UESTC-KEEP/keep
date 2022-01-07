@@ -1,15 +1,15 @@
 package requestDispatcher
 
 import (
-	"keep/cloud/pkg/common/modules"
-	"keep/cloud/pkg/requestDispatcher/Router"
-	"keep/cloud/pkg/requestDispatcher/cloudtunnel"
-	requestDispatcherconfig "keep/cloud/pkg/requestDispatcher/config"
-	"keep/cloud/pkg/requestDispatcher/receiver"
-	"keep/constants/cloud"
-	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
-	"keep/pkg/util/core"
-	logger "keep/pkg/util/loggerv1.0.1"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/common/modules"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/Router"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/cloudtunnel"
+	requestDispatcherconfig "github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/config"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/receiver"
+	"github.com/UESTC-KEEP/keep/constants/cloud"
+	cloudagent "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
+	"github.com/UESTC-KEEP/keep/pkg/util/core"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"os"
 	"time"
 )

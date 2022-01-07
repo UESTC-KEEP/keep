@@ -1,12 +1,12 @@
 package trqCrdinformer
 
 import (
+	tenantresourcequotav1 "github.com/UESTC-KEEP/keep/cloud/pkg/apis/keepedge/tenantresourcequota/v1alpha1"
+	trqcrdinformers "github.com/UESTC-KEEP/keep/cloud/pkg/client/trq/informers/externalversions"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/common/client"
+	beehiveContext "github.com/UESTC-KEEP/keep/pkg/util/core/context"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"k8s.io/client-go/tools/cache"
-	tenantresourcequotav1 "keep/cloud/pkg/apis/keepedge/tenantresourcequota/v1alpha1"
-	trqcrdinformers "keep/cloud/pkg/client/trq/informers/externalversions"
-	"keep/cloud/pkg/common/client"
-	beehiveContext "keep/pkg/util/core/context"
-	logger "keep/pkg/util/loggerv1.0.1"
 	"time"
 )
 

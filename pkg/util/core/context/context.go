@@ -2,7 +2,7 @@ package context
 
 import (
 	gocontext "context"
-	"keep/pkg/util/core/model"
+	"github.com/UESTC-KEEP/keep/pkg/util/core/model"
 	"time"
 )
 

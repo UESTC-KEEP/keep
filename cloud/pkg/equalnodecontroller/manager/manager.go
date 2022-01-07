@@ -1,9 +1,9 @@
 package manager
 
 import (
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
-	"keep/pkg/util/loggerv1.0.1"
 )
 
 type Manager interface {

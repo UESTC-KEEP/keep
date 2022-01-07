@@ -1,9 +1,9 @@
 package routers
 
 import (
-	k8sclientrouter "keep/cloud/pkg/requestDispatcher/Router/routers/k8sclient"
-	kubedge_engin_router "keep/cloud/pkg/requestDispatcher/Router/routers/k8sclient/kubedge-engin-router"
-	naive_engin_router "keep/cloud/pkg/requestDispatcher/Router/routers/k8sclient/naive-engin-router"
+	k8sclientrouter "github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/Router/routers/k8sclient"
+	kubedge_engin_router "github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/Router/routers/k8sclient/kubedge-engin-router"
+	naive_engin_router "github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/Router/routers/k8sclient/naive-engin-router"
 	"sync"
 )
 

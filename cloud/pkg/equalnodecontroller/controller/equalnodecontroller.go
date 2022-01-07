@@ -1,19 +1,19 @@
 package controller
 
 import (
+	crdv1 "github.com/UESTC-KEEP/keep/cloud/pkg/apis/keepedge/equalnode/v1alpha1"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/client/eqnd/clientset/versioned"
+	crdinformers "github.com/UESTC-KEEP/keep/cloud/pkg/client/eqnd/informers/externalversions"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/common/client"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/equalnodecontroller/config"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/equalnodecontroller/manager"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/equalnodecontroller/pkg/signals"
+	beehiveContext "github.com/UESTC-KEEP/keep/pkg/util/core/context"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"github.com/golang/glog"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
-	crdv1 "keep/cloud/pkg/apis/keepedge/equalnode/v1alpha1"
-	"keep/cloud/pkg/client/eqnd/clientset/versioned"
-	crdinformers "keep/cloud/pkg/client/eqnd/informers/externalversions"
-	"keep/cloud/pkg/common/client"
-	"keep/cloud/pkg/equalnodecontroller/config"
-	"keep/cloud/pkg/equalnodecontroller/manager"
-	"keep/cloud/pkg/equalnodecontroller/pkg/signals"
-	beehiveContext "keep/pkg/util/core/context"
-	"keep/pkg/util/loggerv1.0.1"
 	"time"
 )
 

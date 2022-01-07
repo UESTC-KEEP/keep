@@ -1,6 +1,9 @@
 package config
 
 import (
+	"github.com/UESTC-KEEP/keep/cloud/pkg/common/client"
+	cloudagent "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/discovery"
@@ -10,9 +13,6 @@ import (
 	restclient "k8s.io/client-go/rest"
 	"k8s.io/client-go/restmapper"
 	"k8s.io/client-go/tools/clientcmd"
-	"keep/cloud/pkg/common/client"
-	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
-	"keep/pkg/util/loggerv1.0.1"
 	"sync"
 )
 

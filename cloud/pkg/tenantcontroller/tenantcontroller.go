@@ -1,12 +1,12 @@
 package tenant_controller
 
 import (
-	"keep/cloud/pkg/common/modules"
-	"keep/cloud/pkg/tenantcontroller/config"
-	tenant_main_controller "keep/cloud/pkg/tenantcontroller/controller"
-	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
-	"keep/pkg/util/core"
-	"keep/pkg/util/loggerv1.0.1"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/common/modules"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/tenantcontroller/config"
+	tenant_main_controller "github.com/UESTC-KEEP/keep/cloud/pkg/tenantcontroller/controller"
+	cloudagent "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
+	"github.com/UESTC-KEEP/keep/pkg/util/core"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"os"
 )
 

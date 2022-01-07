@@ -18,13 +18,13 @@ package util
 
 import (
 	"fmt"
+	"github.com/UESTC-KEEP/keep/constants"
+	"github.com/UESTC-KEEP/keep/constants/cloud"
+	"github.com/UESTC-KEEP/keep/constants/edge"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"io"
 	"io/ioutil"
 	utilnet "k8s.io/apimachinery/pkg/util/net"
-	"keep/constants"
-	"keep/constants/cloud"
-	"keep/constants/edge"
-	"keep/pkg/util/loggerv1.0.1"
 	"net"
 	"os"
 	"os/exec"

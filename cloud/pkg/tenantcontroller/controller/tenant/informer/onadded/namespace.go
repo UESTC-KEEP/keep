@@ -2,12 +2,12 @@ package tenant_onadded
 
 import (
 	"context"
+	tenantv1 "github.com/UESTC-KEEP/keep/cloud/pkg/apis/keepedge/tenant/v1alpha1"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/common/client"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/tenantcontroller/constant"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	tenantv1 "keep/cloud/pkg/apis/keepedge/tenant/v1alpha1"
-	"keep/cloud/pkg/common/client"
-	"keep/cloud/pkg/tenantcontroller/constant"
-	logger "keep/pkg/util/loggerv1.0.1"
 	"sync"
 )
 

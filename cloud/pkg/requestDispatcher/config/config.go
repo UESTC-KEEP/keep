@@ -1,7 +1,7 @@
 package config
 
 import (
-	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
+	cloudagent "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"sync"
 )
 

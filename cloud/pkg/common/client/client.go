@@ -17,9 +17,9 @@ limitations under the License.
 package client
 
 import (
-	eqndcrdClientset "keep/cloud/pkg/client/eqnd/clientset/versioned"
-	tenantClientset "keep/cloud/pkg/client/tenant/clientset/versioned"
-	trqcrdClientset "keep/cloud/pkg/client/trq/clientset/versioned"
+	eqndcrdClientset "github.com/UESTC-KEEP/keep/cloud/pkg/client/eqnd/clientset/versioned"
+	tenantClientset "github.com/UESTC-KEEP/keep/cloud/pkg/client/tenant/clientset/versioned"
+	trqcrdClientset "github.com/UESTC-KEEP/keep/cloud/pkg/client/trq/clientset/versioned"
 	"os"
 	"sync"
 
@@ -30,7 +30,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/klog/v2"
 
-	cloudagentConfig "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
+	cloudagentConfig "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 )
 
 var kpClient *kubeEdgeClient

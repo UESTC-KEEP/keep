@@ -1,7 +1,7 @@
 package kafka
 
 import (
-	"keep/constants/cloud"
+	"github.com/UESTC-KEEP/keep/constants/cloud"
 	"log"
 	"time"
 

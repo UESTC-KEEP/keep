@@ -1,15 +1,15 @@
 package equalnodecontroller
 
 import (
+	"github.com/UESTC-KEEP/keep/cloud/pkg/common/informers"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/common/modules"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/equalnodecontroller/config"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/equalnodecontroller/controller"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/equalnodecontroller/controller/lister"
+	cloudagent "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
+	"github.com/UESTC-KEEP/keep/pkg/util/core"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	flag "github.com/spf13/pflag"
-	"keep/cloud/pkg/common/informers"
-	"keep/cloud/pkg/common/modules"
-	"keep/cloud/pkg/equalnodecontroller/config"
-	"keep/cloud/pkg/equalnodecontroller/controller"
-	"keep/cloud/pkg/equalnodecontroller/controller/lister"
-	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
-	"keep/pkg/util/core"
-	"keep/pkg/util/loggerv1.0.1"
 )
 
 type EqualNodeController struct {

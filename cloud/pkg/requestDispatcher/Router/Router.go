@@ -2,12 +2,12 @@ package Router
 
 import (
 	"fmt"
-	"keep/cloud/pkg/common/kafka"
-	"keep/cloud/pkg/common/modules"
-	"keep/cloud/pkg/requestDispatcher/Router/routers"
-	beehiveContext "keep/pkg/util/core/context"
-	"keep/pkg/util/core/model"
-	logger "keep/pkg/util/loggerv1.0.1"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/common/kafka"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/common/modules"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/Router/routers"
+	beehiveContext "github.com/UESTC-KEEP/keep/pkg/util/core/context"
+	"github.com/UESTC-KEEP/keep/pkg/util/core/model"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 )
 
 var RevMsgChan = make(chan *model.Message)

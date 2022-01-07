@@ -2,14 +2,14 @@ package tenantresourcequotacontroller
 
 import (
 	//crdinformers "keep/cloud/pkg/client/trq/informers/externalversions"
-	"keep/cloud/pkg/common/modules"
-	"keep/cloud/pkg/tenantresourcequotacontroller/config"
-	trqCrdcontroller "keep/cloud/pkg/tenantresourcequotacontroller/controller"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/common/modules"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/tenantresourcequotacontroller/config"
+	trqCrdcontroller "github.com/UESTC-KEEP/keep/cloud/pkg/tenantresourcequotacontroller/controller"
 
 	//"keep/cloud/pkg/tenantresourcequotacontroller/manager"
-	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
-	"keep/pkg/util/core"
-	logger "keep/pkg/util/loggerv1.0.1"
+	cloudagent "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
+	"github.com/UESTC-KEEP/keep/pkg/util/core"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 )
 
 type tenantresourcequotacontroller struct {

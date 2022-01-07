@@ -19,13 +19,13 @@ package stream
 import (
 	"bufio"
 	"encoding/json"
+	"github.com/UESTC-KEEP/keep/constants/edge"
 	"io"
 	"io/ioutil"
-	"keep/constants/edge"
 	"sync"
 	"time"
 
-	"keep/pkg/util/core/model"
+	"github.com/UESTC-KEEP/keep/pkg/util/core/model"
 
 	"github.com/gorilla/websocket"
 )

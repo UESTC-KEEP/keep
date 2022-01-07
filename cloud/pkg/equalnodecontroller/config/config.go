@@ -1,9 +1,9 @@
 package config
 
 import (
-	crdClientset "keep/cloud/pkg/client/eqnd/clientset/versioned"
-	"keep/cloud/pkg/common/client"
-	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
+	crdClientset "github.com/UESTC-KEEP/keep/cloud/pkg/client/eqnd/clientset/versioned"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/common/client"
+	cloudagent "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
 	"sync"
 )
 

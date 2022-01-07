@@ -19,9 +19,9 @@ limitations under the License.
 package externalversions
 
 import (
-	versioned "keep/cloud/pkg/client/trq/clientset/versioned"
-	internalinterfaces "keep/cloud/pkg/client/trq/informers/externalversions/internalinterfaces"
-	tenantresourcequota "keep/cloud/pkg/client/trq/informers/externalversions/tenantresourcequota"
+	versioned "github.com/UESTC-KEEP/keep/cloud/pkg/client/trq/clientset/versioned"
+	internalinterfaces "github.com/UESTC-KEEP/keep/cloud/pkg/client/trq/informers/externalversions/internalinterfaces"
+	tenantresourcequota "github.com/UESTC-KEEP/keep/cloud/pkg/client/trq/informers/externalversions/tenantresourcequota"
 	reflect "reflect"
 	sync "sync"
 	time "time"

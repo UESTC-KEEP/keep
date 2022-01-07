@@ -2,10 +2,10 @@
 package watchengine
 
 import (
+	"github.com/UESTC-KEEP/keep/cloud/pkg/k8sclient/kubeedge-engine/devices/informer"
+	naive_engine "github.com/UESTC-KEEP/keep/cloud/pkg/k8sclient/naive-engine"
 	appsv1 "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
-	"keep/cloud/pkg/k8sclient/kubeedge-engine/devices/informer"
-	naive_engine "keep/cloud/pkg/k8sclient/naive-engine"
 )
 
 type WatcherEngine struct {

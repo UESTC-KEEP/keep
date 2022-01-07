@@ -1,10 +1,10 @@
 package v1alpha1
 
 import (
+	"github.com/UESTC-KEEP/keep/cloud/pkg/apis/keepedge/equalnode"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"keep/cloud/pkg/apis/keepedge/equalnode"
 )
 
 var SchemeGroupVersion = schema.GroupVersion{

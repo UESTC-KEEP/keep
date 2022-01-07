@@ -3,10 +3,10 @@ package tenant_ondeleted
 import (
 	"context"
 	"fmt"
+	tenantv1 "github.com/UESTC-KEEP/keep/cloud/pkg/apis/keepedge/tenant/v1alpha1"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/common/client"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	tenantv1 "keep/cloud/pkg/apis/keepedge/tenant/v1alpha1"
-	"keep/cloud/pkg/common/client"
-	logger "keep/pkg/util/loggerv1.0.1"
 )
 
 func DeleteTenant(deltenant *tenantv1.Tenant) {

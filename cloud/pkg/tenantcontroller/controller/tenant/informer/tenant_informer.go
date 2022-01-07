@@ -1,14 +1,14 @@
 package tenant_informer
 
 import (
+	tenantv1 "github.com/UESTC-KEEP/keep/cloud/pkg/apis/keepedge/tenant/v1alpha1"
+	tenantInformers "github.com/UESTC-KEEP/keep/cloud/pkg/client/tenant/informers/externalversions"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/common/client"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/tenantcontroller/controller/tenant/informer/onadded"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/tenantcontroller/controller/tenant/informer/ondeleted"
+	beehiveContext "github.com/UESTC-KEEP/keep/pkg/util/core/context"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"k8s.io/client-go/tools/cache"
-	tenantv1 "keep/cloud/pkg/apis/keepedge/tenant/v1alpha1"
-	tenantInformers "keep/cloud/pkg/client/tenant/informers/externalversions"
-	"keep/cloud/pkg/common/client"
-	"keep/cloud/pkg/tenantcontroller/controller/tenant/informer/onadded"
-	"keep/cloud/pkg/tenantcontroller/controller/tenant/informer/ondeleted"
-	beehiveContext "keep/pkg/util/core/context"
-	logger "keep/pkg/util/loggerv1.0.1"
 	"time"
 )
 

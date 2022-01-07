@@ -1,14 +1,14 @@
 package informers
 
 import (
+	crdinformers "github.com/UESTC-KEEP/keep/cloud/pkg/client/eqnd/informers/externalversions"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/common/client"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/client-go/dynamic/dynamicinformer"
 	k8sinformer "k8s.io/client-go/informers"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/cache"
-	crdinformers "keep/cloud/pkg/client/eqnd/informers/externalversions"
-	"keep/cloud/pkg/common/client"
-	"keep/pkg/util/loggerv1.0.1"
 	"sync"
 	"time"
 )

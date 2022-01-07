@@ -8,19 +8,19 @@ import (
 	"encoding/json"
 	"encoding/pem"
 	"fmt"
+	"github.com/UESTC-KEEP/keep/constants/cloud"
 	"io/ioutil"
-	"keep/constants/cloud"
 	"net/http"
 	"strings"
 
-	logger "keep/pkg/util/loggerv1.0.1"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 
 	"github.com/golang-jwt/jwt"
 	"github.com/gorilla/mux"
 	certutil "k8s.io/client-go/util/cert"
 	"k8s.io/klog"
 
-	hubconfig "keep/cloud/pkg/requestDispatcher/config"
+	hubconfig "github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/config"
 )
 
 const (

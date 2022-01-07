@@ -1,8 +1,8 @@
 package kubeedge_engine
 
 import (
+	kedevice "github.com/UESTC-KEEP/keep/cloud/pkg/apis/kubeedge/devices/v1alpha2"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	kedevice "keep/cloud/pkg/apis/kubeedge/devices/v1alpha2"
 )
 
 var KubeedgeGVR = schema.GroupVersionResource{

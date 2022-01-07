@@ -20,10 +20,10 @@ package v1alpha1
 
 import (
 	"context"
-	tenantv1alpha1 "keep/cloud/pkg/apis/keepedge/tenant/v1alpha1"
-	versioned "keep/cloud/pkg/client/tenant/clientset/versioned"
-	internalinterfaces "keep/cloud/pkg/client/tenant/informers/externalversions/internalinterfaces"
-	v1alpha1 "keep/cloud/pkg/client/tenant/listers/tenant/v1alpha1"
+	tenantv1alpha1 "github.com/UESTC-KEEP/keep/cloud/pkg/apis/keepedge/tenant/v1alpha1"
+	versioned "github.com/UESTC-KEEP/keep/cloud/pkg/client/tenant/clientset/versioned"
+	internalinterfaces "github.com/UESTC-KEEP/keep/cloud/pkg/client/tenant/informers/externalversions/internalinterfaces"
+	v1alpha1 "github.com/UESTC-KEEP/keep/cloud/pkg/client/tenant/listers/tenant/v1alpha1"
 	time "time"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"

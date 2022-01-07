@@ -3,8 +3,8 @@ package utils
 import (
 	"errors"
 	"fmt"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"github.com/mitchellh/go-ps"
-	"keep/pkg/util/loggerv1.0.1"
 )
 
 func GracefulExit() {

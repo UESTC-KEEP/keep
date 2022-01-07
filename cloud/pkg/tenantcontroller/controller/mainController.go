@@ -1,7 +1,7 @@
 package tenant_main_controller
 
 import (
-	tenantinformer "keep/cloud/pkg/tenantcontroller/controller/tenant/informer"
+	tenantinformer "github.com/UESTC-KEEP/keep/cloud/pkg/tenantcontroller/controller/tenant/informer"
 )
 
 func StartTenantController() {

@@ -1,11 +1,11 @@
 package cloudimageManager
 
 import (
-	"keep/cloud/pkg/cloudimagemanager/config"
-	"keep/cloud/pkg/common/modules"
-	cloudagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
-	"keep/pkg/util/core"
-	"keep/pkg/util/kplogger"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/cloudimagemanager/config"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/common/modules"
+	cloudagent "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
+	"github.com/UESTC-KEEP/keep/pkg/util/core"
+	"github.com/UESTC-KEEP/keep/pkg/util/kplogger"
 	"os"
 )
 

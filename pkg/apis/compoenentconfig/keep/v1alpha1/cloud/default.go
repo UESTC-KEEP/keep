@@ -1,9 +1,9 @@
 package cloud
 
 import (
-	eqndconstants "keep/cloud/pkg/equalnodecontroller/constants"
-	trquotaconstants "keep/cloud/pkg/tenantresourcequotacontroller/constants"
-	"keep/constants/cloud"
+	eqndconstants "github.com/UESTC-KEEP/keep/cloud/pkg/equalnodecontroller/constants"
+	trquotaconstants "github.com/UESTC-KEEP/keep/cloud/pkg/tenantresourcequotacontroller/constants"
+	"github.com/UESTC-KEEP/keep/constants/cloud"
 	"path/filepath"
 	"strings"
 

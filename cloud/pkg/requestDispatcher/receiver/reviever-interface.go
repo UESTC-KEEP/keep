@@ -1,7 +1,7 @@
 package receiver
 
 import (
-	commonTypes "keep/pkg/apis/compoenentconfig/keep/v1alpha1/common"
+	commonTypes "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/common"
 	"net/http"
 )
 

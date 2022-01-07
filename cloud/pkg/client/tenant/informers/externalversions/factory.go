@@ -19,9 +19,9 @@ limitations under the License.
 package externalversions
 
 import (
-	versioned "keep/cloud/pkg/client/tenant/clientset/versioned"
-	internalinterfaces "keep/cloud/pkg/client/tenant/informers/externalversions/internalinterfaces"
-	tenant "keep/cloud/pkg/client/tenant/informers/externalversions/tenant"
+	versioned "github.com/UESTC-KEEP/keep/cloud/pkg/client/tenant/clientset/versioned"
+	internalinterfaces "github.com/UESTC-KEEP/keep/cloud/pkg/client/tenant/informers/externalversions/internalinterfaces"
+	tenant "github.com/UESTC-KEEP/keep/cloud/pkg/client/tenant/informers/externalversions/tenant"
 	reflect "reflect"
 	sync "sync"
 	time "time"

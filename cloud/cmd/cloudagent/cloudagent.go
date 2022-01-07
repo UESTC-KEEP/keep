@@ -1,11 +1,11 @@
 package main
 
 import (
-	"keep/cloud/cmd/cloudagent/app"
-	"keep/cloud/pkg/common/utils"
-	"keep/constants/cloud"
-	commonutil "keep/pkg/util"
-	"keep/pkg/util/kplogger"
+	"github.com/UESTC-KEEP/keep/cloud/cmd/cloudagent/app"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/common/utils"
+	"github.com/UESTC-KEEP/keep/constants/cloud"
+	commonutil "github.com/UESTC-KEEP/keep/pkg/util"
+	"github.com/UESTC-KEEP/keep/pkg/util/kplogger"
 	"os"
 )
 

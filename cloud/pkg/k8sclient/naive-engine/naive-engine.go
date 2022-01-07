@@ -4,6 +4,9 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/k8sclient/config"
+	naive_engin_pod_informer "github.com/UESTC-KEEP/keep/cloud/pkg/k8sclient/naive-engine/pods/informer"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"github.com/sirupsen/logrus"
 	"io"
 	"io/ioutil"
@@ -17,9 +20,6 @@ import (
 	yamlutil "k8s.io/apimachinery/pkg/util/yaml"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/restmapper"
-	"keep/cloud/pkg/k8sclient/config"
-	naive_engin_pod_informer "keep/cloud/pkg/k8sclient/naive-engine/pods/informer"
-	"keep/pkg/util/loggerv1.0.1"
 	"os"
 )
 

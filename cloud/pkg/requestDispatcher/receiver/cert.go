@@ -9,11 +9,11 @@ import (
 	"crypto/x509/pkix"
 	"errors"
 	"fmt"
-	hubconfig "keep/cloud/pkg/requestDispatcher/config"
+	hubconfig "github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/config"
 
 	certutil "k8s.io/client-go/util/cert"
 
-	logger "keep/pkg/util/loggerv1.0.1"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"math"
 	"math/big"
 	"time"

@@ -2,13 +2,13 @@ package k8sclient
 
 import (
 	"fmt"
-	"keep/cloud/pkg/common/modules"
-	kubeedge_device_lister "keep/cloud/pkg/k8sclient/kubeedge-engine/devices/lister"
-	"keep/cloud/pkg/k8sclient/naive-engine/pods"
-	edgemodules "keep/edge/pkg/common/modules"
-	beehiveContext "keep/pkg/util/core/context"
-	"keep/pkg/util/core/model"
-	logger "keep/pkg/util/loggerv1.0.1"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/common/modules"
+	kubeedge_device_lister "github.com/UESTC-KEEP/keep/cloud/pkg/k8sclient/kubeedge-engine/devices/lister"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/k8sclient/naive-engine/pods"
+	edgemodules "github.com/UESTC-KEEP/keep/edge/pkg/common/modules"
+	beehiveContext "github.com/UESTC-KEEP/keep/pkg/util/core/context"
+	"github.com/UESTC-KEEP/keep/pkg/util/core/model"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 )
 
 // SendBeehiveMsg 发送beehive消息

@@ -19,9 +19,9 @@ limitations under the License.
 package externalversions
 
 import (
-	versioned "keep/cloud/pkg/client/eqnd/clientset/versioned"
-	equalnode "keep/cloud/pkg/client/eqnd/informers/externalversions/equalnode"
-	internalinterfaces "keep/cloud/pkg/client/eqnd/informers/externalversions/internalinterfaces"
+	versioned "github.com/UESTC-KEEP/keep/cloud/pkg/client/eqnd/clientset/versioned"
+	equalnode "github.com/UESTC-KEEP/keep/cloud/pkg/client/eqnd/informers/externalversions/equalnode"
+	internalinterfaces "github.com/UESTC-KEEP/keep/cloud/pkg/client/eqnd/informers/externalversions/internalinterfaces"
 	reflect "reflect"
 	sync "sync"
 	time "time"

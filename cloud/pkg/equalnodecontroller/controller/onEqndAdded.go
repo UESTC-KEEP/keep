@@ -2,12 +2,12 @@ package controller
 
 import (
 	"context"
+	crdv1 "github.com/UESTC-KEEP/keep/cloud/pkg/apis/keepedge/equalnode/v1alpha1"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/common/client"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	v1 "k8s.io/api/apps/v1"
 	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	crdv1 "keep/cloud/pkg/apis/keepedge/equalnode/v1alpha1"
-	"keep/cloud/pkg/common/client"
-	logger "keep/pkg/util/loggerv1.0.1"
 )
 
 func (eqndctl *EqualNodeController) equalNodeAdded(eqnd *crdv1.EqualNode) {
