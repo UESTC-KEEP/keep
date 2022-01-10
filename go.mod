@@ -4,7 +4,6 @@ go 1.17
 
 require (
 	github.com/Shopify/sarama v1.24.1
-	github.com/UESTC-KEEP/muti-tenancy v0.0.0-20220107065942-f0973b8c2a21
 	github.com/bsm/sarama-cluster v2.1.15+incompatible
 	github.com/docker/docker v20.10.11+incompatible
 	github.com/emicklei/go-restful v2.15.0+incompatible

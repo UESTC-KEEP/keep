@@ -78,7 +78,7 @@ func NewDefaultEdgeAgentConfig() *CloudAgentConfig {
 				},
 			},
 			TenantController: &TenantController{
-				Enable: false,
+				Enable: true,
 			},
 		},
 	}
