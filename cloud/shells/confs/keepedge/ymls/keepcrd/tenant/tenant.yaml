@@ -20,6 +20,8 @@ spec:
             spec:
               type: object
               properties:
+                tenantAdmin:
+                  type: string
                 username:
                   type: string
                 password:

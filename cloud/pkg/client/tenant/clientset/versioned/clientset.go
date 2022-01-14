@@ -20,8 +20,8 @@ package versioned
 
 import (
 	"fmt"
-	keepedgev1alpha1 "github.com/UESTC-KEEP/keep/cloud/pkg/client/tenant/clientset/versioned/typed/tenant/v1alpha1"
 
+	keepedgev1alpha1 "github.com/UESTC-KEEP/keep/cloud/pkg/client/tenant/clientset/versioned/typed/tenant/v1alpha1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"

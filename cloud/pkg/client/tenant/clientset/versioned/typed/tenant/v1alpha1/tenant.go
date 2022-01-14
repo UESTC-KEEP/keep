@@ -20,10 +20,10 @@ package v1alpha1
 
 import (
 	"context"
-	v1alpha1 "github.com/UESTC-KEEP/keep/cloud/pkg/apis/keepedge/tenant/v1alpha1"
-	scheme "github.com/UESTC-KEEP/keep/cloud/pkg/client/tenant/clientset/versioned/scheme"
 	"time"
 
+	v1alpha1 "github.com/UESTC-KEEP/keep/cloud/pkg/apis/keepedge/tenant/v1alpha1"
+	scheme "github.com/UESTC-KEEP/keep/cloud/pkg/client/tenant/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"

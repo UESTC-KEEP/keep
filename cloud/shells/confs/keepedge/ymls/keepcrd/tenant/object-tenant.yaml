@@ -6,7 +6,7 @@ spec:
   username: "test-tenant"
   password: "74125899"
   tenant_id: ""
-  status: "initializing"
+  status: ""
   message: "租户创建中..."
   namespaces:
     - "dev"

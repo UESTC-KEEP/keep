@@ -19,13 +19,13 @@ limitations under the License.
 package externalversions
 
 import (
-	versioned "github.com/UESTC-KEEP/keep/cloud/pkg/client/trq/clientset/versioned"
-	internalinterfaces "github.com/UESTC-KEEP/keep/cloud/pkg/client/trq/informers/externalversions/internalinterfaces"
-	tenantresourcequota "github.com/UESTC-KEEP/keep/cloud/pkg/client/trq/informers/externalversions/tenantresourcequota"
 	reflect "reflect"
 	sync "sync"
 	time "time"
 
+	versioned "github.com/UESTC-KEEP/keep/cloud/pkg/client/trq/clientset/versioned"
+	internalinterfaces "github.com/UESTC-KEEP/keep/cloud/pkg/client/trq/informers/externalversions/internalinterfaces"
+	tenantresourcequota "github.com/UESTC-KEEP/keep/cloud/pkg/client/trq/informers/externalversions/tenantresourcequota"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"

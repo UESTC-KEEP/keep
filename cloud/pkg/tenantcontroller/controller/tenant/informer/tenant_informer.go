@@ -1,11 +1,8 @@
 package tenant_informer
 
 import (
-	tenantv1 "github.com/UESTC-KEEP/keep/cloud/pkg/apis/keepedge/tenant/v1alpha1"
 	tenantInformers "github.com/UESTC-KEEP/keep/cloud/pkg/client/tenant/informers/externalversions"
 	"github.com/UESTC-KEEP/keep/cloud/pkg/common/client"
-	"github.com/UESTC-KEEP/keep/cloud/pkg/tenantcontroller/controller/tenant/informer/onadded"
-	"github.com/UESTC-KEEP/keep/cloud/pkg/tenantcontroller/controller/tenant/informer/ondeleted"
 	beehiveContext "github.com/UESTC-KEEP/keep/pkg/util/core/context"
 	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"k8s.io/client-go/tools/cache"
@@ -25,15 +22,15 @@ func StartTenantInformer() {
 	tenantInformer.Run(beehiveContext.Done())
 }
 
-func OnTenantAdded(newTenant interface{}) {
-	newtenant := newTenant.(*tenantv1.Tenant)
-	logger.Debug("新租户加入：", newtenant.Spec.Username)
-	// 更新租户状态
-	tenant_onadded.AddedTenant(newtenant)
-}
-
-func OnTenantDeleted(delTenant interface{}) {
-	deltenant := delTenant.(*tenantv1.Tenant)
-	logger.Warn("删除租户：", deltenant.Spec.Username)
-	tenant_ondeleted.DeleteTenant(deltenant)
-}
+//func OnTenantAdded(newTenant interface{}) {
+//	newtenant := newTenant.(*tenantv1.Tenant)
+//	logger.Debug("新租户加入：", newtenant.Spec.Username)
+//	// 更新租户状态
+//	tenant_onadded.AddedTenant(newtenant)
+//}
+//
+//func OnTenantDeleted(delTenant interface{}) {
+//	deltenant := delTenant.(*tenantv1.Tenant)
+//	logger.Warn("删除租户：", deltenant.Spec.Username)
+//	tenant_ondeleted.DeleteTenant(deltenant)
+//}

@@ -19,13 +19,13 @@ limitations under the License.
 package externalversions
 
 import (
-	versioned "github.com/UESTC-KEEP/keep/cloud/pkg/client/eqnd/clientset/versioned"
-	equalnode "github.com/UESTC-KEEP/keep/cloud/pkg/client/eqnd/informers/externalversions/equalnode"
-	internalinterfaces "github.com/UESTC-KEEP/keep/cloud/pkg/client/eqnd/informers/externalversions/internalinterfaces"
 	reflect "reflect"
 	sync "sync"
 	time "time"
 
+	versioned "github.com/UESTC-KEEP/keep/cloud/pkg/client/eqnd/clientset/versioned"
+	equalnode "github.com/UESTC-KEEP/keep/cloud/pkg/client/eqnd/informers/externalversions/equalnode"
+	internalinterfaces "github.com/UESTC-KEEP/keep/cloud/pkg/client/eqnd/informers/externalversions/internalinterfaces"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"

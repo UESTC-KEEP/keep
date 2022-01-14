@@ -19,10 +19,9 @@ limitations under the License.
 package fake
 
 import (
-	clientset "keep/cloud/pkg/client/tenant/clientset/versioned"
-	keepedgev1alpha1 "keep/cloud/pkg/client/tenant/clientset/versioned/typed/tenant/v1alpha1"
-	fakekeepedgev1alpha1 "keep/cloud/pkg/client/tenant/clientset/versioned/typed/tenant/v1alpha1/fake"
-
+	clientset "github.com/UESTC-KEEP/keep/cloud/pkg/client/tenant/clientset/versioned"
+	keepedgev1alpha1 "github.com/UESTC-KEEP/keep/cloud/pkg/client/tenant/clientset/versioned/typed/tenant/v1alpha1"
+	fakekeepedgev1alpha1 "github.com/UESTC-KEEP/keep/cloud/pkg/client/tenant/clientset/versioned/typed/tenant/v1alpha1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"
