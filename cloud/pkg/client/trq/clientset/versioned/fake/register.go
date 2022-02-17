@@ -19,8 +19,7 @@ limitations under the License.
 package fake
 
 import (
-	keepedgev1alpha1 "keep/cloud/pkg/apis/keepedge/tenantresourcequota/v1alpha1"
-
+	keepedgev1alpha1 "github.com/UESTC-KEEP/keep/cloud/pkg/apis/keepedge/tenantresourcequota/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"

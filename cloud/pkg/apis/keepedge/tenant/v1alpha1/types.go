@@ -23,6 +23,8 @@ const (
 )
 
 type TenantSpec struct {
+	// 租户所对应的租户管理员
+	TenantAdmin string `json:"tenantAdmin"`
 	// 创建Tenant资源对象时新建租户管理员用户的用户名
 	Username string `json:"username"`
 	// 创建Tenant资源对象时新建租户管理员用户的密码

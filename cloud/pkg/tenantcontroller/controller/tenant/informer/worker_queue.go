@@ -1,9 +1,11 @@
-package tenant_controller_queen
+package tenant_informer
 
 import (
 	"fmt"
 	"github.com/UESTC-KEEP/keep/cloud/pkg/apis/keepedge/tenant/v1alpha1"
+	tenantv1 "github.com/UESTC-KEEP/keep/cloud/pkg/apis/keepedge/tenant/v1alpha1"
 	"github.com/UESTC-KEEP/keep/cloud/pkg/common/client"
+	tenant_onadded "github.com/UESTC-KEEP/keep/cloud/pkg/tenantcontroller/controller/tenant/informer/onadded"
 	beehiveContext "github.com/UESTC-KEEP/keep/pkg/util/core/context"
 	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	v1 "k8s.io/api/core/v1"
@@ -138,54 +140,74 @@ func (c *Controller) runWorker() {
 	}
 }
 
+// 创建工作队列
+var queue = workqueue.NewRateLimitingQueue(workqueue.DefaultControllerRateLimiter())
+
 func StartTenantController() {
-	// creates the clientset
+	// 创建crd的操作客户端
 	clientset := client.GetTenantClient()
-
-	// create the pod watcher
+	// 创建租户watcher
 	tenantListWatcher := cache.NewListWatchFromClient(clientset.KeepedgeV1alpha1().RESTClient(), "tenants", v1.NamespaceDefault, fields.Everything())
-
-	// create the workqueue
-	queue := workqueue.NewRateLimitingQueue(workqueue.DefaultControllerRateLimiter())
-
-	// Bind the workqueue to a cache with the help of an informer. This way we make sure that
-	// whenever the cache is updated, the tenant key is added to the workqueue.
-	// Note that when we finally process the item from the workqueue, we might see a newer version
-	// of the tenant than the version which was responsible for triggering the update.
+	synced := cache.WaitForCacheSync(beehiveContext.Done())
+	if !synced {
+		logger.Error("租户控制器同步失败...")
+		beehiveContext.Cancel()
+	}
+	logger.Debug("租户同步成功...")
+	// 在infomer的帮助下把workqueue和cache绑定 确保cache更新的是否都会有key添加到workqueue
+	// 需要注意的是我们最终会在workqueue中独立对象，可能会有个比触发动作更新版本的tenant
 	indexer, informer := cache.NewIndexerInformer(tenantListWatcher, &v1alpha1.Tenant{}, 0, cache.ResourceEventHandlerFuncs{
-		AddFunc: func(obj interface{}) {
-			key, err := cache.MetaNamespaceKeyFunc(obj)
-			if err == nil {
-				queue.Add(key)
-			}
-		},
-		UpdateFunc: func(old interface{}, new interface{}) {
-			logger.Error(new.(*v1alpha1.Tenant).ResourceVersion, new.(*v1alpha1.Tenant).ResourceVersion)
-			if new.(*v1alpha1.Tenant).ResourceVersion == old.(*v1alpha1.Tenant).ResourceVersion {
-				logger.Error("原来的啥子都不干...")
-				return
-			}
-			key, err := cache.MetaNamespaceKeyFunc(new)
-			if err == nil {
-				queue.Add(key)
-			}
-		},
-		DeleteFunc: func(obj interface{}) {
-			// IndexerInformer uses a delta queue, therefore for deletes we have to use this
-			// key function.
-			key, err := cache.DeletionHandlingMetaNamespaceKeyFunc(obj)
-			if err == nil {
-				queue.Add(key)
-			}
-		},
+		AddFunc:    OnTenantAdded,
+		UpdateFunc: OnTenantUpdate,
+		DeleteFunc: OnTenantDeleted,
 	}, cache.Indexers{})
 	controller := NewController(queue, indexer, informer)
 
-	// Now let's start the controller
+	// 启动控制器
 	stop := make(chan struct{})
 	defer close(stop)
 	go controller.Run(1, stop)
 
 	// Wait forever
 	select {}
+}
+
+func OnTenantAdded(newTenant interface{}) {
+	if newTenant.(*v1alpha1.Tenant).Spec.Status != tenantv1.Initializing {
+		logger.Debug("租户：", newTenant.(*v1alpha1.Tenant).Spec.Username, " 已被处理...")
+		return
+	}
+	key, err := cache.MetaNamespaceKeyFunc(newTenant)
+	if err == nil {
+		queue.Add(key)
+	}
+	newtenant := newTenant.(*tenantv1.Tenant)
+	logger.Debug("新租户加入：", newtenant.Spec.Username)
+	// 更新租户状态
+	tenant_onadded.AddedTenant(newtenant)
+}
+
+func OnTenantUpdate(old interface{}, new interface{}) {
+	logger.Error(new.(*v1alpha1.Tenant).ResourceVersion, new.(*v1alpha1.Tenant).ResourceVersion)
+	if new.(*v1alpha1.Tenant).ResourceVersion == old.(*v1alpha1.Tenant).ResourceVersion {
+		logger.Error("原来的啥子都不干...")
+		return
+	}
+	key, err := cache.MetaNamespaceKeyFunc(new)
+	if err == nil {
+		queue.Add(key)
+	}
+}
+
+func OnTenantDeleted(obj interface{}) {
+	// IndexerInformer uses a delta queue, therefore for deletes we have to use this
+	// key function.
+	key, err := cache.DeletionHandlingMetaNamespaceKeyFunc(obj)
+	if err == nil {
+		queue.Add(key)
+	}
+	deltenant := obj.(*tenantv1.Tenant)
+	logger.Warn("删除租户：", deltenant.Spec.Username)
+
+	//tenant_ondeleted.DeleteTenant(deltenant)
 }
