@@ -17,9 +17,9 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"keep/constants/edge"
-	"keep/pkg/util"
-	logger "keep/pkg/util/loggerv1.0.1"
+	"github.com/UESTC-KEEP/keep/constants/edge"
+	"github.com/UESTC-KEEP/keep/pkg/util"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"os"
 	"strings"
 	"time"

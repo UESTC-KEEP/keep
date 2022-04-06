@@ -1,14 +1,14 @@
 package logsagent
 
 import (
-	"keep/edge/pkg/common/modules"
-	"keep/edge/pkg/logsagent/config"
-	logsagentconfig "keep/edge/pkg/logsagent/config"
-	"keep/edge/pkg/logsagent/tailf"
-	"keep/pkg/util/core"
-	"keep/pkg/util/loggerv1.0.1"
+	"github.com/UESTC-KEEP/keep/edge/pkg/common/modules"
+	"github.com/UESTC-KEEP/keep/edge/pkg/logsagent/config"
+	logsagentconfig "github.com/UESTC-KEEP/keep/edge/pkg/logsagent/config"
+	"github.com/UESTC-KEEP/keep/edge/pkg/logsagent/tailf"
+	"github.com/UESTC-KEEP/keep/pkg/util/core"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 
-	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
+	edgeagent "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 
 	"os"
 	"time"

@@ -1,7 +1,7 @@
 package server
 
 import (
-	"keep/pkg/util/kplogger"
+	"github.com/UESTC-KEEP/keep/pkg/util/kplogger"
 
 	"github.com/shirou/gopsutil/disk"
 )

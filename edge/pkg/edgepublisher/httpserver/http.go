@@ -3,12 +3,12 @@ package httpserver
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/UESTC-KEEP/keep/pkg/util/core/model"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"io"
-	"keep/pkg/util/core/model"
-	logger "keep/pkg/util/loggerv1.0.1"
 	"net/http"
 
-	"keep/edge/pkg/edgepublisher/tunnel"
+	"github.com/UESTC-KEEP/keep/edge/pkg/edgepublisher/tunnel"
 )
 
 func httpHandler(writer http.ResponseWriter, request *http.Request) {

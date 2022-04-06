@@ -1,8 +1,8 @@
 package mqtt
 
 import (
-	"keep/constants/edge"
-	"keep/pkg/util/kplogger"
+	"github.com/UESTC-KEEP/keep/constants/edge"
+	"github.com/UESTC-KEEP/keep/pkg/util/kplogger"
 	"sync"
 	"time"
 

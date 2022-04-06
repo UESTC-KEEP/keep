@@ -35,6 +35,7 @@ minikube start  --force --driver=docker --image-mirror-country='cn'   --registry
 minikube node add
 minikube addons enable metrics-server
 minikube addons enable dashboard
+minikube addons enable ingress
 minikube dashboard
 kubectl get nodes
 

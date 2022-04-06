@@ -17,9 +17,9 @@ limitations under the License.
 package options
 
 import (
-	"keep/constants/edge"
-	v1alpha1 "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
-	logger "keep/pkg/util/loggerv1.0.1"
+	"github.com/UESTC-KEEP/keep/constants/edge"
+	v1alpha1 "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 )
 
 type EdgeAgentOptions struct {

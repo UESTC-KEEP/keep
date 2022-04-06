@@ -2,14 +2,14 @@ package edgetwin
 
 import (
 	"fmt"
-	"keep/edge/pkg/common/modules"
-	edgetwinconfig "keep/edge/pkg/edgetwin/config"
-	"keep/edge/pkg/edgetwin/sqlite"
-	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
-	"keep/pkg/util/core"
-	beehiveContext "keep/pkg/util/core/context"
-	"keep/pkg/util/core/model"
-	"keep/pkg/util/loggerv1.0.1"
+	"github.com/UESTC-KEEP/keep/edge/pkg/common/modules"
+	edgetwinconfig "github.com/UESTC-KEEP/keep/edge/pkg/edgetwin/config"
+	"github.com/UESTC-KEEP/keep/edge/pkg/edgetwin/sqlite"
+	edgeagent "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
+	"github.com/UESTC-KEEP/keep/pkg/util/core"
+	beehiveContext "github.com/UESTC-KEEP/keep/pkg/util/core/context"
+	"github.com/UESTC-KEEP/keep/pkg/util/core/model"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"os"
 )
 

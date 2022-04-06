@@ -1,11 +1,11 @@
 package edgetunnel
 
 import (
+	"github.com/UESTC-KEEP/keep/constants/edge"
+	"github.com/UESTC-KEEP/keep/pkg/stream"
+	beehiveContext "github.com/UESTC-KEEP/keep/pkg/util/core/context"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"github.com/gorilla/websocket"
-	"keep/constants/edge"
-	"keep/pkg/stream"
-	beehiveContext "keep/pkg/util/core/context"
-	"keep/pkg/util/loggerv1.0.1"
 	"sync"
 	"time"
 )

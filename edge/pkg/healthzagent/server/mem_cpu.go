@@ -1,7 +1,7 @@
 package server
 
 import (
-	logger "keep/pkg/util/loggerv1.0.1"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"time"
 
 	"github.com/shirou/gopsutil/cpu"

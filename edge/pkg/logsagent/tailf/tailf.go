@@ -1,9 +1,9 @@
 package tailf
 
 import (
+	"github.com/UESTC-KEEP/keep/edge/pkg/logsagent/filter"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"github.com/hpcloud/tail"
-	"keep/edge/pkg/logsagent/filter"
-	"keep/pkg/util/loggerv1.0.1"
 	"time"
 )
 

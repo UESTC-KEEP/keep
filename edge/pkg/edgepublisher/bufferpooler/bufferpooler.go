@@ -2,12 +2,12 @@ package bufferpooler
 
 import (
 	"fmt"
-	"keep/constants/edge"
-	beehiveContext "keep/pkg/util/core/context"
-	"keep/pkg/util/loggerv1.0.1"
+	"github.com/UESTC-KEEP/keep/constants/edge"
+	beehiveContext "github.com/UESTC-KEEP/keep/pkg/util/core/context"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 
-	"keep/edge/pkg/common/modules"
-	"keep/edge/pkg/edgepublisher/chanmsgqueen"
+	"github.com/UESTC-KEEP/keep/edge/pkg/common/modules"
+	"github.com/UESTC-KEEP/keep/edge/pkg/edgepublisher/chanmsgqueen"
 )
 
 // SentImmediately 被调用就即时给云端推送消息

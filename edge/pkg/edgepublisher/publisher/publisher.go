@@ -3,11 +3,11 @@ package publisher
 
 import (
 	"fmt"
-	"keep/edge/pkg/edgepublisher/chanmsgqueen"
-	"keep/edge/pkg/edgepublisher/config"
-	edgetunnel "keep/edge/pkg/edgepublisher/tunnel"
-	"keep/pkg/util/core/model"
-	logger "keep/pkg/util/loggerv1.0.1"
+	"github.com/UESTC-KEEP/keep/edge/pkg/edgepublisher/chanmsgqueen"
+	"github.com/UESTC-KEEP/keep/edge/pkg/edgepublisher/config"
+	edgetunnel "github.com/UESTC-KEEP/keep/edge/pkg/edgepublisher/tunnel"
+	"github.com/UESTC-KEEP/keep/pkg/util/core/model"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 )
 
 //

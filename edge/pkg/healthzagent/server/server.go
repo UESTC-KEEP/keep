@@ -5,11 +5,11 @@ package server
 
 import (
 	"fmt"
-	"keep/edge/pkg/common/modules"
-	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
-	beehiveContext "keep/pkg/util/core/context"
-	"keep/pkg/util/core/model"
-	logger "keep/pkg/util/loggerv1.0.1"
+	"github.com/UESTC-KEEP/keep/edge/pkg/common/modules"
+	edgeagent "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
+	beehiveContext "github.com/UESTC-KEEP/keep/pkg/util/core/context"
+	"github.com/UESTC-KEEP/keep/pkg/util/core/model"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"strconv"
 
 	"github.com/robfig/cron"

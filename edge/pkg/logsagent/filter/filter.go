@@ -2,12 +2,12 @@ package filter
 
 import (
 	"fmt"
-	beehiveContext "keep/pkg/util/core/context"
+	beehiveContext "github.com/UESTC-KEEP/keep/pkg/util/core/context"
 	//beehiveContext "github.com/kubeedge/beehive/pkg/core/context"
-	"keep/pkg/util/core/model"
+	"github.com/UESTC-KEEP/keep/pkg/util/core/model"
 
-	"keep/edge/pkg/common/modules"
-	"keep/edge/pkg/logsagent/config"
+	"github.com/UESTC-KEEP/keep/edge/pkg/common/modules"
+	"github.com/UESTC-KEEP/keep/edge/pkg/logsagent/config"
 	"strings"
 )
 

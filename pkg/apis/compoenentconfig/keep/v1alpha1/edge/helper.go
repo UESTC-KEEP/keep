@@ -17,8 +17,8 @@ limitations under the License.
 package v1alpha1
 
 import (
+	"github.com/UESTC-KEEP/keep/constants/edge"
 	"io/ioutil"
-	"keep/constants/edge"
 
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/yaml"

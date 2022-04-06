@@ -1,9 +1,9 @@
 package main
 
 import (
-	"keep/edge/cmd/edgeagent/app"
-	"keep/edge/pkg/common/utils"
-	kplogger "keep/pkg/util/kplogger"
+	"github.com/UESTC-KEEP/keep/edge/cmd/edgeagent/app"
+	"github.com/UESTC-KEEP/keep/edge/pkg/common/utils"
+	kplogger "github.com/UESTC-KEEP/keep/pkg/util/kplogger"
 	_ "net/http/pprof"
 	"os"
 )

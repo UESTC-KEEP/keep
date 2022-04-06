@@ -1,20 +1,20 @@
 package healthzagent
 
 import (
-	"keep/constants/edge"
-	"keep/edge/pkg/common/modules"
-	"keep/edge/pkg/healthzagent/config"
-	prome "keep/edge/pkg/healthzagent/promethus"
-	"keep/edge/pkg/healthzagent/server"
-	"keep/pkg/util/core"
-	"keep/pkg/util/loggerv1.0.1"
+	"github.com/UESTC-KEEP/keep/constants/edge"
+	"github.com/UESTC-KEEP/keep/edge/pkg/common/modules"
+	"github.com/UESTC-KEEP/keep/edge/pkg/healthzagent/config"
+	prome "github.com/UESTC-KEEP/keep/edge/pkg/healthzagent/promethus"
+	"github.com/UESTC-KEEP/keep/edge/pkg/healthzagent/server"
+	"github.com/UESTC-KEEP/keep/pkg/util/core"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 
+	edgeagent "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/mem"
 	"github.com/shirou/gopsutil/net"
-	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 
 	"os"
 )

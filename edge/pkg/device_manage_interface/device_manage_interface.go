@@ -1,17 +1,17 @@
 package device_manage_interface
 
 import (
-	"keep/edge/pkg/common/modules"
-	dmi_cfg "keep/edge/pkg/device_manage_interface/config"
-	"keep/edge/pkg/device_monitor/mqtt"
-	"keep/edge/pkg/edgepublisher/publisher"
+	"github.com/UESTC-KEEP/keep/edge/pkg/common/modules"
+	dmi_cfg "github.com/UESTC-KEEP/keep/edge/pkg/device_manage_interface/config"
+	"github.com/UESTC-KEEP/keep/edge/pkg/device_monitor/mqtt"
+	"github.com/UESTC-KEEP/keep/edge/pkg/edgepublisher/publisher"
 
-	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
-	"keep/pkg/util/core"
-	beehiveContext "keep/pkg/util/core/context"
-	"keep/pkg/util/core/model"
-	"keep/pkg/util/kplogger"
-	logger "keep/pkg/util/loggerv1.0.1"
+	edgeagent "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
+	"github.com/UESTC-KEEP/keep/pkg/util/core"
+	beehiveContext "github.com/UESTC-KEEP/keep/pkg/util/core/context"
+	"github.com/UESTC-KEEP/keep/pkg/util/core/model"
+	"github.com/UESTC-KEEP/keep/pkg/util/kplogger"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"os"
 	"time"
 )
