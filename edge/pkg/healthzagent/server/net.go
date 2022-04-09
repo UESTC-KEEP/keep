@@ -54,7 +54,7 @@ func GetNetworkInterfaceInfoList(opt *NetworkInterfaceInfoOption) *NetworkInterf
 	return &list
 }
 
-//检测是否是虚拟网卡。当前仅限于linux系统
+// IsVirtualInterface 检测是否是虚拟网卡。当前仅限于linux系统
 func IsVirtualInterface(interface_name string) (bool, error) {
 	net_dev_path := "/sys/devices/virtual/net/" + interface_name
 	_, err := os.Stat(net_dev_path)

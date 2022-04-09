@@ -18,7 +18,7 @@ modules:
   logsagent:
     enable: true
     loglevel: 6
-    logtime: 2021-12-27T11:01:57.40508683+08:00
+    logtime: 2022-04-09T17:40:40.295895126+08:00
     logfilename: ""
     loginfo: ""
     logfiles:
@@ -36,7 +36,7 @@ modules:
     tlscertfile: ""
     tlsprivatekeyfile: ""
     beehivetimeout: 500ms
-    hostnameoverride: edge03-zlj
+    hostnameoverride: edge03-zlj-kata
     localip: 192.168.1.128
     token: ""
   edgetwin:

@@ -1,8 +1,8 @@
 package Router
 
 import (
-	beehiveContext "keep/pkg/util/core/context"
-	"keep/pkg/util/core/model"
+	beehiveContext "github.com/UESTC-KEEP/keep/pkg/util/core/context"
+	"github.com/UESTC-KEEP/keep/pkg/util/core/model"
 	"testing"
 	"time"
 )
@@ -45,7 +45,7 @@ func TestRouter_MessageDispatcher1(t *testing.T) {
 
 }
 
-func TestRouter_SendToEdge(t *testing.T) {
+func TestRouter_SendToEdge2(t *testing.T) {
 	msg := &model.Message{}
 	msg.Content = "hello edge!!!"
 	msg.Router.Group = "/log"

@@ -1,9 +1,9 @@
 package healthzhub
 
 import (
-	beehiveContext "keep/pkg/util/core/context"
-	"keep/pkg/util/core/model"
-	"keep/pkg/util/loggerv1.0.1"
+	beehiveContext "github.com/UESTC-KEEP/keep/pkg/util/core/context"
+	"github.com/UESTC-KEEP/keep/pkg/util/core/model"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"time"
 )
 

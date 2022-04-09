@@ -30,7 +30,11 @@ func MessageRouter() {
 			close(RevMsgChan)
 			return
 		case message := <-RevMsgChan:
-			logger.Trace(fmt.Sprintf("%#v", message))
+			msgStr := fmt.Sprintf("云端接收消息:%#v", message)
+			if len(msgStr) >= 60 {
+				msgStr = msgStr[:60]
+			}
+			logger.Trace(msgStr+"..."+"message.Router.Resource:", message.Router.Resource)
 			switch message.Router.Resource {
 			case "/log":
 				kafkaMsg := message.Content.(string)
@@ -45,6 +49,8 @@ func MessageRouter() {
 			case routers.KeepRouter.K8sClientRouter.KubeedgeEngine.Devices.Resources:
 				beehiveContext.Send(modules.K8sClientModule, *message)
 			}
+			// 匹配metrics信息
+
 		default:
 		}
 	}

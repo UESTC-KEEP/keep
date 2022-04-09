@@ -17,7 +17,7 @@ func SendBeehiveMsg(module string, msg model.Message) {
 }
 
 func StartK8sClientRouter() {
-	//fmt.Println("启动路由...")
+	fmt.Println("启动路由...")
 	go func() {
 		for {
 			select {

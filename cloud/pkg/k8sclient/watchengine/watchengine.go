@@ -2,7 +2,6 @@
 package watchengine
 
 import (
-	"github.com/UESTC-KEEP/keep/cloud/pkg/k8sclient/kubeedge-engine/devices/informer"
 	naive_engine "github.com/UESTC-KEEP/keep/cloud/pkg/k8sclient/naive-engine"
 	appsv1 "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
@@ -20,7 +19,7 @@ type WatcherEngine struct {
 
 func StartAllInformers() {
 	go naive_engine.StartNaiveEngineInformers()
-	go device_informer.StartDeviceInformer()
+	//go device_informer.StartDeviceInformer()
 }
 
 func InitK8sClientWatchEngine(engin WatcherEngineInterface) {

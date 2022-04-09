@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/k8sclient/config"
 	"io/ioutil"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
@@ -16,11 +17,11 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/restmapper"
 	"k8s.io/client-go/tools/clientcmd"
-	"keep/cloud/pkg/k8sclient/config"
 	"log"
 	"os/user"
 	"testing"
 )
+
 const metaCRD = `
 apiVersion: "apiextensions.k8s.io/v1beta1"
 kind: "CustomResourceDefinition"
@@ -52,9 +53,9 @@ func TestCreatResourcesByYAML(t *testing.T) {
 }
 
 func TestOpCRD(t *testing.T) {
-	obj:=&unstructured.Unstructured{}
-	_, gvk,err := yaml.NewDecodingSerializer(unstructured.UnstructuredJSONScheme).Decode([]byte(metaCRD), nil, obj)
-	if err!=nil {
+	obj := &unstructured.Unstructured{}
+	_, gvk, err := yaml.NewDecodingSerializer(unstructured.UnstructuredJSONScheme).Decode([]byte(metaCRD), nil, obj)
+	if err != nil {
 		log.Fatal(err)
 	}
 	dr, err := config.GetGVRdyClient(gvk, obj.GetNamespace())
@@ -67,13 +68,13 @@ func TestOpCRD(t *testing.T) {
 	//}
 	//log.Print("Create: : ",objCreate)
 	unstructuredList, err := dr.List(context.TODO(), metav1.ListOptions{})
-	if err!=nil{
+	if err != nil {
 		log.Fatal(err.Error())
 	}
 	content := unstructuredList.UnstructuredContent()
-	CRDList:=&v1.PodList{}
+	CRDList := &v1.PodList{}
 	runtime.DefaultUnstructuredConverter.FromUnstructured(content, CRDList)
-	for _ ,item :=range CRDList.Items{
+	for _, item := range CRDList.Items {
 		t.Logf("%v\t %v\t %v\n",
 			item.Namespace,
 			item.Status.Phase,
@@ -158,5 +159,3 @@ func GetHomePath() string {
 	}
 	return ""
 }
-
-

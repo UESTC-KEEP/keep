@@ -3,7 +3,6 @@ package k8sclient
 import (
 	"github.com/UESTC-KEEP/keep/cloud/pkg/common/modules"
 	k8sclientconfig "github.com/UESTC-KEEP/keep/cloud/pkg/k8sclient/config"
-	kubeedge_engine "github.com/UESTC-KEEP/keep/cloud/pkg/k8sclient/kubeedge-engine"
 	naive_engine "github.com/UESTC-KEEP/keep/cloud/pkg/k8sclient/naive-engine"
 	"github.com/UESTC-KEEP/keep/cloud/pkg/k8sclient/watchengine"
 	"github.com/UESTC-KEEP/keep/constants/cloud"
@@ -69,7 +68,7 @@ func (k *K8sClient) Start() {
 	//	time.Sleep(time.Second)
 	//}
 	// 查询所有的device
-	go kubeedge_engine.NewKubeEdgeEngine().GetDevicesByNodeName("")
+	//go kubeedge_engine.NewKubeEdgeEngine().GetDevicesByNodeName("")
 	// 启动系统需要的所有informers们
 	go watchengine.StartAllInformers()
 	//	所有项目准备完成启动路由
@@ -87,12 +86,12 @@ func initKeepEdgeEnv() {
 	go checkK8sVersion()
 	// 检查有没有keepedge的namesopace
 	// 没有就创建
-	go checkNamespaceAliveness()
+	//go checkNamespaceAliveness()
 	// 检查k8s集群apiserver状态
 	// 检查redis在线状态 如果不在线就由naive_engine 在master集群中创建statefulset
-	go checkRedisAliveness()
+	//go checkRedisAliveness()
 	// 创建crd
-	go checkeepCrd()
+	//go checkeepCrd()
 
 }
 

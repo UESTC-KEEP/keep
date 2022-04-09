@@ -131,6 +131,7 @@ func SpliceErrors(errors []error) string {
 
 //OrganizeConfigurationFile 组织自动下发配置文件 日志文件
 func OrganizeConfigurationFile(agentName string) {
+	fmt.Println(os.Getwd())
 	var sourceConfDir, destinationConfDir string
 	if agentName == edge.EdgeAgentName {
 		sourceConfDir = edge.EdgeConfigeFilesSourceDir

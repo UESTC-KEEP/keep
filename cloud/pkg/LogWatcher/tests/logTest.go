@@ -1,9 +1,9 @@
 package main
 
 import (
-	"keep/cloud/pkg/LogWatcher"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/LogWatcher"
 )
 
-func main(){
+func main() {
 	LogWatcher.GetAndPusherKafka()
 }

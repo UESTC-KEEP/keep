@@ -11,7 +11,6 @@ import (
 	"github.com/UESTC-KEEP/keep/pkg/util/core"
 	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"os"
-	"time"
 )
 
 type RequestDispatcher struct {
@@ -70,10 +69,10 @@ func (r *RequestDispatcher) Start() {
 	// Router.TestRouter_SendToEdge()
 
 	// 张连军测试
-	go func() {
-		time.Sleep(5 * time.Second)
-		Router.TestSendtoK8sClint()
-	}()
+	//go func() {
+	//	time.Sleep(5 * time.Second)
+	//	Router.TestSendtoK8sClint()
+	//}()
 
 	cloudtunnel.StartWebsocketServer()
 

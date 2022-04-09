@@ -1,7 +1,7 @@
 package edge
 
 const EdgeAgentName = "EdgeAgent"
-const EdgeConfigeFilesSourceDir = "edge/shells/confs/keepedge"
+const EdgeConfigeFilesSourceDir = "../../../edge/shells/confs/keepedge"
 
 const (
 	KeepBasepath              = "/etc/keepedge/"
@@ -38,9 +38,9 @@ const (
 
 // EdgePublisher 全局配置
 const (
-	DefaultHttpServer    = "172.17.14.196"
-	DefaultCloudHttpPort = 30001
-	DefaultWebSocketPort = 30000
+	DefaultHttpServer    = "192.168.1.128"
+	DefaultCloudHttpPort = 20001
+	DefaultWebSocketPort = 20000
 	DefaultEdgeHeartBeat = 15
 	DefaultEdgePort      = 20350
 	DefaultLogsTopic     = "keep_log_topic"
