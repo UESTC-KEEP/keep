@@ -4,6 +4,8 @@ import (
 	k8sclientrouter "github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/Router/routers/k8sclient"
 	kubedge_engin_router "github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/Router/routers/k8sclient/kubedge-engin-router"
 	naive_engin_router "github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/Router/routers/k8sclient/naive-engin-router"
+	kafka_router "github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/Router/routers/kafka"
+	kafka_metrics "github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/Router/routers/kafka/metrics"
 	"sync"
 )
 
@@ -11,6 +13,7 @@ import (
 
 type KeepRouters struct {
 	K8sClientRouter k8sclientrouter.K8sClientRouter
+	Kafka           kafka_router.FluentKafkaRouter
 }
 
 var KeepRouter KeepRouters
@@ -35,6 +38,14 @@ func InitRouters() {
 						Operation: kubedge_engin_router.Operation{
 							List: "list",
 						},
+					},
+				},
+			},
+			Kafka: kafka_router.FluentKafkaRouter{
+				Metrics: kafka_metrics.Metrics{
+					Resources: "$uestc/keep/kafka/metrics/",
+					Operation: kafka_metrics.Operation{
+						Push: "push",
 					},
 				},
 			},

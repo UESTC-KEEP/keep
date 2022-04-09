@@ -1,8 +1,8 @@
 package metrics_collector
 
 import (
-	"keep/cloud/pkg/promserver/config"
-	"keep/pkg/util/loggerv1.0.1"
+	"github.com/UESTC-KEEP/keep/cloud/pkg/promserver/config"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"net/http"
 	"strconv"
 )
