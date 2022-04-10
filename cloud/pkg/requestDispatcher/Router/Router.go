@@ -8,6 +8,7 @@ import (
 	beehiveContext "github.com/UESTC-KEEP/keep/pkg/util/core/context"
 	"github.com/UESTC-KEEP/keep/pkg/util/core/model"
 	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
+	"time"
 )
 
 var RevMsgChan = make(chan *model.Message)
@@ -48,6 +49,16 @@ func MessageRouter() {
 			// 匹配kubeedge device资源
 			case routers.KeepRouter.K8sClientRouter.KubeedgeEngine.Devices.Resources:
 				beehiveContext.Send(modules.K8sClientModule, *message)
+			// 匹配需要发送给kafka的用量消息
+			case routers.KeepRouter.Kafka.Metrics.Resources:
+				logger.Info("发送给kafka...")
+				// 主题设置为设置的metrics topic
+				p := kafka.NewProducerConfig(routers.KeepRouter.Kafka.Metrics.Resources)
+				go p.Publish()
+				// 向kafka push数据
+				timeNw := time.Now()
+				value := message.Content.(string) + timeNw.Format("15:04:05")
+				p.Msg <- value
 			}
 			// 匹配metrics信息
 

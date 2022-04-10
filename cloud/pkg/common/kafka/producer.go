@@ -2,7 +2,7 @@ package kafka
 
 import (
 	"github.com/Shopify/sarama"
-	"log"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 )
 
 //var Address = []string{"192.168.1.103:9092", "192.168.1.103:9093"}
@@ -23,8 +23,10 @@ func InitManualRetryAsyncProducer(addr []string, conf *Config) (*AsyncProducer, 
 	var err error
 	aSyncProducer.producer, err = sarama.NewAsyncProducer(addr, &conf.Config.Config)
 	if err != nil {
-		log.Printf("sarama.NewSyncProducer err, message=%s \n", err)
+		logger.Info("sarama.NewSyncProducer err, message="+err.Error()+" ip:", addr)
 		return nil, err
+	} else {
+		logger.Info("kafka集群链接成功：", addr)
 	}
 	return aSyncProducer, nil
 }

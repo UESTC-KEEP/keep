@@ -5,12 +5,9 @@ import (
 	"github.com/UESTC-KEEP/keep/cloud/pkg/cloudimagemanager"
 	"github.com/UESTC-KEEP/keep/cloud/pkg/common/client"
 	"github.com/UESTC-KEEP/keep/cloud/pkg/common/informers"
-	"github.com/UESTC-KEEP/keep/cloud/pkg/equalnodecontroller"
 	"github.com/UESTC-KEEP/keep/cloud/pkg/k8sclient"
 	"github.com/UESTC-KEEP/keep/cloud/pkg/promserver"
 	"github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher"
-	tenant_controller "github.com/UESTC-KEEP/keep/cloud/pkg/tenantcontroller"
-	"github.com/UESTC-KEEP/keep/cloud/pkg/tenantresourcequotacontroller"
 	"github.com/UESTC-KEEP/keep/constants/cloud"
 	"github.com/UESTC-KEEP/keep/edge/pkg/common/utils"
 	cloudagent "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
@@ -66,9 +63,9 @@ func NewCloudAgentCommand() *cobra.Command {
 // register all modules in system
 func registerModules(config *cloudagent.CloudAgentConfig) {
 	k8sclient.Register(config.Modules.K8sClient)
-	equalnodecontroller.Register(config.Modules.EqualNodeController)
-	tenantresourcequotacontroller.Register(config.Modules.TenantResourceQuotaController)
-	tenant_controller.Register(config.Modules.TenantController)
+	//equalnodecontroller.Register(config.Modules.EqualNodeController)
+	//tenantresourcequotacontroller.Register(config.Modules.TenantResourceQuotaController)
+	//tenant_controller.Register(config.Modules.TenantController)
 	promserver.Register(config.Modules.PromServer)
 	requestDispatcher.Register(config.Modules.RequestDispatcher)
 	cloudimageManager.Register(config.Modules.CloudImageManager)
