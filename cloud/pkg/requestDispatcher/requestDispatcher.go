@@ -5,6 +5,7 @@ import (
 	"github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/Router"
 	"github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/cloudtunnel"
 	requestDispatcherconfig "github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/config"
+	prome_exporter "github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/prome-exporter"
 	"github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/receiver"
 	"github.com/UESTC-KEEP/keep/constants/cloud"
 	cloudagent "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/cloud"
@@ -46,7 +47,8 @@ func (r *RequestDispatcher) Group() string {
 func (r *RequestDispatcher) Start() {
 
 	logger.Info("RequestDispatcher begin..")
-
+	// 启动peomethues Exporter
+	go prome_exporter.StartPromeExporter()
 	// check whether the certificates exist in the local directory,
 	// and then check whether certificates exist in the secret, generate if they don't exist
 	if err := receiver.PrepareAllCerts(); err != nil {
@@ -74,6 +76,7 @@ func (r *RequestDispatcher) Start() {
 	//	Router.TestSendtoK8sClint()
 	//}()
 
+	// 注意这里启动后会阻塞
 	cloudtunnel.StartWebsocketServer()
 
 	// err := coupon.ServerInit()

@@ -5,10 +5,10 @@ import (
 	"github.com/UESTC-KEEP/keep/cloud/pkg/common/kafka"
 	"github.com/UESTC-KEEP/keep/cloud/pkg/common/modules"
 	"github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/Router/routers"
+	prome_exporter "github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/prome-exporter"
 	beehiveContext "github.com/UESTC-KEEP/keep/pkg/util/core/context"
 	"github.com/UESTC-KEEP/keep/pkg/util/core/model"
 	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
-	"time"
 )
 
 var RevMsgChan = make(chan *model.Message)
@@ -32,9 +32,9 @@ func MessageRouter() {
 			return
 		case message := <-RevMsgChan:
 			msgStr := fmt.Sprintf("云端接收消息:%#v", message)
-			if len(msgStr) >= 60 {
-				msgStr = msgStr[:60]
-			}
+			//if len(msgStr) >= 60 {
+			//	msgStr = msgStr[:60]
+			//}
 			logger.Trace(msgStr+"..."+"message.Router.Resource:", message.Router.Resource)
 			switch message.Router.Resource {
 			case "/log":
@@ -51,14 +51,11 @@ func MessageRouter() {
 				beehiveContext.Send(modules.K8sClientModule, *message)
 			// 匹配需要发送给kafka的用量消息
 			case routers.KeepRouter.Kafka.Metrics.Resources:
-				logger.Info("发送给kafka...")
-				// 主题设置为设置的metrics topic
-				p := kafka.NewProducerConfig(routers.KeepRouter.Kafka.Metrics.Resources)
-				go p.Publish()
-				// 向kafka push数据
-				timeNw := time.Now()
-				value := message.Content.(string) + timeNw.Format("15:04:05")
-				p.Msg <- value
+				logger.Info("发送给prometheus...")
+				node_name := message.Content.(map[string]interface{})["node_name"].(string)
+				cpuUsage := message.Content.(map[string]interface{})["cpu_usage"].(float64)
+				memUsage := message.Content.(map[string]interface{})["mem"].(map[string]interface{})["usedPercent"].(float64)
+				prome_exporter.UpdatesData(node_name, cpuUsage, memUsage)
 			}
 			// 匹配metrics信息
 

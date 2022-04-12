@@ -1,5 +1,6 @@
 package edge
 
+const NodeName = "node-01"
 const EdgeAgentName = "EdgeAgent"
 const EdgeConfigeFilesSourceDir = "../../../edge/shells/confs/keepedge"
 
@@ -26,7 +27,7 @@ const (
 
 // healthzagent 全局静态配置
 const (
-	DefaultEdgeHealthInterval = 30
+	DefaultEdgeHealthInterval = 5
 )
 
 //
@@ -38,11 +39,19 @@ const (
 
 // EdgePublisher 全局配置
 const (
-	DefaultHttpServer    = "192.168.1.128"
-	DefaultCloudHttpPort = 20001
-	DefaultWebSocketPort = 20000
+	DefaultHttpServer = "172.17.1.20"
+	//DefaultHttpServer    = "192.168.1.128"
+
+	// 云端打包
+	DefaultCloudHttpPort = 30525
+	DefaultWebSocketPort = 32402
+	DefaultEdgePort      = 31975
+	// 本地测试
+	//DefaultEdgePort      = 20350
+	//DefaultCloudHttpPort = 20001
+	//DefaultWebSocketPort = 20000
+
 	DefaultEdgeHeartBeat = 15
-	DefaultEdgePort      = 20350
 	DefaultLogsTopic     = "keep_log_topic"
 	DefaultDataTopic     = "keep_data_topic"
 	// DefaultLogsQueenSize 日志缓冲队列默认大小

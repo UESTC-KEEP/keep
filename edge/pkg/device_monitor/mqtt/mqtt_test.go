@@ -2,7 +2,7 @@ package mqtt
 
 import (
 	"fmt"
-	"keep/pkg/util/kplogger"
+	"github.com/UESTC-KEEP/keep/pkg/util/kplogger"
 	"testing"
 	"time"
 )

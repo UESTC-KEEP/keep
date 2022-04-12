@@ -1,12 +1,27 @@
 {
-  "File": {
-    "filename": "/var/log/keepedge/keep_edgeagent_logs.log",
-    "level": "DEBG",
-    "daily": false,
-    "maxlines": 1000000,
-    "maxsize": 1,
-    "maxdays": -1,
-    "append": true,
-    "permit": "0666"
+  "TimeFormat":"",
+  "Console": {
+    "level":"TRAC",
+    "color":true,
+    "LogLevel":0
+  },
+  "File":{
+    "filename":"/var/log/keepedge/keep_edgeagent_logs.log",
+    "append":true,
+    "maxlines":1000000,
+    "maxsize":1,
+    "daily":false,
+    "maxdays":-1,
+    "level":"TRAC",
+    "permit":"0600",
+    "LogLevel":0
+  },
+  "Conn":{
+    "reconnectOnMsg":false,
+    "reconnect":false,
+    "net":"",
+    "addr":"",
+    "level":"",
+    "LogLevel":0
   }
 }

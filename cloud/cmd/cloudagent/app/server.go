@@ -5,7 +5,6 @@ import (
 	"github.com/UESTC-KEEP/keep/cloud/pkg/cloudimagemanager"
 	"github.com/UESTC-KEEP/keep/cloud/pkg/common/client"
 	"github.com/UESTC-KEEP/keep/cloud/pkg/common/informers"
-	"github.com/UESTC-KEEP/keep/cloud/pkg/k8sclient"
 	"github.com/UESTC-KEEP/keep/cloud/pkg/promserver"
 	"github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher"
 	"github.com/UESTC-KEEP/keep/constants/cloud"
@@ -62,7 +61,7 @@ func NewCloudAgentCommand() *cobra.Command {
 
 // register all modules in system
 func registerModules(config *cloudagent.CloudAgentConfig) {
-	k8sclient.Register(config.Modules.K8sClient)
+	//k8sclient.Register(config.Modules.K8sClient)
 	//equalnodecontroller.Register(config.Modules.EqualNodeController)
 	//tenantresourcequotacontroller.Register(config.Modules.TenantResourceQuotaController)
 	//tenant_controller.Register(config.Modules.TenantController)

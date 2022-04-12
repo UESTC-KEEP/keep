@@ -1,8 +1,8 @@
 package healthzhub
 
 import (
-	"keep/pkg/util/core/model"
-	"keep/pkg/util/kplogger"
+	"github.com/UESTC-KEEP/keep/pkg/util/core/model"
+	"github.com/UESTC-KEEP/keep/pkg/util/kplogger"
 )
 
 type HealthzHubImpl struct {

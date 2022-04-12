@@ -6,14 +6,14 @@ package server
 import (
 	"fmt"
 	"github.com/UESTC-KEEP/keep/edge/pkg/common/modules"
+	"github.com/UESTC-KEEP/keep/edge/pkg/healthzagent/config"
 	edgeagent "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 	beehiveContext "github.com/UESTC-KEEP/keep/pkg/util/core/context"
 	"github.com/UESTC-KEEP/keep/pkg/util/core/model"
 	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
-	"strconv"
-
 	"github.com/robfig/cron"
 	"github.com/shirou/gopsutil/host"
+	"strconv"
 )
 
 var Healagent edgeagent.HealthzAgent
@@ -43,6 +43,8 @@ func GetMachineStatus() {
 	Healagent.DiskPartitionStat = GetDiskStorageStatus()
 	Healagent.DiskIOCountersStat = GetDiskIOStatus()
 	Healagent.NetIOCountersStat, _ = GetNetIOStatus()
+	Healagent.NodeName = config.Config.NodeName
+
 	//同步数据到sqlite
 	msg := model.Message{
 		Header: model.MessageHeader{},
@@ -50,7 +52,7 @@ func GetMachineStatus() {
 			Source:    modules.HealthzAgentModule,
 			Group:     "",
 			Operation: "",
-			Resource:  "",
+			Resource:  "uestc-keep-kafka-metrics",
 		},
 		Content: Healagent,
 	}
@@ -95,6 +97,6 @@ func StartMetricEdgeInterval(interval int) *cron.Cron {
 		logger.Error(err)
 	}
 	cron2.Start()
-	logger.Trace("定时检测边缘节点健康状态启动成功...")
+	logger.Trace(interval, "s 定时检测边缘节点健康状态启动成功...")
 	return cron2
 }

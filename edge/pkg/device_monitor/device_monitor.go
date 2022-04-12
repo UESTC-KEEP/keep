@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"os"
 
-	"keep/edge/pkg/common/modules"
-	"keep/edge/pkg/device_monitor/mqtt"
-	"keep/pkg/util/core"
-	"keep/pkg/util/kplogger"
+	"github.com/UESTC-KEEP/keep/edge/pkg/common/modules"
+	"github.com/UESTC-KEEP/keep/edge/pkg/device_monitor/mqtt"
+	"github.com/UESTC-KEEP/keep/pkg/util/core"
+	"github.com/UESTC-KEEP/keep/pkg/util/kplogger"
 	"net/http"
 	"time"
 )

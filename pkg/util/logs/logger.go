@@ -1,7 +1,7 @@
 package logs
 
 import (
-	"keep/pkg/util/loggerv1.0.1"
+	"github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 )
 
 func InitKeepLogger() {

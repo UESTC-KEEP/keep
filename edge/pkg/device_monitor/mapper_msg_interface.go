@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"keep/edge/pkg/device_monitor/mqtt"
-	"keep/pkg/util/kplogger"
+	"github.com/UESTC-KEEP/keep/edge/pkg/device_monitor/mqtt"
+	"github.com/UESTC-KEEP/keep/pkg/util/kplogger"
 	"net/http"
 	"time"
 )

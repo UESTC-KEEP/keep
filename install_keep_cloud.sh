@@ -1,6 +1,7 @@
 #!/bin/bash
+#/bin/bash /home/et/go/src/github.com/UESTC-KEEP/keep/install_keep_cloud.sh
 rm -rf cloudagent
-cp /root/.kube/config .
+#cp /root/.kube/config .
 # docker build -f /path/to/a/Dockerfile .
 # 构建镜像
 docker build -f Dockerfile_cloud -t keep-cloud .

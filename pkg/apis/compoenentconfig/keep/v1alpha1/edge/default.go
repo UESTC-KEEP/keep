@@ -36,6 +36,7 @@ func NewDefaultEdgeAgentConfig() *EdgeAgentConfig {
 		},
 		Modules: &Modules{
 			HealthzAgent: &HealthzAgent{
+				NodeName:                  edge.NodeName,
 				Enable:                    true,
 				CpuUsage:                  0.0,
 				DefaultEdgeHealthInterval: edge.DefaultEdgeHealthInterval,

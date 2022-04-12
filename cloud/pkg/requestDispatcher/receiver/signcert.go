@@ -7,6 +7,7 @@ import (
 	"fmt"
 	hubconfig "github.com/UESTC-KEEP/keep/cloud/pkg/requestDispatcher/config"
 	"github.com/UESTC-KEEP/keep/constants/cloud"
+	"os"
 
 	certutil "k8s.io/client-go/util/cert"
 
@@ -19,6 +20,14 @@ import (
 )
 
 func SignCerts() ([]byte, []byte, error) {
+	// 如果当前环境变量有 DefaultKeepCloudIP 就使用这个环境变量签发证书
+	ip := os.Getenv("DefaultKeepCloudIP")
+	signIP := ""
+	if ip != "" {
+		signIP = ip
+	} else {
+		signIP = cloud.DefaultKeepCloudIP
+	}
 	cfg := &certutil.Config{
 		CommonName:   "KeepEdge",
 		Organization: []string{"KeepEdge"},
@@ -26,7 +35,7 @@ func SignCerts() ([]byte, []byte, error) {
 		AltNames: certutil.AltNames{
 			DNSNames: []string{""},
 			// DNSNames: hubconfig.Config.DNSNames,
-			IPs: getIps([]string{cloud.DefaultKeepCloudIP}),
+			IPs: getIps([]string{signIP}),
 		},
 	}
 

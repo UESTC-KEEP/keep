@@ -69,6 +69,7 @@ type Modules struct {
 type HealthzAgent struct {
 	// Enable 说明healthzagent模块当前是否启用 如果没有启用则其对应的配置文件也不会进行校验 默认启动
 	// default true
+	NodeName                  string                           `json:"node_name"`
 	Enable                    bool                             `json:"enable,omitempty"`
 	HostInfoStat              *host.InfoStat                   `json:"host_info_stat"`
 	Cpu                       *[]cpu.InfoStat                  `json:"cpu,omitempty"`

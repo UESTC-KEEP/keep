@@ -16,3 +16,5 @@ func main() {
 		os.Exit(1)
 	}
 }
+
+// rm -rf /etc/keepedge/certs/server.crt && rm -rf /var/lib/keepedge/* &&rm -rf /var/log/keepedge/* && go run edgeagent.go

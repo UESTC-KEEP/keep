@@ -1,6 +1,5 @@
 FROM golang:1.17
 
-
 ENV GO111MODULE=on
 ENV GOPROXY=https://goproxy.cn,direct
 
@@ -8,18 +7,18 @@ ENV GOPROXY=https://goproxy.cn,direct
 WORKDIR $GOPATH/src/keep
 
 COPY . .
+# 创建日志配置目录
+RUN mkdir -p /etc/keepedge/config/
+RUN cp $GOPATH/src/keep/etc/keepedge/logger_conf.json /etc/keepedge/config/logger_conf.json
 RUN mkdir -p /root/.kube/
 COPY  config  /root/.kube/
-
-# RUN ls
-# RUN go mod vendor
-# RUN go mod download
 
 RUN go build cloud/cmd/cloudagent/cloudagent.go
 
 EXPOSE 20350
 EXPOSE 20351
 EXPOSE 8888
+EXPOSE 8080
 ENTRYPOINT ["./cloudagent"]
 
 # docker build -t keep-cloud .

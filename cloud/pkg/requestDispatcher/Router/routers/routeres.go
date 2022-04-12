@@ -43,7 +43,7 @@ func InitRouters() {
 			},
 			Kafka: kafka_router.FluentKafkaRouter{
 				Metrics: kafka_metrics.Metrics{
-					Resources: "$uestc/keep/kafka/metrics/",
+					Resources: "uestc-keep-kafka-metrics",
 					Operation: kafka_metrics.Operation{
 						Push: "push",
 					},

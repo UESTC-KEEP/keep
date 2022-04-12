@@ -4,6 +4,7 @@ database:
   datasource: /var/lib/keepedge/keep.db
 modules:
   healthzagent:
+    nodename: node-01
     enable: true
     hostinfostat: null
     cpu: null
@@ -18,7 +19,7 @@ modules:
   logsagent:
     enable: true
     loglevel: 6
-    logtime: 2022-04-10T23:53:43.631500647+08:00
+    logtime: 2022-04-12T20:26:55.896721107+08:00
     logfilename: ""
     loginfo: ""
     logfiles:
