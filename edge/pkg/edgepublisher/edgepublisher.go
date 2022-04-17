@@ -117,10 +117,16 @@ func EdgeAgentHealthCheck(w http.ResponseWriter, r *http.Request) {
 }
 
 func NewEdgePublisher(enable bool) (*EdgePublisher, error) {
+	// yaml文件中配置token
+	tokenEnv := os.Getenv("KEEP_TOKEN")
+	token := "bda3bbdc7914b9e0d159758c4b2e82297cfb432f31c64c56f0681342f1ad608f.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDk4NTI3MjJ9.e48vUyEDIQbFb8OGmH49Imvuv7CG2TdvDanFrhuZsPc"
+	if tokenEnv != "" {
+		token = tokenEnv
+	}
 	return &EdgePublisher{
 		enable:           enable,
 		hostnameOverride: edgepublisherconfig.Config.HostnameOverride,
 		nodeIP:           edgepublisherconfig.Config.LocalIP,
-		token:            "bda3bbdc7914b9e0d159758c4b2e82297cfb432f31c64c56f0681342f1ad608f.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDk4NTI3MjJ9.e48vUyEDIQbFb8OGmH49Imvuv7CG2TdvDanFrhuZsPc",
+		token:            token,
 	}, nil
 }

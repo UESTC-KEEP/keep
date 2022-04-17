@@ -1,0 +1,27 @@
+FROM golang:1.17
+
+ENV GO111MODULE=on
+ENV GOPROXY=https://goproxy.cn,direct
+
+#工作目录作目录
+WORKDIR $GOPATH/src/keep
+
+COPY . .
+# 创建日志配置目录
+RUN mkdir -p /etc/keepedge/config/
+RUN cp $GOPATH/src/keep/etc/keepedge/logger_conf.json /etc/keepedge/config/logger_conf.json
+
+RUN go build edge/cmd/edgeagent/edgeagent.go
+
+EXPOSE 20350
+EXPOSE 20351
+EXPOSE 8888
+EXPOSE 8080
+ENTRYPOINT ["./edgeagent"]
+
+# docker build -t keep-cloud .
+# docker run --name keep-cloud -p 20350:20350 -p 8888:8888  `docker images | grep  'keep-cloud' | awk '{print $3}'`
+#   一条命令实现停用并删除所有容器：
+#   docker stop $(docker ps -q) & docker rm $(docker ps -aq)
+#   删除none镜像
+#   docker rmi `docker images | grep  '<none>' | awk '{print $3}'`

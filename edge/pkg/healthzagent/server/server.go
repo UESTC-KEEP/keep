@@ -45,6 +45,13 @@ func GetMachineStatus() {
 	Healagent.NetIOCountersStat, _ = GetNetIOStatus()
 	Healagent.NodeName = config.Config.NodeName
 
+	//resp, err := http.Get("127.0.0.1:9200/metrics")
+	//if err != nil {
+	//	logger.Error(err)
+	//	return
+	//}
+	//defer resp.Body.Close()
+	//body, err := ioutil.ReadAll(resp.Body)
 	//同步数据到sqlite
 	msg := model.Message{
 		Header: model.MessageHeader{},
