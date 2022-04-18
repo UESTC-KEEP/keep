@@ -1,15 +1,15 @@
 package main
 
 import (
-	"keep/constants/edge"
-	"keep/healthagent/config"
-	prome "keep/healthagent/promethus"
-	"keep/healthagent/server"
-	"keep/pkg/util/kplogger"
-	logger "keep/pkg/util/loggerv1.0.1"
+	"github.com/UESTC-KEEP/keep/constants/edge"
+	"github.com/UESTC-KEEP/keep/healthagent/config"
+	prome "github.com/UESTC-KEEP/keep/healthagent/promethus"
+	"github.com/UESTC-KEEP/keep/healthagent/server"
+	"github.com/UESTC-KEEP/keep/pkg/util/kplogger"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"strings"
 
-	edgeagent "keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
+	edgeagent "github.com/UESTC-KEEP/keep/pkg/apis/compoenentconfig/keep/v1alpha1/edge"
 	"os"
 
 	"github.com/shirou/gopsutil/cpu"

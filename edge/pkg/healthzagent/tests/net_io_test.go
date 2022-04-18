@@ -2,7 +2,7 @@ package tests
 
 import (
 	"fmt"
-	server "keep/edge/pkg/healthzagent/server"
+	server "github.com/UESTC-KEEP/keep/edge/pkg/healthzagent/server"
 	"testing"
 )
 

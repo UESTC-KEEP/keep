@@ -33,7 +33,7 @@ func ReadQueueAndPublish() {
 
 // Publish 将数据发送到云端
 func Publish(msg model.Message) {
-	fmt.Printf("--------------------------  发送云端  msg:%#v \n", msg)
+	logger.Trace(fmt.Sprintf("--------------------------  发送云端  msg:%#v \n", msg)[:40])
 	//msg.Router.Group = "/log"
 	edgetunnel.WriteToCloud(&msg)
 }

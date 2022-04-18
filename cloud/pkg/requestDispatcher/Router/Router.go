@@ -52,10 +52,11 @@ func MessageRouter() {
 			// 匹配需要发送给kafka的用量消息
 			case routers.KeepRouter.Kafka.Metrics.Resources:
 				logger.Info("发送给prometheus...")
-				node_name := message.Content.(map[string]interface{})["node_name"].(string)
-				cpuUsage := message.Content.(map[string]interface{})["cpu_usage"].(float64)
-				memUsage := message.Content.(map[string]interface{})["mem"].(map[string]interface{})["usedPercent"].(float64)
-				prome_exporter.UpdatesData(node_name, cpuUsage, memUsage)
+				//node_name := message.Content.(map[string]interface{})["node_name"].(string)
+				//cpuUsage := message.Content.(map[string]interface{})["cpu_usage"].(float64)
+				//memUsage := message.Content.(map[string]interface{})["mem"].(map[string]interface{})["usedPercent"].(float64)
+				//prome_exporter.UpdatesData(node_name, cpuUsage, memUsage)
+				prome_exporter.UpdateNodeExporter(message.Content.(string))
 			}
 			// 匹配metrics信息
 

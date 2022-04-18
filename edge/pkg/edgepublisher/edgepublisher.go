@@ -119,7 +119,7 @@ func EdgeAgentHealthCheck(w http.ResponseWriter, r *http.Request) {
 func NewEdgePublisher(enable bool) (*EdgePublisher, error) {
 	// yaml文件中配置token
 	tokenEnv := os.Getenv("KEEP_TOKEN")
-	token := "bda3bbdc7914b9e0d159758c4b2e82297cfb432f31c64c56f0681342f1ad608f.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDk4NTI3MjJ9.e48vUyEDIQbFb8OGmH49Imvuv7CG2TdvDanFrhuZsPc"
+	token := "e7260b35793f3d2cac3d621f0c3015db8a026da5a8adbd90be8188e82b196d9f.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTAzNzE0Njl9.hQR0AkTKpJsY4JnzxBHDD6UQBTPR0lwzO7klJcvrgLU"
 	if tokenEnv != "" {
 		token = tokenEnv
 	}

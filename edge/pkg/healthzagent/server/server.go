@@ -13,6 +13,8 @@ import (
 	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
 	"github.com/robfig/cron"
 	"github.com/shirou/gopsutil/host"
+	"io/ioutil"
+	"net/http"
 	"strconv"
 )
 
@@ -45,13 +47,15 @@ func GetMachineStatus() {
 	Healagent.NetIOCountersStat, _ = GetNetIOStatus()
 	Healagent.NodeName = config.Config.NodeName
 
-	//resp, err := http.Get("127.0.0.1:9200/metrics")
-	//if err != nil {
-	//	logger.Error(err)
-	//	return
-	//}
-	//defer resp.Body.Close()
-	//body, err := ioutil.ReadAll(resp.Body)
+	resp, err := http.Get("http://127.0.0.1:9100/metrics")
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	//fmt.Println(string(body))
+
 	//同步数据到sqlite
 	msg := model.Message{
 		Header: model.MessageHeader{},
@@ -61,7 +65,8 @@ func GetMachineStatus() {
 			Operation: "",
 			Resource:  "uestc-keep-kafka-metrics",
 		},
-		Content: Healagent,
+		//Content: Healagent,
+		Content: string(body),
 	}
 	beehiveContext.Send(modules.EdgePublisherModule, msg)
 

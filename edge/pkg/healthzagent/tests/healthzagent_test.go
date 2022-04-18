@@ -3,7 +3,10 @@ package tests
 
 import (
 	"fmt"
-	"keep/edge/pkg/healthzagent/server"
+	"github.com/UESTC-KEEP/keep/edge/pkg/healthzagent/server"
+	logger "github.com/UESTC-KEEP/keep/pkg/util/loggerv1.0.1"
+	"io/ioutil"
+	"net/http"
 	"testing"
 )
 
@@ -37,4 +40,15 @@ func TestGetDiskIOStatus(t *testing.T) {
 
 func TestGetNetIOStatus(t *testing.T) {
 	server.GetNetIOStatus()
+}
+
+func TestNodeExporter(t *testing.T) {
+	resp, err := http.Get("http://127.0.0.1:9100/metrics")
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
 }
